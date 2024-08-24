@@ -3,4 +3,5 @@ REFASH adalah platform aplikasi dekstop untuk campaign tren pengurangan Fast Fah
 
 Kelompok SpeedRun
 
-Ketua Kelompok: Habib Fabian Fahlesi - 22/505501/TK/55319
+Ketua   : Habib Fabian Fahlesi - 22/505501/TK/55319
+Anggota : Muhammad Budi Setiawan - 22/505064/TK/55254
