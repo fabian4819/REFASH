@@ -8,5 +8,9 @@ namespace WpfApp_REFASH
 {
     internal class Collection
     {
+        public string collectionID { get; set; }
+        public string status { get; set; }
+        public string category { get; set; }
+
     }
 }
