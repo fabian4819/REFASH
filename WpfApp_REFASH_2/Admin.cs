@@ -28,7 +28,7 @@ namespace WpfApp_REFASH
         {
             // Verify collection
         }
-        public void addProduct(string name, byte[] image, string price, string category, string size, int stock)
+        public void addProduct(string name, byte[] image, string price, string category, string size, int stock, string description)
         {
             // Add product
         }
@@ -36,7 +36,7 @@ namespace WpfApp_REFASH
         {
             // Remove product
         }
-        public void updateProduct(string productID, string name, byte[] image, string price, string category, string size, int stock)
+        public void updateProduct(string productID, string name, byte[] image, string price, string category, string size, int stock, string decription) 
         {
             // Update product
         }
