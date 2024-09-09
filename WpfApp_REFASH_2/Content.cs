@@ -8,9 +8,9 @@ namespace WpfApp_REFASH
 {
     internal class Content
     {
-        private int contentID;
-        private string title;
-        private string description;
-        private string writer;
+        public int contentID;
+        public string title;
+        public string description;
+        public string writer;
     }
 }

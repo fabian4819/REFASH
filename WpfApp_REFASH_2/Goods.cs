@@ -8,8 +8,8 @@ namespace WpfApp_REFASH
 {
     internal class Goods
     {
-        public string name { get; set; }
-        public string description { get; set; }
+        protected string name { get; set; }
+        protected string description { get; set; }
 
     }
 }
