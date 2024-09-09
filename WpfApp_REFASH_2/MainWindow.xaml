@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_REFASH"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="720" Width="1280"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Maximized">
     <Grid>
-        
+        <!-- Upperbar -->
+        <DockPanel VerticalAlignment="Top" Background="#000000" Height="64">
+            <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="60" Height="30" HorizontalAlignment="Right" Click="Click_CloseApp"/>
+            <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="60" Height="30" HorizontalAlignment="Right" Click="Click_CloseApp"/>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left"  Width="128" Background="Black"/>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="test"/>
     </Grid>
 </Window>

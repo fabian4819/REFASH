@@ -7,31 +7,31 @@ using System.Threading.Tasks;
 
 namespace WpfApp_REFASH
 {
-    internal class User
+    public abstract class User
     {
-        private string name;
-        private string email;
-        private string phone_number;
+        protected string name;
+        protected string email;
+        protected string phone_number;
 
         public void login()
         {
-            // logic
+            Console.WriteLine("User logged in.");
         }
         public void register()
         {
-            // Logic
+            Console.WriteLine("User registered.");
         }
         public void logout()
         {
-            // Logic
+            Console.WriteLine("User logged out.");
         }
         public void changePassword()
         {
-            // Logic
+            Console.WriteLine("Password changed.");
         }
         public void updateProfile()
         {
-            // Logic
+            Console.WriteLine("Profile updated.");
         }
     }
 }

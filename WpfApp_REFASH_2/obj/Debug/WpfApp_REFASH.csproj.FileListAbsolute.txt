@@ -1,0 +1,15 @@
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\bin\Debug\WpfApp_REFASH.exe.config
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\bin\Debug\WpfApp_REFASH.exe
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\bin\Debug\WpfApp_REFASH.pdb
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.csproj.AssemblyReference.cache
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\MainWindow.g.cs
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\App.g.cs
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH_MarkupCompile.cache
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH_MarkupCompile.lref
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\MainWindow.baml
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.g.resources
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.Properties.Resources.resources
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.csproj.GenerateResource.cache
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.csproj.CoreCompileInputs.cache
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.exe
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.pdb
