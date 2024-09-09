@@ -24,5 +24,10 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
         }
+
+        private void Click_CloseApp(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

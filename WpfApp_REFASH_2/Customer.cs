@@ -1,48 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfApp_REFASH
 {
-    internal class Customer
+    internal class Customer: User
     {
         private string customerID;
         private string address;
-        private string loyaltyPoint;
+        private int loyaltyPoint;
 
-        public void updateProfile()
+        public int checkLoyaltyPoint()
         {
-
+            return loyaltyPoint;
         }
-        public int checkLoyalty()
+        public void addChart(string productID)
         {
-            return 0;
-        }
-        public void addChart()
-        {
-
+            Console.WriteLine($"Product {productID} added to cart.");
         }
         public void removeChart(string productID)
         {
-
+            Console.WriteLine($"Product {productID} removed from cart.");
         }
         public void seeProductDetail(string productID)
         {
-
+            Console.WriteLine($"Viewing details for product {productID}.");
         }
         public void checkout()
         {
-
+            Console.WriteLine("Checkout completed.");
         }
         public void addCollection()
         {
-
+            Console.WriteLine($"Collection added.");
         }
         public void removeCollection(string collectionID)
         {
-
+            Console.WriteLine($"Collection {collectionID} removed.");
         }
     }
 }
