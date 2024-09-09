@@ -8,10 +8,10 @@ using System.Windows.Media.Animation;
 
 namespace WpfApp_REFASH
 {
-    internal class Admin
+    internal class Admin : User
     {
-        public string adminID { get; set; }
-        public int totalContent { get; set; }
+        private string adminID { get; set; }
+        private int totalContent { get; set; }
         public void addContent(string title, byte[] image, string description)
         {
             totalContent++;
