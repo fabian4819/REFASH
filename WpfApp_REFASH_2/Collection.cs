@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp_REFASH
 {
-    internal class Collection
+    internal class Collection : Goods
     {
         public string collectionID { get; set; }
         public string status { get; set; }
