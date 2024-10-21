@@ -16,6 +16,11 @@
             <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="60" Height="30" HorizontalAlignment="Right" Click="Click_CloseApp"/>
         </DockPanel>
         <DockPanel HorizontalAlignment="Left"  Width="128" Background="Black"/>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="test"/>
+        <StackPanel Background="#ffffff" Margin="128,64,0,0" VerticalAlignment="Center" >
+            <TextBlock HorizontalAlignment="Center" FontSize="60" FontWeight="Bold" Margin="0,0,0,10">REFASH</TextBlock>
+            <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="Normal" TextWrapping="Wrap" Padding="10" TextAlignment="Justify" Margin="0,0,0,10">Welcome to REFASH, the innovative app that connects you to the future of sustainable fashion! At REFASH, we collect fashion waste, process it with creativity, and bring it back to life for resale to industries and eco-conscious individuals. Join us in reducing waste, supporting eco-friendly materials, and being part of a movement towards more sustainable fashion. Together, we can make a difference, save the planet, and stay stylish with REFASH!</TextBlock>
+            <Button Name="btn_register" Width="256" FontSize="48" FontWeight="Medium" Background="Black" Foreground="White" Margin="0,0,0,10" Click="btn_register_Click">Register</Button>
+            <Button Name="btn_login" Width="256" FontSize="48" FontWeight="Medium" Background="White" Foreground="Black" Margin="0,0,0,10" Click="btn_login_Click">Login</Button>
+        </StackPanel>
     </Grid>
 </Window>
