@@ -6,10 +6,22 @@ using System.Threading.Tasks;
 
 namespace WpfApp_REFASH
 {
-    internal class Goods
+    internal abstract class Goods
     {
-        protected string name { get; set; }
-        protected string description { get; set; }
+        //Encapsulation (protected access modifier)
+        protected string Name { get; set; }
+        protected string Description { get; set; }
+        //Constructor
+        protected Goods(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+        //Virtual method for polymorphism
+        public virtual void DisplayInfo()
+        {
+            Console.WriteLine($"Name: {Name}\nDescription: {Description}");
+        }
 
     }
 }
