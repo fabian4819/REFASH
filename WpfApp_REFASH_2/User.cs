@@ -9,27 +9,40 @@ namespace WpfApp_REFASH
 {
     public abstract class User
     {
-        protected string name;
-        protected string email;
-        protected string phone_number;
+        //Encapsulation (protected access modifier)
+        protected string Name { get; set; }
+        protected string Email { get; set; }
+        protected string PhoneNumber { get; set; }
 
-        public void login()
+        //Constructor
+        protected User(string name, string email, string phoneNumber)
         {
-            Console.WriteLine("User logged in.");
+            Name = name;
+            Email = email;
+            PhoneNumber = phoneNumber;
         }
-        public void register()
+        //Login
+        public virtual void Login()
         {
-            Console.WriteLine("User registered.");
+            Console.WriteLine($"{Name} logged in.");
         }
-        public void logout()
+        //Register
+        public virtual void Register()
         {
-            Console.WriteLine("User logged out.");
+            Console.WriteLine($"{Name} registered.");
         }
-        public void changePassword()
+        //Logout
+        public virtual void Logout()
+        {
+            Console.WriteLine($"{Name} logged out.");
+        }
+        //Change Password
+        public void ChangePassword()
         {
             Console.WriteLine("Password changed.");
         }
-        public void updateProfile()
+        //Polymorphism (updateProfile method)
+        public virtual void UpdateProfile()
         {
             Console.WriteLine("Profile updated.");
         }

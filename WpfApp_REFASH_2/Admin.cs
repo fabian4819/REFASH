@@ -8,37 +8,60 @@ using System.Windows.Media.Animation;
 
 namespace WpfApp_REFASH
 {
+    // Inheritance (User)
     internal class Admin : User
     {
-        private string adminID { get; set; }
-        private int totalContent { get; set; }
-        public void addContent(string title, byte[] image, string description)
+        //Property for Admin
+        public string AdminID { get; private set; }
+        private int TotalContent { get; set; }
+        //Constructor for Admin
+        public Admin(string name, string email, string phoneNumber, string adminID)
+           : base(name, email, phoneNumber)
         {
-            totalContent++;
-        }   
-        public void removeContent(string contentID)
-        {
-            totalContent--;
+            AdminID = adminID;
+            TotalContent = 0;
         }
-        public void updateContent(string contentID, string title, byte[] image, string description)
+        // Override Method UpdateProfile for Admin (Polymorphism)
+        public override void UpdateProfile()
         {
-            // Update content
+            Console.WriteLine($"Admin {Name}'s profile updated with admin ID: {AdminID}.");
         }
-        public void verifyCollection(string collectionID)
+        // Add Content
+        public void AddContent(string title, byte[] image, string description)
         {
-            // Verify collection
+            TotalContent++;
+            Console.WriteLine($"Content '{title}' added by {Name}. Total content now: {TotalContent}.");
         }
-        public void addProduct(string name, byte[] image, string price, string category, string size, int stock, string description)
+        // Remove Content
+        public void RemoveContent(string contentID)
         {
-            // Add product
+            TotalContent--;
+            Console.WriteLine($"Content {contentID} removed by {Name}. Total content now: {TotalContent}.");
         }
-        public void removeProduct(string productID)
+        // Update Content
+        public void UpdateContent(string contentID, string title, byte[] image, string description)
         {
-            // Remove product
+            Console.WriteLine($"Content {contentID} updated by {Name}.");   
         }
-        public void updateProduct(string productID, string name, byte[] image, string price, string category, string size, int stock, string decription) 
+        // Verify Collection
+        public void VerifyCollection(string collectionID)
         {
-            // Update product
+            Console.WriteLine($"Collection {collectionID} verified by Admin {Name}.");
+        }
+        // Add Product
+        public void AddProduct(string name, byte[] image, string price, string category, string size, int stock, string description)
+        {
+            Console.WriteLine($"Product {name} added by {Name}.");  
+        }
+        // Remove Product
+        public void RemoveProduct(string productID)
+        {
+            Console.WriteLine($"Product {productID} removed by {Name}.");
+        }
+        // Update Product
+        public void UpdateProduct(string productID, string name, byte[] image, string price, string category, string size, int stock, string decription) 
+        {
+            Console.WriteLine($"Product {productID} updated by {Name}.");
         }
     }
 }
