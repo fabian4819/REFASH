@@ -28,3 +28,7 @@ C:\Users\hp\REFASH\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.csproj.Generat
 C:\Users\hp\REFASH\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.csproj.CoreCompileInputs.cache
 C:\Users\hp\REFASH\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.exe
 C:\Users\hp\REFASH\REFASH\WpfApp_REFASH_2\obj\Debug\WpfApp_REFASH.pdb
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\LoginWindow.g.cs
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\RegisterWindow.g.cs
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\LoginWindow.baml
+C:\Users\ACER\Accounts\Universitas Gadjah Mada\Courses\Semester 5\Junior Projek\REFASH\WpfApp_REFASH_2\obj\Debug\RegisterWindow.baml
