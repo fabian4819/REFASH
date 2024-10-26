@@ -1,0 +1,63 @@
+# Visual Studio
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folders for app and files created by windows store
+_AppData/
+*.appx
+*.appxbundle
+*.appxsym
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# IIS
+[Ii][Nn][Ee][Tt][Pp][Uu][Bb]/
+
+# Visual Studio Temporary Files, Downloads, and Package Cache
+_node_modules/
+.vs/
+_Installer/
+.paket/
+packages/
+TESTRESULTS/
+TestResult/
+
+# DotNet
+*.lock.json
+project.assets.json
+project.fragment.lock.json
+project.nuget.cache
+*.runtimeconfig.dev.json
+*.runtimeconfig.json
