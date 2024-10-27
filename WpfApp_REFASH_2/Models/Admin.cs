@@ -15,8 +15,8 @@ namespace WpfApp_REFASH
         public string AdminID { get; private set; }
         private int TotalContent { get; set; }
         //Constructor for Admin
-        public Admin(string name, string email, string phoneNumber, string adminID)
-           : base(name, email, phoneNumber)
+        public Admin(string name, string email, string phoneNumber, string password, string adminID)
+           : base(name, email, phoneNumber, password)
         {
             AdminID = adminID;
             TotalContent = 0;

@@ -13,13 +13,15 @@ namespace WpfApp_REFASH
         protected string Name { get; set; }
         protected string Email { get; set; }
         protected string PhoneNumber { get; set; }
+        protected string Password { get; set; }
 
         //Constructor
-        protected User(string name, string email, string phoneNumber)
+        protected User(string name, string email, string phoneNumber, string password)
         {
             Name = name;
             Email = email;
             PhoneNumber = phoneNumber;
+            Password = password;
         }
         //Login
         public virtual void Login()

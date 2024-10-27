@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=junpro;Username=postgres;Password=12345678"
+  }
+}

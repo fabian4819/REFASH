@@ -16,8 +16,8 @@ namespace WpfApp_REFASH
         public int LoyaltyPoints { get; set; }
 
         //Constructor for Customer
-        public Customer(string name, string email, string phoneNumber, string customerID, string address)
-            : base(name, email, phoneNumber)
+        public Customer(string name, string email, string phoneNumber, string password, string customerID, string address)
+        : base(name, email, phoneNumber, password)
         {
             CustomerID = customerID;
             Address = address;
