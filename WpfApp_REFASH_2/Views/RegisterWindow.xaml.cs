@@ -20,12 +20,11 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class RegisterWindow : Window
     {
-        private UserRepository _userRepository;
+        private DatabaseManager dbManager;
         public RegisterWindow()
         {
             InitializeComponent();
-            var dbManager = new DatabaseManager();
-            _userRepository = new UserRepository(dbManager);
+            dbManager = new DatabaseManager();
         }
 
         private void btn_login_click(object sender, RoutedEventArgs e)
@@ -43,8 +42,8 @@ namespace WpfApp_REFASH
             string phoneNumber = tb_phoneNumber.Text;
             string password = tb_password.Text;
             string role = ((ComboBoxItem)cb_role.SelectedItem).Content.ToString();
-
-            bool result = _userRepository.RegisterUser(name, email, phoneNumber, password, role);
+            User newUser = new User(name, email, phoneNumber, password, role);
+            bool result = newUser.Register();
 
             if (result)
             {

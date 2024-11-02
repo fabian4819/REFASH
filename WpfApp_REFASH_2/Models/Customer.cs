@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using WpfApp_REFASH.DataAccess;
 
 namespace WpfApp_REFASH
 {
@@ -16,8 +17,8 @@ namespace WpfApp_REFASH
         public int LoyaltyPoints { get; set; }
 
         //Constructor for Customer
-        public Customer(string name, string email, string phoneNumber, string password, string customerID, string address)
-        : base(name, email, phoneNumber, password)
+        public Customer(string name, string email, string phoneNumber, string password, string role, string customerID, string address)
+        : base(name, email, phoneNumber, password, role)
         {
             CustomerID = customerID;
             Address = address;

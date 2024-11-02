@@ -31,7 +31,7 @@
                     <Button Foreground="Black" Background="Transparent" BorderBrush="Transparent" Click="btn_login_click">Login</Button>
                 </StackPanel>
                 <Grid HorizontalAlignment="right">
-                    <Button Width="64" Foreground="White" Background="Black" Padding="10,5,10,5" Click="btn_register_Click" Height="28" VerticalAlignment="Top">Register</Button>
+                    <Button Width="64" Foreground="White" Background="Black" Padding="10,5,10,5" Click="btn_register_Click">Register</Button>
                 </Grid>
             </StackPanel>
         </Border>

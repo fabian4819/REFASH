@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
+using WpfApp_REFASH.DataAccess;
 
 namespace WpfApp_REFASH
 {
@@ -15,8 +16,8 @@ namespace WpfApp_REFASH
         public string AdminID { get; private set; }
         private int TotalContent { get; set; }
         //Constructor for Admin
-        public Admin(string name, string email, string phoneNumber, string password, string adminID)
-           : base(name, email, phoneNumber, password)
+        public Admin(string name, string email, string phoneNumber, string password, string role, string adminID)
+           : base(name, email, phoneNumber, password, role)
         {
             AdminID = adminID;
             TotalContent = 0;
