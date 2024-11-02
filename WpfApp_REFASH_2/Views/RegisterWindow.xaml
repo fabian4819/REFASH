@@ -5,14 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_REFASH"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="450" Width="800"
+        Title="RegisterWindow" Height="720" Width="1280"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowState="Maximized"
         >
     <Grid Background="#000000">
+        <!-- Header with buttons in top-right corner -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
+            <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="72"/>
+            <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="72"/>
+        </StackPanel>
         <Border Width="300" Height="400" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="12" Padding="10">
             <StackPanel  Background="White" VerticalAlignment="Center">
+                <Image Source="../Assets/Logo-Black-Transparant.png" Width="72"/>
                 <Label Name="lbl_username">Username</Label>
                 <TextBox Name="tb_username"></TextBox>
                 <Label Name="lbl_email">Email</Label>
