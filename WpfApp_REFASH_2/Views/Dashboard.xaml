@@ -1,0 +1,63 @@
+﻿<Window x:Class="WpfApp_REFASH.Dashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_REFASH"
+        mc:Ignorable="d"
+        Title="Dashboard" Height="720" Width="1280"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Maximized"
+        >
+    <Grid HorizontalAlignment="Stretch">
+        <!-- Define Columns: Sidebar and Main Content -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Sidebar width -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main content width -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <StackPanel Background="#000000" Grid.Column="0" Height="720">
+            <Image Source="../Assets\Logo.png"/>
+            <Label Foreground="White" FontSize="24" Margin="10">News</Label>
+            <Label Foreground="White" FontSize="24" Margin="10">Collection</Label>
+            <Label Foreground="White" FontSize="24" Margin="10">Shop</Label>
+        </StackPanel>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1">
+            <!-- Define Rows: Header and Content Area -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <!-- Header area for buttons -->
+                <RowDefinition Height="*"/>
+                <!-- Content area -->
+            </Grid.RowDefinitions>
+
+            <!-- Header with Buttons, Background Black -->
+            <Grid Grid.Row="0" Background="#000000" HorizontalAlignment="Stretch" Height="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!-- Filler space to push buttons to the right -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Column for buttons -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Buttons on the Right Side -->
+                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                    <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="72"/>
+                    <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="72"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Main Content Area -->
+            <StackPanel Grid.Row="1" Margin="10">
+                <Label FontSize="20" Margin="10">Main Content Here</Label>
+                <!-- Additional content can go here -->
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
