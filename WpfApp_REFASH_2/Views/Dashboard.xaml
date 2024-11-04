@@ -4,10 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Dashboard" Height="720" Width="1280"
-        WindowStyle="None"
-        ResizeMode="NoResize"
-        WindowState="Maximized">
+        Title="Dashboard" Height="720" Width="1280">
 
     <Grid HorizontalAlignment="Stretch">
         <!-- Define Columns: Sidebar and Main Content -->

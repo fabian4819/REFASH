@@ -44,7 +44,6 @@ namespace WpfApp_REFASH
             string role = ((ComboBoxItem)cb_role.SelectedItem).Content.ToString();
             User newUser = new User(name, email, phoneNumber, password, role);
             bool result = newUser.Register();
-
             if (result)
             {
                 MessageBox.Show("Registration successful!");
