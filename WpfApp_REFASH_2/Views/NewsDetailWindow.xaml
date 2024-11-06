@@ -1,0 +1,54 @@
+﻿<Window x:Class="WpfApp_REFASH.NewsDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_REFASH"
+        mc:Ignorable="d"
+        Title="NewsDetailWindow" Height="720" Width="1280"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowState="Maximized"
+        >
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Background="#000000" Grid.Column="0" VerticalAlignment="Stretch" Grid.RowSpan="2">
+            <Image Source="../Assets/Logo.png"/>
+            <Button Content="News" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
+            <Button Content="Colletion" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
+            <Button Content="Shop" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#000000" HorizontalAlignment="Stretch" Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
+                    <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_minimizeApp_click"/>
+                    <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_closeApp_click"/>
+                </StackPanel>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="12">
+                    <Button HorizontalAlignment="Left" FontSize="16" FontWeight="DemiBold" Background="Transparent" BorderBrush="Transparent" Margin="-8,0,0,10" Click="btn_back_click">Back</Button>
+                    <Label FontSize="48" FontWeight="Black" Margin="0,0,0,10">Title</Label>
+                    <Label FontSize="16" Foreground="Gray" Margin="0,0,0,20">Author</Label>
+                    <TextBlock FontSize="16" TextWrapping="Wrap" Text="Description" Margin="0,0,0,10"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>
