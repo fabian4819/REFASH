@@ -116,6 +116,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ShopCard.xaml.cs">
+      <DependentUpon>ShopCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShopWindow.xaml.cs">
+      <DependentUpon>ShopWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\UpperBar.xaml.cs">
       <DependentUpon>UpperBar.xaml</DependentUpon>
     </Compile>
@@ -150,6 +156,14 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="ShopCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShopWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControl\UpperBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
