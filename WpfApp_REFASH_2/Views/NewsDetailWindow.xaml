@@ -16,12 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Background="#000000" Grid.Column="0" VerticalAlignment="Stretch" Grid.RowSpan="2">
-            <Image Source="../Assets/Logo.png"/>
-            <Button Content="News" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
-            <Button Content="Colletion" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
-            <Button Content="Shop" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
-        </StackPanel>
+        <local:SideBar Grid.Column="0"/>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -35,10 +30,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
-                    <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_minimizeApp_click"/>
-                    <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_closeApp_click"/>
-                </StackPanel>
+                <local:UpperBar Grid.Row="0"/>
             </Grid>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">

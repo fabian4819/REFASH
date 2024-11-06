@@ -116,6 +116,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControl\UpperBar.xaml.cs">
+      <DependentUpon>UpperBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\SideBar.xaml.cs">
+      <DependentUpon>SideBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewsDetailWindow.xaml.cs">
       <DependentUpon>NewsDetailWindow.xaml</DependentUpon>
     </Compile>
@@ -144,6 +150,14 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="UserControl\UpperBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\SideBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NewsDetailWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
