@@ -24,5 +24,13 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
         }
+
+        private void btn_detail_click(object sender, RoutedEventArgs e)
+        {
+            NewsDetailWindow newsDetailWindow = new NewsDetailWindow();
+            newsDetailWindow.Show();
+            Window parentWindow = Window.GetWindow(this);
+            parentWindow?.Close();
+        }
     }
 }
