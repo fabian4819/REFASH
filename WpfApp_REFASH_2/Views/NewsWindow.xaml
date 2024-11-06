@@ -11,43 +11,36 @@
         WindowState="Maximized"
         >
     <Grid HorizontalAlignment="Stretch">
-        <!-- Define Columns: Sidebar and Main Content -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Sidebar -->
         <StackPanel Background="#000000" Grid.Column="0" VerticalAlignment="Stretch" Grid.RowSpan="2">
             <Image Source="../Assets/Logo.png"/>
-            <Label Foreground="White" FontSize="24" Margin="10">News</Label>
-            <Label Foreground="White" FontSize="24" Margin="10">Collection</Label>
-            <Label Foreground="White" FontSize="24" Margin="10">Shop</Label>
+            <Button Content="News" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
+            <Button Content="Colletion" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
+            <Button Content="Shop" Foreground="White" Background="Transparent" BorderThickness="0" FontWeight="DemiBold" FontSize="16" Margin="12" Width="72" Click="btn_navigateNews_click"/>
         </StackPanel>
 
-        <!-- Main Content Area -->
         <Grid Grid.Column="1">
-            <!-- Define Rows: Header and Content Area -->
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Header with Buttons, Background Black -->
-            <Grid Grid.Row="0" Background="#000000" HorizontalAlignment="Stretch" Height="60">
+            <Grid Grid.Row="0" Background="#000000" HorizontalAlignment="Stretch" Height="Auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Buttons on the Right Side -->
-                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
-                    <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="72"/>
-                    <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="24" Width="72"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
+                    <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_minimizeApp_click"/>
+                    <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_closeApp_click"/>
                 </StackPanel>
             </Grid>
 
-            <!-- Main Content Area with NewsCard -->
             <StackPanel Grid.Row="1" Margin="10">
                 <ItemsControl ItemsSource="{Binding ContentItem}">
                     <ItemsControl.ItemTemplate>

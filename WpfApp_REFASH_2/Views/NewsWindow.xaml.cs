@@ -41,11 +41,26 @@ namespace WpfApp_REFASH
                 title = "Another News Title",
                 description = "This is another sample description for the news content.",
                 writer = "Author 2",
-                imagePath = "../Assets/NewsImage.png"
+                imagePath = "../Assets/Logo-Black-Transparant.png"
             }
         };
 
             DataContext = this;
+        }
+
+        private void btn_closeApp_click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void btn_minimizeApp_click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void btn_navigateNews_click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
