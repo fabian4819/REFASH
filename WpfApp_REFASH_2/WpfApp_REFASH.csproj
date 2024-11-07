@@ -393,5 +393,8 @@
     <Resource Include="Assets\Logo-Black-Transparant.png" />
     <Resource Include="Assets\Logo-White-Transparant.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\denimdummy.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

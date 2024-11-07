@@ -22,13 +22,21 @@ namespace WpfApp_REFASH
         public CollectionWindow()
         {
             InitializeComponent();
+
             // Initialize the collections list with sample data
             Collections = new ObservableCollection<CollectionItem>
-            {
-                new CollectionItem { Title = "Item 1", URL = "https://via.placeholder.com/210" },
-                new CollectionItem { Title = "Item 2", URL = "https://via.placeholder.com/210" },
-                new CollectionItem { Title = "Item 3", URL = "https://via.placeholder.com/210" }
-            };
+        {
+            new CollectionItem { Title = "Item 1", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 2", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 3", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 4", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 5", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 6", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 7", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 8", URL = "../Assets/denimdummy.png" },
+            new CollectionItem { Title = "Item 9", URL = "../Assets/denimdummy.png" }
+        };
+
             DataContext = this;
         }
     }
