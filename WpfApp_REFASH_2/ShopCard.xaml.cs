@@ -16,21 +16,13 @@ using System.Windows.Shapes;
 namespace WpfApp_REFASH
 {
     /// <summary>
-    /// Interaction logic for NewsCard.xaml
+    /// Interaction logic for ShopCard.xaml
     /// </summary>
-    public partial class NewsCard : UserControl
+    public partial class ShopCard : UserControl
     {
-        public NewsCard()
+        public ShopCard()
         {
             InitializeComponent();
-        }
-
-        private void btn_detail_click(object sender, RoutedEventArgs e)
-        {
-            NewsDetailWindow newsDetailWindow = new NewsDetailWindow();
-            newsDetailWindow.Show();
-            Window parentWindow = Window.GetWindow(this);
-            parentWindow?.Close();
         }
     }
 }

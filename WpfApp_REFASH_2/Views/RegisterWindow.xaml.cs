@@ -56,5 +56,15 @@ namespace WpfApp_REFASH
                 MessageBox.Show("Registration failed. Please check your details.");
             }
         }
+
+        private void btn_close_app_click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void btn_minimaize_app_click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }

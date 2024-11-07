@@ -16,21 +16,24 @@ using System.Windows.Shapes;
 namespace WpfApp_REFASH
 {
     /// <summary>
-    /// Interaction logic for NewsCard.xaml
+    /// Interaction logic for UpperBar.xaml
     /// </summary>
-    public partial class NewsCard : UserControl
+    public partial class UpperBar : UserControl
     {
-        public NewsCard()
+        public UpperBar()
         {
             InitializeComponent();
         }
 
-        private void btn_detail_click(object sender, RoutedEventArgs e)
+        private void btn_minimizeApp_click(object sender, RoutedEventArgs e)
         {
-            NewsDetailWindow newsDetailWindow = new NewsDetailWindow();
-            newsDetailWindow.Show();
             Window parentWindow = Window.GetWindow(this);
-            parentWindow?.Close();
+            parentWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void btn_closeApp_click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

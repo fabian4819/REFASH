@@ -15,22 +15,16 @@ using System.Windows.Shapes;
 
 namespace WpfApp_REFASH
 {
-    /// <summary>
-    /// Interaction logic for NewsCard.xaml
-    /// </summary>
-    public partial class NewsCard : UserControl
+    public partial class CollectionControl : UserControl
     {
-        public NewsCard()
+        public CollectionControl()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
 
-        private void btn_detail_click(object sender, RoutedEventArgs e)
-        {
-            NewsDetailWindow newsDetailWindow = new NewsDetailWindow();
-            newsDetailWindow.Show();
-            Window parentWindow = Window.GetWindow(this);
-            parentWindow?.Close();
-        }
+        public string Title { get; set; }
+        public string URL { get; set; }
     }
 }
+

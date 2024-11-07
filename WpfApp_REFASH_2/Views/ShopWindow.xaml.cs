@@ -10,27 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp_REFASH
 {
     /// <summary>
-    /// Interaction logic for NewsCard.xaml
+    /// Interaction logic for ShopWindow.xaml
     /// </summary>
-    public partial class NewsCard : UserControl
+    public partial class ShopWindow : Window
     {
-        public NewsCard()
+        public ShopWindow()
         {
             InitializeComponent();
-        }
-
-        private void btn_detail_click(object sender, RoutedEventArgs e)
-        {
-            NewsDetailWindow newsDetailWindow = new NewsDetailWindow();
-            newsDetailWindow.Show();
-            Window parentWindow = Window.GetWindow(this);
-            parentWindow?.Close();
         }
     }
 }

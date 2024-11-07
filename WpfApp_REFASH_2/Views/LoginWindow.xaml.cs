@@ -53,13 +53,26 @@ namespace WpfApp_REFASH
                 }
                 else if (role == "Customer")
                 {
-                    MessageBox.Show("Login as Customer");
+                    // MessageBox.Show("Login as Customer");
+                    NewsWindow newsWindow = new NewsWindow();
+                    newsWindow.Show();
+                    this.Close();
                 }
             }
             else
             {
                 MessageBox.Show(role);
             }
+        }
+
+        private void btn_closeApp_click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void btn_minimizeApp_click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }
