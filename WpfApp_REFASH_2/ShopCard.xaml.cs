@@ -13,18 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp_REFASH.Views
+namespace WpfApp_REFASH
 {
-    public partial class CollectionControl : UserControl
+    /// <summary>
+    /// Interaction logic for ShopCard.xaml
+    /// </summary>
+    public partial class ShopCard : UserControl
     {
-        public CollectionControl()
+        public ShopCard()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
-
-        public string Title { get; set; }
-        public string URL { get; set; }
     }
 }
-

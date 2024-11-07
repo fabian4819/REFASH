@@ -1,16 +1,15 @@
-﻿<Window x:Class="WpfApp_REFASH.Views.Dashboard"
+﻿<Window x:Class="WpfApp_REFASH.NewsDetailWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_REFASH"
         mc:Ignorable="d"
-        Title="Dashboard" Height="720" Width="1280"
+        Title="NewsDetailWindow" Height="720" Width="1280"
         ResizeMode="NoResize"
-        WindowState="Maximized"
         WindowStyle="None"
+        WindowState="Maximized"
         >
-
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -34,9 +33,14 @@
                 <local:UpperBar Grid.Row="0"/>
             </Grid>
 
-            <StackPanel Grid.Row="1" Margin="10">
-                <TextBlock>Content</TextBlock>
-            </StackPanel>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="12">
+                    <Button HorizontalAlignment="Left" FontSize="16" FontWeight="DemiBold" Background="Transparent" BorderBrush="Transparent" Margin="-8,0,0,10" Click="btn_back_click">Back</Button>
+                    <Label FontSize="48" FontWeight="Black" Margin="0,0,0,10">Title</Label>
+                    <Label FontSize="16" Foreground="Gray" Margin="0,0,0,20">Author</Label>
+                    <TextBlock FontSize="16" TextWrapping="Wrap" Text="Description" Margin="0,0,0,10"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace WpfApp_REFASH
 {
-    internal class Content
+    public class Content
     {
-        public int contentID;
-        public string title;
-        public string description;
-        public string writer;
+        public int contentID { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public string writer { get; set; }
+        public string imagePath { get; set; }
     }
 }

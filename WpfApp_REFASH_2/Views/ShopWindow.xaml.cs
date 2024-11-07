@@ -10,21 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp_REFASH.Views
+namespace WpfApp_REFASH
 {
-    public partial class CollectionControl : UserControl
+    /// <summary>
+    /// Interaction logic for ShopWindow.xaml
+    /// </summary>
+    public partial class ShopWindow : Window
     {
-        public CollectionControl()
+        public ShopWindow()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
-
-        public string Title { get; set; }
-        public string URL { get; set; }
     }
 }
-

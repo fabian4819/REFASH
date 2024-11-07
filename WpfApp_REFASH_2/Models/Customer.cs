@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,17 +13,65 @@ namespace WpfApp_REFASH
     // Inheritance (User)
     internal class Customer: User
     {
-        public string CustomerID { get; private set; }
-        public string Address { get; set; }
-        public int LoyaltyPoints { get; set; }
+        private string CustomerID { get; set; }
+        private string Address { get; set; }
+        private int LoyaltyPoints { get; set; }
+        private DatabaseManager _dbManager = new DatabaseManager();
 
-        //Constructor for Customer
-        public Customer(string name, string email, string phoneNumber, string password, string role, string customerID, string address)
+        public Customer(string name, string email, string phoneNumber, string password, string role)
         : base(name, email, phoneNumber, password, role)
         {
-            CustomerID = customerID;
-            Address = address;
-            LoyaltyPoints = 0;
+            Name = name;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Password = password;
+            Role = role;
+            GetData(Email);
+        }
+
+        protected override (bool, string, string, string, string) GetData(string email)
+        {
+            var (isFound, name, role, phoneNumber, dbPassword) = base.GetData(email);
+
+            if (!isFound)
+            {
+                return (false, "Email not found in User table", null, null, null);
+            }
+
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var cmd = new NpgsqlCommand("SELECT address, loyalty_points, id FROM customers WHERE email = @e", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@e", email);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                var address = reader.IsDBNull(0) ? null : reader.GetString(0);
+                                var loyaltyPoints = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
+                                var customerId = reader.IsDBNull(2) ? null : reader.GetString(2);
+                                Address = address;
+                                LoyaltyPoints = loyaltyPoints;
+                                CustomerID = customerId;
+
+                                return (true, name, role, phoneNumber, dbPassword);
+                            }
+                            else
+                            {
+                                return (false, "Customer data not found", null, null, null);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during customer data retrieval: {ex.Message}");
+                return (false, "Error during customer data retrieval", null, null, null);
+            }
         }
 
         // Override Method UpdateProfile for Customer (Polymorphism)

@@ -1,16 +1,15 @@
-﻿<Window x:Class="WpfApp_REFASH.Views.Dashboard"
+﻿<Window x:Class="WpfApp_REFASH.NewsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_REFASH"
         mc:Ignorable="d"
-        Title="Dashboard" Height="720" Width="1280"
+        Title="NewsWindow" Height="720" Width="1280"
+        WindowStyle="None"
         ResizeMode="NoResize"
         WindowState="Maximized"
-        WindowStyle="None"
         >
-
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -35,7 +34,13 @@
             </Grid>
 
             <StackPanel Grid.Row="1" Margin="10">
-                <TextBlock>Content</TextBlock>
+                <ItemsControl ItemsSource="{Binding ContentItem}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:NewsCard/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Grid>
     </Grid>

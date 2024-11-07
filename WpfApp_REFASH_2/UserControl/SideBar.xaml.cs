@@ -16,21 +16,28 @@ using System.Windows.Shapes;
 namespace WpfApp_REFASH
 {
     /// <summary>
-    /// Interaction logic for NewsCard.xaml
+    /// Interaction logic for SideBar.xaml
     /// </summary>
-    public partial class NewsCard : UserControl
+    public partial class SideBar : UserControl
     {
-        public NewsCard()
+        public SideBar()
         {
             InitializeComponent();
         }
 
-        private void btn_detail_click(object sender, RoutedEventArgs e)
+        private void btn_navigateNews_click(object sender, RoutedEventArgs e)
         {
-            NewsDetailWindow newsDetailWindow = new NewsDetailWindow();
-            newsDetailWindow.Show();
-            Window parentWindow = Window.GetWindow(this);
-            parentWindow?.Close();
+
+        }
+
+        private void btn_navigateCollection_click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_navigateShop_click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

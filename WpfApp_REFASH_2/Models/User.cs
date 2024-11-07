@@ -12,13 +12,12 @@ namespace WpfApp_REFASH
 {
     public class User
     {
-        //Encapsulation (protected access modifier)
         protected string Name { get; set; }
         protected string Email { get; set; }
         protected string PhoneNumber { get; set; }
         protected string Password { get; set; }
         protected string Role { get; set; }
-        private static DatabaseManager _dbManager = new DatabaseManager();
+        private DatabaseManager _dbManager = new DatabaseManager();
 
         
 
@@ -31,12 +30,18 @@ namespace WpfApp_REFASH
             Password = password;
             Role = role;
         }
-        //Login
-        public static (bool, string) Login(string email, string password)
+        public User(string email, string password)
+        {
+            Email = email;
+            Password = password;
+        }
+
+        // GetData
+        protected virtual (bool, string, string, string, string) GetData(string email)
         {
             if (_dbManager == null)
             {
-                return (false, "Database Manager not initialized");
+                return (false, "Database Manager not initialized", null, null, null);
             }
 
             try
@@ -44,29 +49,23 @@ namespace WpfApp_REFASH
                 using (var conn = _dbManager.GetConnection())
                 {
                     conn.Open();
-                    using (var cmd = new NpgsqlCommand("SELECT password, role FROM users WHERE email = @e", conn))
+                    using (var cmd = new NpgsqlCommand("SELECT name, role, phone_number, password FROM users WHERE email = @e", conn))
                     {
                         cmd.Parameters.AddWithValue("@e", email);
                         using (var reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var dbPassword = reader.GetString(0);
+                                var name = reader.GetString(0);
                                 var role = reader.GetString(1);
-                                reader.Close();
+                                var phoneNumber = reader.GetString(2);
+                                var dbPassword = reader.GetString(3);
 
-                                if (SecurityUtils.HashPassword(password) == dbPassword)
-                                {
-                                    return (true, role);
-                                }
-                                else
-                                {
-                                    return (false, "Incorrect password");
-                                }
+                                return (true, name, role, phoneNumber, dbPassword);
                             }
                             else
                             {
-                                return (false, "Email not found");
+                                return (false, "Email not found", null, null, null);
                             }
                         }
                     }
@@ -74,10 +73,37 @@ namespace WpfApp_REFASH
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error during login: {ex.Message}");
-                return (false, "Error during login");
+                Console.WriteLine($"Error during data retrieval: {ex.Message}");
+                return (false, "Error during data retrieval", null, null, null);
             }
         }
+
+        //Login
+        public (bool, string, string, string, string) Login(string email, string password)
+        {
+            var (isFound, name, role, phoneNumber, dbPassword) = GetData(email);
+
+            if (!isFound)
+            {
+                
+                return (false, name, null, null, null);
+            }
+
+            if (SecurityUtils.HashPassword(password) == dbPassword)
+            {
+                Name = name;
+                Role = role;
+                PhoneNumber = phoneNumber;
+
+                return (true, "Login successful", name, role, phoneNumber);
+            }
+            else
+            {
+                return (false, "Incorrect password", null, null, null);
+            }
+        }
+
+
 
 
 

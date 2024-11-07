@@ -23,6 +23,7 @@ namespace WpfApp_REFASH
     {
         private DatabaseManager dbManager;
         private User user;
+        private Customer customer;
         public LoginWindow()
         {
             InitializeComponent();
@@ -40,8 +41,9 @@ namespace WpfApp_REFASH
         {
             string email = tb_email.Text;
             string password = tb_password.Text;
+            user = new User(email, password);
 
-            var (isAuthenticated, role) = User.Login(email, password);
+            var (isAuthenticated, message, name, role, phoneNumber) = user.Login(email, password);
             if (isAuthenticated)
             {
                 MessageBox.Show("Login successfull");
@@ -51,13 +53,26 @@ namespace WpfApp_REFASH
                 }
                 else if (role == "Customer")
                 {
-                    MessageBox.Show("Login as Customer");
+                    // MessageBox.Show("Login as Customer");
+                    NewsWindow newsWindow = new NewsWindow();
+                    newsWindow.Show();
+                    this.Close();
                 }
             }
             else
             {
                 MessageBox.Show(role);
             }
+        }
+
+        private void btn_closeApp_click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void btn_minimizeApp_click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }

@@ -3,30 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WpfApp_REFASH"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1024">
+             d:DesignHeight="240" d:DesignWidth="600">
     <Border Background="White" CornerRadius="10" BorderBrush="Gray" BorderThickness="1" Padding="10">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Image Section -->
-        <Border Grid.Column="0" Background="LightGray" CornerRadius="5" Margin="0,0,10,0">
-            <Image Source="../Assets/Logo.png" Stretch="UniformToFill"/>
-        </Border>
+            <!-- Image Section -->
+            <Border Grid.Column="0" Background="LightGray" CornerRadius="5" Margin="0,0,10,0">
+                <Image Source="{Binding imagePath}" Stretch="UniformToFill"/>
+            </Border>
 
-        <!-- Content Section -->
-        <StackPanel Grid.Column="1" Margin="10,0,0,0">
-            <TextBlock Text="Bahaya Fast Fashion" FontSize="20" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
-            <TextBlock Text="Lorem Ipsum dolor amet kata kata yang sangat sulit untuk dihapal tapi menarik untuk dihapal dan ingin sekali mengetahui bagaimana cara kerja algoritma lorem ipsum dolot amet bjit awowkwkwkwkwkwkwk." 
-                           FontSize="14" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
-            <StackPanel HorizontalAlignment="Right" Margin="0,20,0,0">
-                <Button Content="Selengkapnya" Width="120" Height="40" Background="Black" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5"/>
-            </StackPanel>
-        </StackPanel>
-    </Grid>
+            <!-- Content Section -->
+            <Grid Grid.Column="1" Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="{Binding title}" FontSize="24" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
+
+                <TextBlock Grid.Row="1" Text="{Binding description}" FontSize="12" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
+
+                <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button Content="Selengkapnya" Width="120" Height="40" Background="Black" FontSize="12" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5" Click="btn_detail_click"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="3" Text="by {Binding writer}" FontSize="12" Foreground="Gray"/>
+            </Grid>
+        </Grid>
     </Border>
 </UserControl>
