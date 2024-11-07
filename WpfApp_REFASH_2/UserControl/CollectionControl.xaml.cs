@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +18,34 @@ namespace WpfApp_REFASH
 {
     public partial class CollectionControl : UserControl
     {
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+            nameof(Title), typeof(string), typeof(CollectionControl), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty URLProperty = DependencyProperty.Register(
+            nameof(URL), typeof(string), typeof(CollectionControl), new PropertyMetadata(null));
+
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public string URL
+        {
+            get { return (string)GetValue(URLProperty); }
+            set { SetValue(URLProperty, value); }
+        }
+
         public CollectionControl()
         {
             InitializeComponent();
-            this.DataContext = this;
+            this.Loaded += (s, e) =>
+            {
+                Debug.WriteLine($"Title: {Title}, URL: {URL}");
+            };
         }
 
-        public string Title { get; set; }
-        public string URL { get; set; }
     }
+
 }
 

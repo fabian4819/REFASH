@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace WpfApp_REFASH
 {
-    /// <summary>
-    /// Interaction logic for SideBar.xaml
-    /// </summary>
     public partial class SideBar : UserControl
     {
         public SideBar()
@@ -27,17 +24,19 @@ namespace WpfApp_REFASH
 
         private void btn_navigateNews_click(object sender, RoutedEventArgs e)
         {
-
+            // Navigate to News window
         }
 
         private void btn_navigateCollection_click(object sender, RoutedEventArgs e)
         {
-
+            // Show the CollectionWindow
+            CollectionWindow collectionWindow = new CollectionWindow();
+            collectionWindow.Show();
         }
 
         private void btn_navigateShop_click(object sender, RoutedEventArgs e)
         {
-
+            // Navigate to Shop window
         }
     }
 }
