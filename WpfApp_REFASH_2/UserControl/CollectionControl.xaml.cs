@@ -10,18 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp_REFASH
 {
-    /// <summary>
-    /// Interaction logic for Dashboard.xaml
-    /// </summary>
-    public partial class Dashboard : Window
+    public partial class CollectionControl : UserControl
     {
-        public Dashboard()
+        public CollectionControl()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
+
+        public string Title { get; set; }
+        public string URL { get; set; }
     }
 }
+

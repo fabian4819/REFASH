@@ -116,11 +116,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControl\CollectionControl.xaml.cs">
+      <DependentUpon>CollectionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\NewsCard.xaml.cs">
       <DependentUpon>NewsCard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Dashboard.xaml.cs">
-      <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\DatabaseManager.cs" />
     <Compile Include="DataAccess\UserRepository.cs" />
@@ -130,6 +130,9 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Goods.cs" />
     <Compile Include="Utilities\SecurityUtils.cs" />
+    <Compile Include="Views\CollectionWindow.xaml.cs">
+      <DependentUpon>CollectionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -138,7 +141,15 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="UserControl\CollectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControl\NewsCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,6 +215,9 @@
   <ItemGroup>
     <Resource Include="Assets\Logo-Black-Transparant.png" />
     <Resource Include="Assets\Logo-White-Transparant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\denimdummy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
