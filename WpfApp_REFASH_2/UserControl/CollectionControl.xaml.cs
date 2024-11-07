@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp_REFASH.Views
+namespace WpfApp_REFASH
 {
     public partial class CollectionControl : UserControl
     {
