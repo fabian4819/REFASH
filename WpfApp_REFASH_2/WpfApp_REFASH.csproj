@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -251,6 +252,9 @@
     <Compile Include="ShopCard.xaml.cs">
       <DependentUpon>ShopCard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\AddCollectionDialog.xaml.cs">
+      <DependentUpon>AddCollectionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\CollectionControl.xaml.cs">
       <DependentUpon>CollectionControl.xaml</DependentUpon>
     </Compile>
@@ -296,6 +300,10 @@
     </Compile>
     <Compile Include="Models\User.cs" />
     <Page Include="ShopCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\AddCollectionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
