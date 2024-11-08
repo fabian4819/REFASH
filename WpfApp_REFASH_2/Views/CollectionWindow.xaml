@@ -14,16 +14,13 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
         <!-- Sidebar -->
         <local:SideBar Grid.Column="0"/>
-
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
             <!-- Upper Bar -->
             <Grid Grid.Row="0" Background="#000000" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -32,39 +29,53 @@
                 </Grid.ColumnDefinitions>
                 <local:UpperBar Grid.Column="0"/>
             </Grid>
-
             <!-- Main Content Area -->
             <Grid Grid.Row="1" Margin="0,10,0,0">
-                <StackPanel Margin="10">
-                    <!-- Total Collection Section -->
-                    <Border BorderBrush="#000000" BorderThickness="1" Margin="10" CornerRadius="5" HorizontalAlignment="Stretch" Height="80">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Total Collection" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="22" Margin="20,0,0,0"/>
-                            <Label Content="10" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="30" Grid.Column="1" Margin="0,0,20,0"/>
-                        </Grid>
-                    </Border>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                    <!-- Collection List -->
-                    <ListView ItemsSource="{Binding Collections}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <!-- Total Collection Section -->
+                <Border Grid.Row="0" BorderBrush="#000000" BorderThickness="1" Margin="48,10,63,10" CornerRadius="5" Height="80">
+                    <Grid Margin="38,0,36,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Total Collection" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="30" Margin="0,0,0,0"/>
+                        <Label Content="{Binding TotalCollections}" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="40" Grid.Column="1" Margin="0,0,20,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- ScrollViewer for ListView -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10,0,10,10">
+                    <ListView ItemsSource="{Binding Collections}" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal"/>
+                                <UniformGrid Columns="4"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
+                        <ListView.Template>
+                            <ControlTemplate>
+                                <ItemsPresenter/>
+                            </ControlTemplate>
+                        </ListView.Template>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <!-- Set margin for spacing between items -->
-                                <local:CollectionControl Title="{Binding Title}" URL="{Binding URL}" Margin="0,10,70,50"/>
+                                <local:CollectionControl 
+        Title="{Binding Title}" 
+        URL="{Binding URL}" 
+        Status="{Binding Status}"
+        Margin="30,10,30,30"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
-
-                </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>

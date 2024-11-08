@@ -254,6 +254,7 @@
     <Compile Include="UserControl\CollectionControl.xaml.cs">
       <DependentUpon>CollectionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Converters.cs" />
     <Compile Include="Views\CollectionWindow.xaml.cs">
       <DependentUpon>CollectionWindow.xaml</DependentUpon>
     </Compile>

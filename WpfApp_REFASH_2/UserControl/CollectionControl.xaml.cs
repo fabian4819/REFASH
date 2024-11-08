@@ -18,11 +18,14 @@ namespace WpfApp_REFASH
 {
     public partial class CollectionControl : UserControl
     {
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
-            nameof(Title), typeof(string), typeof(CollectionControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(CollectionControl), new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty URLProperty = DependencyProperty.Register(
-            nameof(URL), typeof(string), typeof(CollectionControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty URLProperty =
+            DependencyProperty.Register("URL", typeof(string), typeof(CollectionControl), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty StatusProperty =
+            DependencyProperty.Register("Status", typeof(VerificationStatus), typeof(CollectionControl), new PropertyMetadata(VerificationStatus.InVerification));
 
         public string Title
         {
@@ -36,15 +39,16 @@ namespace WpfApp_REFASH
             set { SetValue(URLProperty, value); }
         }
 
+        public VerificationStatus Status
+        {
+            get { return (VerificationStatus)GetValue(StatusProperty); }
+            set { SetValue(StatusProperty, value); }
+        }
+
         public CollectionControl()
         {
             InitializeComponent();
-            this.Loaded += (s, e) =>
-            {
-                Debug.WriteLine($"Title: {Title}, URL: {URL}");
-            };
         }
-
     }
 
 }
