@@ -76,13 +76,33 @@ namespace WpfApp_REFASH
             modalBackground = new Grid
             {
                 Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0)),
-                Visibility = Visibility.Collapsed
+                Visibility = Visibility.Collapsed,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch
+            };
+
+            var blurEffect = new System.Windows.Media.Effects.BlurEffect
+            {
+                Radius = 5,
+                KernelType = System.Windows.Media.Effects.KernelType.Gaussian
             };
 
             addDialog = new AddCollectionDialog();
             addDialog.OnAdd += AddDialog_OnAdd;
             addDialog.OnCancel += AddDialog_OnCancel;
+            addDialog.HorizontalAlignment = HorizontalAlignment.Center;
+            addDialog.VerticalAlignment = VerticalAlignment.Center;
 
+            modalBackground.IsVisibleChanged += (s, e) =>
+            {
+                if (modalBackground.Visibility == Visibility.Visible)
+                    MainGrid.Children[1].Effect = blurEffect;
+                else
+                    MainGrid.Children[1].Effect = null;
+            };
+
+            Grid.SetColumn(modalBackground, 1); // Set modal ke kolom kedua (content area)
+            Grid.SetZIndex(modalBackground, 999);
             modalBackground.Children.Add(addDialog);
             MainGrid.Children.Add(modalBackground);
         }
