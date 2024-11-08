@@ -9,7 +9,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowState="Maximized">
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -37,14 +37,34 @@
                 </Grid.RowDefinitions>
 
                 <!-- Total Collection Section -->
-                <Border Grid.Row="0" BorderBrush="#000000" BorderThickness="1" Margin="48,10,63,10" CornerRadius="5" Height="80">
+                <Border Grid.Row="0" BorderBrush="#000000" BorderThickness="1" Margin="48,10,234,10" CornerRadius="5" Height="80">
                     <Grid Margin="38,0,36,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Total Collection" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="30" Margin="0,0,0,0"/>
-                        <Label Content="{Binding TotalCollections}" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="40" Grid.Column="1" Margin="0,0,20,0"/>
+                        <Label Content="{Binding TotalCollections}" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="40" Margin="91,0,0,0" Grid.Column="2"/>
+                        <Button Grid.Column="2" 
+                Width="140" 
+                Height="50"
+                Click="btn_addCollection_Click"
+                Background="#323232"
+                Foreground="White"
+                BorderThickness="0"
+                Margin="213,14,-193,14">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" 
+                      Fill="White" 
+                      Width="20" 
+                      Height="20" 
+                      Stretch="Uniform" 
+                      Margin="0,0,8,0"/>
+                                <TextBlock Text="Add Collection" 
+                         VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
                 </Border>
 
