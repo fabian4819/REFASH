@@ -7,21 +7,23 @@ using System.Threading.Tasks;
 namespace WpfApp_REFASH
 {
     //Inheritance (Goods)
-    internal class Product : Goods
+    public class Product : Goods
     {
-        //Property for Product
         public string ProductID { get; set; }
-        public byte[] Image { get; set; }
+        public string ProductName { get; set; } // Add this property if needed
+        public string Image { get; set; }
         public string Price { get; set; }
         public string Category { get; set; }
         public string Size { get; set; }
         public int Stock { get; set; }
+        public string Description { get; set; }
 
-        //Constructor
-        public Product(string name, string description, string productID, byte[] image, string price, string category, string size, int stock)
+        public Product(string name, string description, string productID, string image, string price, string category, string size, int stock)
             : base(name, description)
         {
+            ProductName = name;
             ProductID = productID;
+            Description = description;
             Image = image;
             Price = price;
             Category = category;
