@@ -57,7 +57,7 @@ namespace WpfApp_REFASH
 
         private void btn_navigateCollection_click(object sender, RoutedEventArgs e)
         {
-            CollectionWindow collectionWindow = new CollectionWindow();
+            CollectionWindow collectionWindow = new CollectionWindow(Customer);
             collectionWindow.Show();
             Window.GetWindow(this)?.Close();
         }

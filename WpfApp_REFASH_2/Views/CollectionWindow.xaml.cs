@@ -24,6 +24,7 @@ namespace WpfApp_REFASH
     }
     public partial class CollectionWindow : Window, INotifyPropertyChanged
     {
+        public Customer Customer { get; private set; }
         private Grid modalBackground;
         private AddCollectionDialog addDialog;
         private ObservableCollection<CollectionItem> _collections;
@@ -43,7 +44,7 @@ namespace WpfApp_REFASH
             get { return Collections?.Count ?? 0; }
         }
 
-        public CollectionWindow()
+        public CollectionWindow(Customer customer)
         {
             InitializeComponent();
             InitializeModalLayer();
@@ -69,6 +70,7 @@ namespace WpfApp_REFASH
             };
 
             DataContext = this;
+            Customer = customer;
         }
 
         private void InitializeModalLayer()
