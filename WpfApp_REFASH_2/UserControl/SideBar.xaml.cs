@@ -24,19 +24,23 @@ namespace WpfApp_REFASH
 
         private void btn_navigateNews_click(object sender, RoutedEventArgs e)
         {
-            // Navigate to News window
+            NewsWindow newsWindow = new NewsWindow();
+            newsWindow.Show();
+            Window.GetWindow(this)?.Close();
         }
 
         private void btn_navigateCollection_click(object sender, RoutedEventArgs e)
         {
-            // Show the CollectionWindow
             CollectionWindow collectionWindow = new CollectionWindow();
             collectionWindow.Show();
+            Window.GetWindow(this)?.Close();
         }
 
         private void btn_navigateShop_click(object sender, RoutedEventArgs e)
         {
-            // Navigate to Shop window
+            ShopWindow shopWindow = new ShopWindow();
+            shopWindow.Show();
+            Window.GetWindow(this)?.Close();
         }
     }
 }
