@@ -20,31 +20,22 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class NewsWindow : Window
     {
+        public Customer Customer { get; private set; }
         public ObservableCollection<Content> ContentItem { get; set; }
-        public NewsWindow()
+        public NewsWindow(Customer customer)
         {
             InitializeComponent();
-
-            ContentItem = new ObservableCollection<Content>
-        {
-            new Content
+            Customer = customer;
+            if (Customer == null)
             {
-                contentID = 0,
-                title = "Lorem ipsum dolor sit amet",
-                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                writer = "Author 1",
-                imagePath = "../Assets/Logo.png"
-            },
-            new Content
-            {
-                contentID = 1,
-                title = "Another News Title",
-                description = "This is another sample description for the news content.",
-                writer = "Author 2",
-                imagePath = "../Assets/Logo-Black-Transparant.png"
+                MessageBox.Show("Customer data is missing.");
+                return;
             }
-        };
-
+            ContentItem = Customer.GetAllContent();
+            foreach (var content in ContentItem)
+            {
+                content.Customer = Customer; // Assign Customer to each Content item
+            }
             DataContext = this;
         }
 

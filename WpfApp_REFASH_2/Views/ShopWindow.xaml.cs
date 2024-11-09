@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using System.IO;
 namespace WpfApp_REFASH
 {
     /// <summary>
@@ -19,9 +20,27 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class ShopWindow : Window
     {
-        public ShopWindow()
+        public Customer Customer { get; private set; }
+        public ObservableCollection<Product> ProductItem { get; set; }
+
+        public ShopWindow(Customer customer)
         {
             InitializeComponent();
+            Customer = customer;
+            if (Customer == null)
+            {
+                MessageBox.Show("Customer data is missing.");
+                return;
+            }
+            ProductItem = Customer.GetAllProductOffer();
+            DataContext = this;
+        }
+
+        private void btn_cart_click(object sender, RoutedEventArgs e)
+        {
+            ShopCartWindow shopCartWindow = new ShopCartWindow(Customer);
+            shopCartWindow.Show();
+            this.Close();
         }
     }
 }

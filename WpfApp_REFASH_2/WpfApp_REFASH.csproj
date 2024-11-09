@@ -249,7 +249,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ShopCard.xaml.cs">
+    <Compile Include="Views\ShopCartWindow.xaml.cs">
+      <DependentUpon>ShopCartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ShopCard.xaml.cs">
       <DependentUpon>ShopCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControl\AddCollectionDialog.xaml.cs">
@@ -299,7 +302,11 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
-    <Page Include="ShopCard.xaml">
+    <Page Include="Views\ShopCartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\ShopCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -404,6 +411,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\denimdummy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ShopCartLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ShopListLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
