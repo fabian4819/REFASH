@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="240" d:DesignWidth="600">
+             d:DesignWidth="600"
+             Height="240px">
     <Border Background="White" CornerRadius="10" BorderBrush="Gray" BorderThickness="1" Padding="10">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -34,7 +35,7 @@
                     <Button Content="Selengkapnya" Width="120" Height="40" Background="Black" FontSize="12" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5" Click="btn_detail_click"/>
                 </StackPanel>
 
-                <TextBlock Grid.Row="3" Text="by {Binding writer}" FontSize="12" Foreground="Gray"/>
+                <TextBlock Grid.Row="3" Text="{Binding writer}" FontSize="12" Foreground="Gray"/>
             </Grid>
         </Grid>
     </Border>

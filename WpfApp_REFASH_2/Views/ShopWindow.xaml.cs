@@ -20,23 +20,27 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class ShopWindow : Window
     {
+        public Customer Customer { get; private set; }
         public ObservableCollection<Product> ProductItem { get; set; }
 
-        public ShopWindow()
+        public ShopWindow(Customer customer)
         {
             InitializeComponent();
-            ProductItem = new ObservableCollection<Product>
+            Customer = customer;
+            if (Customer == null)
             {
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
-            };
-
-            DataContext = this; // Set DataContext to enable binding
+                MessageBox.Show("Customer data is missing.");
+                return;
+            }
+            ProductItem = Customer.GetAllProductOffer();
+            DataContext = this;
         }
 
         private void btn_cart_click(object sender, RoutedEventArgs e)
         {
-
+            ShopCartWindow shopCartWindow = new ShopCartWindow(Customer);
+            shopCartWindow.Show();
+            this.Close();
         }
     }
 }

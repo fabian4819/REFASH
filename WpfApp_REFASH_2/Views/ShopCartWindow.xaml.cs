@@ -20,10 +20,17 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class ShopCartWindow : Window
     {
+        public Customer Customer { get; private set; }
         public ObservableCollection<Product> CartItems { get; set; }
-        public ShopCartWindow()
+        public ShopCartWindow(Customer customer)
         {
             InitializeComponent();
+            Customer = customer;
+            if (Customer == null)
+            {
+                MessageBox.Show("Customer data is missing.");
+                return;
+            }
             CartItems = new ObservableCollection<Product>
             {
                 new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
@@ -62,6 +69,13 @@ namespace WpfApp_REFASH
         {
             // Implement checkout functionality here
             MessageBox.Show("Proceeding to checkout");
+        }
+
+        private void btn_back_click(object sender, RoutedEventArgs e)
+        {
+            ShopWindow shopWindow = new ShopWindow(Customer);
+            shopWindow.Show();
+            this.Close();
         }
     }
 }
