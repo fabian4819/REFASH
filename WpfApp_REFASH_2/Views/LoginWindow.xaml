@@ -8,29 +8,213 @@
         Title="LoginWindow" Height="720" Width="1280"
         WindowStyle="None"
         ResizeMode="NoResize"
-        WindowState="Maximized"
-        >
-    <Grid Background="#000000">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
-            <Button Content="-" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_minimizeApp_click"/>
-            <Button Content="X" Foreground="White" Background="Transparent" BorderThickness="0" FontSize="16" Width="72" Click="btn_closeApp_click"/>
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <!-- Color Resources -->
+        <Color x:Key="PrimaryDark">#1A1A2E</Color>
+        <Color x:Key="Primary">#16213E</Color>
+        <Color x:Key="Secondary">#0F3460</Color>
+        <Color x:Key="Accent">#E94560</Color>
+        <Color x:Key="HoverColor">#233666</Color>
+        <Color x:Key="PressedColor">#162444</Color>
+        <Color x:Key="HoverLight">#2A2A45</Color>
+        <Color x:Key="PressedLight">#25253D</Color>
+        <Color x:Key="CloseHover">#E94560</Color>
+        <Color x:Key="ClosePressed">#D13551</Color>
+
+        <!-- Brushes -->
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDark}"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+        <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}"/>
+        <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}"/>
+        <SolidColorBrush x:Key="HoverLightBrush" Color="{StaticResource HoverLight}"/>
+        <SolidColorBrush x:Key="PressedLightBrush" Color="{StaticResource PressedLight}"/>
+        <SolidColorBrush x:Key="CloseHoverBrush" Color="{StaticResource CloseHover}"/>
+        <SolidColorBrush x:Key="ClosePressedBrush" Color="{StaticResource ClosePressed}"/>
+
+        <!-- Drop Shadow Effect -->
+        <DropShadowEffect x:Key="CardShadow" 
+                         Direction="0" 
+                         BlurRadius="15" 
+                         ShadowDepth="2" 
+                         Color="#3F000000"/>
+
+        <!-- Button Style -->
+        <Style x:Key="WindowControlButton" TargetType="Button">
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- TextBox Style -->
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SecondaryBrush}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource PrimaryDarkBrush}">
+        <!-- Window Controls -->
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top" 
+                    Margin="10,0">
+
+            <!-- Minimize Button -->
+            <Button Style="{StaticResource WindowControlButton}"
+                    Margin="0,0,8,0"
+                    Click="btn_minimizeApp_click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="Transparent" 
+                                CornerRadius="4">
+                            <Path x:Name="icon"
+                                Data="M19,13H5V11H19V13Z"
+                                Fill="White"
+                                Width="14"
+                                Height="14"
+                                Stretch="Uniform"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource HoverLightBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PressedLightBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- Close Button -->
+            <Button Style="{StaticResource WindowControlButton}"
+                    Click="btn_closeApp_click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="Transparent"
+                                CornerRadius="4">
+                            <Path x:Name="icon"
+                                Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                Fill="White"
+                                Width="14"
+                                Height="14"
+                                Stretch="Uniform"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource CloseHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ClosePressedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
 
-        <Border Width="300" Height="400" BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="12" Padding="10"
-            HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Background="White" VerticalAlignment="Center">
-                <Image Source="../Assets/Logo-Black-Transparant.png" Width="72"/>
-                <Label Name="lbl_email">Email</Label>
-                <TextBox Name="tb_email"></TextBox>
-                <Label Name="lbl_password">Password</Label>
-                <TextBox Name="tb_password" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock>Don't have an account?</TextBlock>
-                    <Button Name="btn_register" Foreground="Black" Background="Transparent" BorderBrush="Transparent" Click="btn_register_click">Register</Button>
+        <!-- Login Card -->
+        <Border Width="390" Height="542" 
+                Background="{StaticResource PrimaryBrush}"
+                BorderThickness="0"
+                CornerRadius="20"
+                Effect="{StaticResource CardShadow}"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
+
+            <StackPanel Margin="40,30">
+                <!-- Logo -->
+                <Image Source="../Assets/Logo-Black-Transparant.png" Width="100" Margin="0,0,0,30"/>
+
+                <!-- Login Form -->
+                <TextBlock Text="Welcome Back" 
+                         Foreground="White" 
+                         FontSize="24" 
+                         FontWeight="Bold" 
+                         HorizontalAlignment="Center"
+                         Margin="0,0,0,30"/>
+
+                <Label Content="Email" Foreground="White" FontSize="16" Margin="0,0,0,5"/>
+                <TextBox Name="tb_email" 
+                         Style="{StaticResource ModernTextBox}" FontSize="18"/>
+
+                <Label Content="Password" Foreground="White" FontSize="16" Margin="0,0,0,5"/>
+                <PasswordBox Name="tb_password"
+                            Height="40"
+                            Margin="0,5,0,15"
+                            Padding="10,5"
+                            Background="#F0F0F0"
+                            BorderThickness="0"
+                            FontSize="18"/>
+
+                <Button Height="45" 
+                        Margin="0,20"
+                        Background="{StaticResource AccentBrush}"
+                        BorderThickness="0"
+                        Foreground="White"
+                        Content="LOGIN"
+                        FontSize="16"
+                        Click="btn_login_click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- Register Link -->
+                <StackPanel Orientation="Horizontal" 
+                          HorizontalAlignment="Center" 
+                          Margin="0,10,0,0">
+                    <TextBlock Text="Don't have an account? " 
+                             Foreground="LightGray" FontSize="14"/>
+                    <Button Content="Register"
+                            Foreground="{StaticResource AccentBrush}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="btn_register_click" FontSize="14">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </StackPanel>
-                <Grid HorizontalAlignment="Right">
-                    <Button Width="64" Foreground="White" Background="Black" Padding="10,5,10,5" Click="btn_login_click">Login</Button>
-                </Grid>
             </StackPanel>
         </Border>
     </Grid>
