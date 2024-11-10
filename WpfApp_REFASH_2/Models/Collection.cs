@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,15 @@ namespace WpfApp_REFASH
             Status = status;
             Category = category;
             ImagePath = image_path;
+            Description = description;
+        }
+        public Collection(string name, string description, string category = "Undefined", string imagePath = "default.png")
+            : base(name, description) 
+        {
+            Name = name;
+            Description = description;
+            Category = category;
+            ImagePath = imagePath;
         }
 
         //Override Method DisplayInfo for Collection (Polymorphism)

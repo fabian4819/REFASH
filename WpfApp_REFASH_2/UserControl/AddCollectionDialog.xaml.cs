@@ -19,23 +19,25 @@ namespace WpfApp_REFASH
     {
         public event RoutedEventHandler OnAdd;
         public event RoutedEventHandler OnCancel;
-        public string CollectionTitle => TitleTextBox.Text;
-        public string CollectionURL => URLTextBox.Text;
-        public VerificationStatus CollectionStatus
-        {
-            get
-            {
-                switch (StatusComboBox.SelectedIndex)
-                {
-                    case 0:
-                        return VerificationStatus.Verified;
-                    case 2:
-                        return VerificationStatus.Rejected;
-                    default:
-                        return VerificationStatus.InVerification;
-                }
-            }
-        }
+        public string CollectionName => tb_NameTextBox.Text;
+        public string CollectionDescription => tb_DescriptionTextBox.Text;
+        public string CollectionCategory => (tb_CategoryComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+        public string CollectionImagePath => tb_ImageURLTextBox.Text;
+        //public VerificationStatus CollectionStatus
+        //{
+        //    get
+        //    {
+        //        switch (StatusComboBox.SelectedIndex)
+        //        {
+        //            case 0:
+        //                return VerificationStatus.Verified;
+        //            case 2:
+        //                return VerificationStatus.Rejected;
+        //            default:
+        //                return VerificationStatus.InVerification;
+        //        }
+        //    }
+        //}
 
         public AddCollectionDialog()
         {

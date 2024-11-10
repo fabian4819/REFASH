@@ -131,20 +131,17 @@ namespace WpfApp_REFASH
 
         private void AddDialog_OnAdd(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(addDialog.CollectionTitle) ||
-                string.IsNullOrWhiteSpace(addDialog.CollectionURL))
-            {
-                MessageBox.Show("Please fill all fields", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            // Assuming you have a method in Customer class to add collections
+            var newCollection = new Collection(
+            addDialog.CollectionName,
+            addDialog.CollectionDescription,
+            addDialog.CollectionCategory,
+            addDialog.CollectionImagePath
+            );
 
-            Collections.Add(new CollectionItem
-            {
-                Title = addDialog.CollectionTitle,
-                URL = addDialog.CollectionURL,
-                Status = addDialog.CollectionStatus
-            });
+            Customer.AddCollection(newCollection);
 
+            // Update UI or close dialog
             modalBackground.Visibility = Visibility.Collapsed;
         }
 
