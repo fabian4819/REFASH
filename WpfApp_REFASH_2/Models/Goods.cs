@@ -9,7 +9,7 @@ namespace WpfApp_REFASH
     public abstract class Goods
     {
         //Encapsulation (protected access modifier)
-        protected string Name { get; set; }
+        public string Name { get; set; }
         protected string Description { get; set; }
         //Constructor
         protected Goods(string name, string description)

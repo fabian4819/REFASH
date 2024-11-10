@@ -49,20 +49,9 @@ namespace WpfApp_REFASH
             InitializeComponent();
             InitializeModalLayer();
             // Initialize the collections list with sample data
-            Collections = new ObservableCollection<CollectionItem>
-        {
-            new CollectionItem { Title = "Item 1", URL = "../Assets/denimdummy.png", Status = VerificationStatus.Verified },
-            new CollectionItem { Title = "Item 2", URL = "../Assets/denimdummy.png", Status = VerificationStatus.InVerification },
-            new CollectionItem { Title = "Item 3", URL = "../Assets/denimdummy.png", Status = VerificationStatus.Rejected },
-            new CollectionItem { Title = "Item 4", URL = "../Assets/denimdummy.png", Status = VerificationStatus.Verified },
-            new CollectionItem { Title = "Item 5", URL = "../Assets/denimdummy.png", Status = VerificationStatus.InVerification },
-            new CollectionItem { Title = "Item 6", URL = "../Assets/denimdummy.png", Status = VerificationStatus.Rejected },
-            new CollectionItem { Title = "Item 7", URL = "../Assets/denimdummy.png", Status = VerificationStatus.Verified },
-            new CollectionItem { Title = "Item 8", URL = "../Assets/denimdummy.png", Status = VerificationStatus.InVerification },
-            new CollectionItem { Title = "Item 9", URL = "../Assets/denimdummy.png", Status = VerificationStatus.Rejected },
-            new CollectionItem { Title = "Item 10", URL = "../Assets/denimdummy.png", Status = VerificationStatus.Verified }
-        };
-
+            var collections = customer.GetAllCollections();
+            var collectionItems = ConvertToCollectionItems(collections);
+            Collections = collectionItems;
             // Subscribe to CollectionChanged event
             Collections.CollectionChanged += (s, e) =>
             {
@@ -71,6 +60,32 @@ namespace WpfApp_REFASH
 
             DataContext = this;
             Customer = customer;
+        }
+
+        private VerificationStatus MapStatusToVerificationStatus(string status)
+        {
+            return status switch
+            {
+                "Verified" => VerificationStatus.Verified,
+                "InVerification" => VerificationStatus.InVerification,
+                "Rejected" => VerificationStatus.Rejected,
+                _ => VerificationStatus.InVerification // Default case
+            };
+        }
+
+        public ObservableCollection<CollectionItem> ConvertToCollectionItems(ObservableCollection<Collection> collections)
+        {
+            ObservableCollection<CollectionItem> collectionItems = new ObservableCollection<CollectionItem>();
+            foreach (var collection in collections)
+            {
+                collectionItems.Add(new CollectionItem
+                {
+                    Title = collection.Name,
+                    URL = collection.ImagePath, // Directly using Category as URL
+                    Status = MapStatusToVerificationStatus(collection.Status)
+                });
+            }
+            return collectionItems;
         }
 
         private void InitializeModalLayer()

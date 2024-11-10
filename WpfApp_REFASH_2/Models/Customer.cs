@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using WpfApp_REFASH.DataAccess;
 
 namespace WpfApp_REFASH
@@ -17,7 +18,8 @@ namespace WpfApp_REFASH
         private string Address { get; set; }
         private int LoyaltyPoints { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
-        public ObservableCollection<Content> ContentItem { get; set; }
+        private ObservableCollection<Content> ContentItem { get; set; }
+        public ObservableCollection<Collection> collections { get; set; }
 
         public Customer(string name, string email, string phoneNumber, string password, string role)
         : base(name, email, phoneNumber, password, role)
@@ -133,6 +135,67 @@ namespace WpfApp_REFASH
             }
 
             return contents;
+        }
+        public ObservableCollection<Collection> GetAllCollections()
+        {
+            ObservableCollection<Collection> collections = new ObservableCollection<Collection>();
+
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                        SELECT id AS collectionID, 
+                               name, 
+                               description, 
+                               status, 
+                               category,
+                               image_path
+                        FROM collections 
+                        WHERE customer_email = @Email";
+
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@Email", Email);
+
+                                using (var reader = cmd.ExecuteReader())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        var collection = new Collection(
+                                            reader.GetString(reader.GetOrdinal("name")),
+                                            reader.GetString(reader.GetOrdinal("description")),
+                                            reader.GetInt32(reader.GetOrdinal("collectionID")),
+                                            reader.IsDBNull(reader.GetOrdinal("status")) ? null : reader.GetString(reader.GetOrdinal("status")),
+                                            reader.IsDBNull(reader.GetOrdinal("category")) ? null : reader.GetString(reader.GetOrdinal("category")),
+                                            reader.IsDBNull(reader.GetOrdinal("image_path")) ? null : reader.GetString(reader.GetOrdinal("image_path"))
+                                        );
+                                        collections.Add(collection);
+                                    }
+                                }
+                            }
+
+                            transaction.Commit(); // Commit the transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback the transaction on error
+                            throw; // Optionally re-throw to handle higher up
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+            }
+
+            return collections;
         }
         public ObservableCollection<Product> GetAllProductOffer()
         {
