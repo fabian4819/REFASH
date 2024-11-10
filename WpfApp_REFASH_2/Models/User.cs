@@ -19,7 +19,7 @@ namespace WpfApp_REFASH
         protected string Role { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
 
-        
+
 
         //Constructor
         public User(string name, string email, string phoneNumber, string password, string role)
@@ -81,20 +81,22 @@ namespace WpfApp_REFASH
         //Login
         public (bool, string, string, string, string) Login(string email, string password)
         {
-            var (isFound, name, role, phoneNumber, dbPassword) = GetData(email);
+            var (userFound, name, role, phoneNumber, dbPassword) = GetData(email);
 
-            if (!isFound)
+            if (!userFound)
             {
-                
-                return (false, name, null, null, null);
+                return (false, "User not found.", null, null, null);
             }
 
-            if (SecurityUtils.HashPassword(password) == dbPassword)
+            // Hash the input password
+            var inputPasswordHash = SecurityUtils.HashPassword(password);
+
+            // Compare hashes using the constant time string comparison
+            if (SecurityUtils.PasswordComparison(inputPasswordHash, dbPassword))
             {
                 Name = name;
                 Role = role;
                 PhoneNumber = phoneNumber;
-
                 return (true, "Login successful", name, role, phoneNumber);
             }
             else
@@ -107,51 +109,61 @@ namespace WpfApp_REFASH
 
 
 
-        //Register
         public bool Register()
         {
+            NpgsqlTransaction transaction = null;
             try
             {
                 using (var conn = _dbManager.GetConnection())
                 {
                     conn.Open();
-                    using (var transaction = conn.BeginTransaction())
+                    transaction = conn.BeginTransaction();
+
+                    using (var cmd = new NpgsqlCommand("INSERT INTO users (name, email, phone_number, password, role) VALUES (@n, @e, @ph, @p, @r) RETURNING email", conn, transaction))
                     {
-                        var cmd = new NpgsqlCommand("INSERT INTO users (name, email, password, phone_number, role) VALUES (@n, @e, @p, @ph, @r) RETURNING email", conn, transaction);
                         cmd.Parameters.AddWithValue("@n", Name);
                         cmd.Parameters.AddWithValue("@e", Email);
-                        cmd.Parameters.AddWithValue("@p", SecurityUtils.HashPassword(Password));
                         cmd.Parameters.AddWithValue("@ph", PhoneNumber);
+                        cmd.Parameters.AddWithValue("@p", SecurityUtils.HashPassword(Password));
                         cmd.Parameters.AddWithValue("@r", Role);
-                        var result = cmd.ExecuteScalar()?.ToString(); 
-                        if (!string.IsNullOrEmpty(result))
+                        var userEmail = cmd.ExecuteScalar()?.ToString();
+
+                        if (string.IsNullOrEmpty(userEmail))
                         {
-                            if (Role == "Admin")
-                            {
-                                var adminCmd = new NpgsqlCommand("INSERT INTO admins (email) VALUES (@e)", conn, transaction);
-                                adminCmd.Parameters.AddWithValue("@e", Email);
-                                adminCmd.ExecuteNonQuery();
-                            }
-                            else if (Role == "Customer")
-                            {
-                                var customerCmd = new NpgsqlCommand("INSERT INTO customers (email) VALUES (@e)", conn, transaction);
-                                customerCmd.Parameters.AddWithValue("@e", Email);
-                                customerCmd.ExecuteNonQuery();
-                            }
-                            transaction.Commit();
-                            return true;
+                            throw new Exception("Failed to insert user data");
                         }
                     }
+
+                    if (Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        using (var cmd = new NpgsqlCommand("INSERT INTO admins (email) VALUES (@e)", conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@e", Email);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else if (Role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
+                    {
+                        using (var cmd = new NpgsqlCommand("INSERT INTO customers (email) VALUES (@e)", conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@e", Email);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                transaction?.Rollback();
+                Console.WriteLine("Error during registration: " + ex.Message);
+                return false;
             }
-            return false;
         }
 
-        
+
 
         //Logout
         public virtual void Logout()

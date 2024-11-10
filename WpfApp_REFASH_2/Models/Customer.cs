@@ -76,27 +76,63 @@ namespace WpfApp_REFASH
         }
         public ObservableCollection<Content> GetAllContent()
         {
-            ObservableCollection<Content> list = new ObservableCollection<Content>
+            ObservableCollection<Content> contents = new ObservableCollection<Content>();
+            
+            try
             {
-                new Content
+                using (var conn = _dbManager.GetConnection())
                 {
-                    contentID = 0,
-                    title = "Lorem ipsum dolor sit amet",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    writer = "Author 1",
-                    imagePath = "../Assets/Logo.png"
-                },
-                new Content
-                {
-                    contentID = 1,
-                    title = "Another News Title",
-                    description = "This is another sample description for the news content.",
-                    writer = "Author 2",
-                    imagePath = "../Assets/Logo-Black-Transparant.png"
-                }
-            };
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                        SELECT c.id AS contentID, 
+                               c.title AS title, 
+                               c.description AS description, 
+                               u.name AS writer, 
+                               c.image_path AS imagePath 
+                        FROM contents AS c 
+                        JOIN admins AS a ON c.author_email = a.email 
+                        JOIN users AS u ON a.email = u.email";
 
-            return list;
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                using (var reader = cmd.ExecuteReader())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        var content = new Content
+                                        {
+                                            contentID = reader.GetInt32(reader.GetOrdinal("contentID")),
+                                            title = reader.GetString(reader.GetOrdinal("title")),
+                                            description = reader.GetString(reader.GetOrdinal("description")),
+                                            writer = reader.GetString(reader.GetOrdinal("writer")),
+                                            imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
+                                        };
+                                        contents.Add(content);
+                                    }
+                                }
+                            }
+
+                            transaction.Commit(); // Commit transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback transaction on error
+                            throw; // Re-throw the exception to handle it outside or log it
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle or log exception related to connection issues
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+            }
+
+            return contents;
         }
         public ObservableCollection<Product> GetAllProductOffer()
         {
