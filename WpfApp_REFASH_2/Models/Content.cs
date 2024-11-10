@@ -13,5 +13,7 @@ namespace WpfApp_REFASH
         public string description { get; set; }
         public string writer { get; set; }
         public string imagePath { get; set; }
+        public Customer Customer { get; set; }
+
     }
 }

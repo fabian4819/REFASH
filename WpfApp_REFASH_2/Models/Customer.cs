@@ -11,12 +11,13 @@ using WpfApp_REFASH.DataAccess;
 namespace WpfApp_REFASH
 {
     // Inheritance (User)
-    internal class Customer: User
+    public class Customer : User
     {
         private string CustomerID { get; set; }
         private string Address { get; set; }
         private int LoyaltyPoints { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
+        public ObservableCollection<Content> ContentItem { get; set; }
 
         public Customer(string name, string email, string phoneNumber, string password, string role)
         : base(name, email, phoneNumber, password, role)
@@ -73,53 +74,55 @@ namespace WpfApp_REFASH
                 return (false, "Error during customer data retrieval", null, null, null);
             }
         }
+        public ObservableCollection<Content> GetAllContent()
+        {
+            ObservableCollection<Content> list = new ObservableCollection<Content>
+            {
+                new Content
+                {
+                    contentID = 0,
+                    title = "Lorem ipsum dolor sit amet",
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    writer = "Author 1",
+                    imagePath = "../Assets/Logo.png"
+                },
+                new Content
+                {
+                    contentID = 1,
+                    title = "Another News Title",
+                    description = "This is another sample description for the news content.",
+                    writer = "Author 2",
+                    imagePath = "../Assets/Logo-Black-Transparant.png"
+                }
+            };
 
-        // Override Method UpdateProfile for Customer (Polymorphism)
-        public override void UpdateProfile()
-        {
-            Console.WriteLine($"Customer {Name}'s profile updated.");
+            return list;
         }
+        public ObservableCollection<Product> GetAllProductOffer()
+        {
+            ObservableCollection<Product> list = new ObservableCollection<Product>
+            {
+                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
+                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
+            };
+            return list;
+        }
+        public ObservableCollection<Product> GetAllCart()
+        {
+            ObservableCollection<Product> list = new ObservableCollection<Product>
+            {
+                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
+                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
+            };
+            return list;
+        }
+        public void AddToCart(string ProductID)
+        {
 
-        // (Encapsulation) Check Loyalty Points
-        public int CheckLoyaltyPoints()
-        {
-            return LoyaltyPoints;
         }
-        // Add Loyalty Points
-        public void AddLoyaltyPoints(int points)
+        public void DeleteFromCart(string ProductID)
         {
-            LoyaltyPoints += points;
-            Console.WriteLine($"{points} loyalty points added. Total now: {LoyaltyPoints}.");
-        }
-        // Add product to cart
-        public void AddToCart(string productID)
-        {
-            Console.WriteLine($"Product {productID} added to cart.");
-        }
-        // Remove product from cart
-        public void RemoveFromCart(string productID)
-        {
-            Console.WriteLine($"Product {productID} removed from cart.");
-        }
-        // See Product Detail
-        public void SeeProductDetail(string productID)
-        {
-            Console.WriteLine($"Viewing details for product {productID}.");
-        }
-        // Checkout
-        public void Checkout()
-        {
-            Console.WriteLine("Checkout completed.");
-        }
-        // Add to Collection
-        public void AddToCollection()
-        {
-            Console.WriteLine($"Collection added.");
-        }
-        // Remove from Collection
-        public void RemoveFromCollection(string collectionID)
-        {
-            Console.WriteLine($"Collection {collectionID} removed.");
+
         }
     }
 }

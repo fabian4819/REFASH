@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp_REFASH
 {
-    internal abstract class Goods
+    public abstract class Goods
     {
         //Encapsulation (protected access modifier)
         protected string Name { get; set; }

@@ -5,22 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp_REFASH"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="300">
+             Height="400" Width="300">
     <Border Background="White" BorderBrush="White" BorderThickness="4" CornerRadius="12">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
+        </Border.Effect>
         <Grid Margin="12">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <!-- Row pertama fleksibel mengisi ruang tersisa -->
                 <RowDefinition Height="Auto"/>
-                <!-- Row kedua ukuran tetap untuk button -->
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" VerticalAlignment="Stretch">
-                <Image Source="\Assets\Logo.png" Stretch="UniformToFill" Width="240" Height="200"/>
-                <Label Content="Title" FontSize="16" FontWeight="Bold" Margin="12,0,12,0"/>
-                <TextBlock Text="Rp120.000" FontSize="12" FontWeight="Medium" Margin="12,0,12,0"/>
-                <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
-                           FontSize="12" TextWrapping="Wrap" Margin="12,0,12,0"/>
+                <!-- Image binding with path -->
+                <Image Source="{Binding Image}" Stretch="UniformToFill" Width="240" Height="200"/>
+                <Label Content="{Binding ProductName}" FontSize="16" FontWeight="Bold" Margin="12,0,12,0"/>
+                <TextBlock Text="{Binding Price}" FontSize="12" FontWeight="Medium" Margin="12,0,12,0"/>
+                <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap" Margin="12,0,12,0"/>
             </StackPanel>
 
             <Button Content="Add to Cart" FontWeight="DemiBold" Foreground="White" Background="Black" BorderBrush="Transparent" 

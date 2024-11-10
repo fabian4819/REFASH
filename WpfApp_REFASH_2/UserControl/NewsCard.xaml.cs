@@ -24,13 +24,20 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
         }
-
         private void btn_detail_click(object sender, RoutedEventArgs e)
         {
-            NewsDetailWindow newsDetailWindow = new NewsDetailWindow();
-            newsDetailWindow.Show();
-            Window parentWindow = Window.GetWindow(this);
-            parentWindow?.Close();
+            // Access Customer through DataContext (Content object)
+            if (DataContext is Content content && content.Customer != null)
+            {
+                NewsDetailWindow newsDetailWindow = new NewsDetailWindow(content.Customer);
+                newsDetailWindow.Show();
+                Window parentWindow = Window.GetWindow(this);
+                parentWindow?.Close();
+            }
+            else
+            {
+                MessageBox.Show("Customer data is missing.");
+            }
         }
     }
 }

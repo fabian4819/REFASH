@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <local:SideBar Grid.Column="0"/>
+        <local:SideBar Grid.Column="0" Customer="{Binding Customer}"/>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
