@@ -11,7 +11,7 @@ namespace WpfApp_REFASH.DataAccess
 {
     public class DatabaseManager
     {
-        private readonly string ConnectionString = "Host=localhost;Username=postgres;Password=12345678;Database=junpro";
+        private readonly string ConnectionString = "Host=localhost;Username=postgres;Password=12345678;Database=junpro0";
 
         public NpgsqlConnection GetConnection()
         {
