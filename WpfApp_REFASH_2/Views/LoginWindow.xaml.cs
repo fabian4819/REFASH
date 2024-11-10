@@ -41,34 +41,45 @@ namespace WpfApp_REFASH
 
         private void btn_login_click(object sender, RoutedEventArgs e)
         {
-            string email = tb_email.Text;
-            string password = tb_password.Text;
-            user = new User(email, password);
+            string email = tb_email.Text.Trim(); // Trim to remove any extraneous whitespace
+            string password = tb_password.Text.Trim(); // Assuming this is a PasswordBox for security reasons
 
-            //var (isAuthenticated, message, name, role, phoneNumber) = user.Login(email, password);
-            //if (isAuthenticated)
-            //{
-            //    MessageBox.Show("Login successfull");
-            //    if (role == "Admin")
-            //    {
-            //        MessageBox.Show("Login as Admin");
-            //    }
-            //    else if (role == "Customer")
-            //    {
-            //        customer = new Customer(name, email, phoneNumber, password, role);
-            //        NewsWindow newsWindow = new NewsWindow(customer);
-            //        newsWindow.Show();
-            //        this.Close();
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show(role);
-            //}
-            customer = new Customer("name", "email", "phoneNumber", "password", "role");
-            NewsWindow newsWindow = new NewsWindow(customer);
-            newsWindow.Show();
-            this.Close();
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Please enter both email and password.");
+                return; // Stop further execution if the fields are empty
+            }
+
+            User user = new User(email, password);
+            var (isAuthenticated, message, name, role, phoneNumber) = user.Login(email, password);
+
+            if (isAuthenticated)
+            {
+                MessageBox.Show(message); // Display the success message
+
+                switch (role)
+                {
+                    case "Admin":
+                        MessageBox.Show("Logged in as Admin");
+                    //    AdminWindow adminWindow = new AdminWindow(); // Assuming there's an AdminWindow
+                    //    adminWindow.Show();
+                        break;
+                    case "Customer":
+                        Customer customer = new Customer(name, email, phoneNumber, password, role);
+                        NewsWindow newsWindow = new NewsWindow(customer);
+                        newsWindow.Show();
+                        break;
+                    default:
+                        MessageBox.Show("Unknown role");
+                        break;
+                }
+
+                this.Close(); // Close the login window only after successful login
+            }
+            else
+            {
+                MessageBox.Show(message); // Show error message if not authenticated
+            }
         }
 
         private void btn_closeApp_click(object sender, RoutedEventArgs e)

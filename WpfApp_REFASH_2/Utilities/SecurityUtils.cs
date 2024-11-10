@@ -17,5 +17,20 @@ namespace WpfApp_REFASH.Utilities
                 return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
             }
         }
+        public static bool PasswordComparison(string str1, string str2)
+        {
+            if (str1.Length != str2.Length)
+            {
+                return false;
+            }
+
+            int result = 0;
+            for (int i = 0; i < str1.Length; i++)
+            {
+                result |= str1[i] ^ str2[i];
+            }
+            return result == 0;
+        }
+
     }
 }

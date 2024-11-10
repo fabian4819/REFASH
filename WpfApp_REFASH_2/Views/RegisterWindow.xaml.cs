@@ -37,11 +37,21 @@ namespace WpfApp_REFASH
 
         private void btn_register_Click(object sender, RoutedEventArgs e)
         {
-            string name = tb_username.Text;
-            string email = tb_email.Text;
-            string phoneNumber = tb_phoneNumber.Text;
+            // Membaca input dari form
+            string name = tb_username.Text.Trim();  // Trim untuk menghilangkan whitespace di awal dan akhir
+            string email = tb_email.Text.Trim();
+            string phoneNumber = tb_phoneNumber.Text.Trim(); 
             string password = tb_password.Text;
-            string role = ((ComboBoxItem)cb_role.SelectedItem).Content.ToString();
+            string role = ((ComboBoxItem)cb_role.SelectedItem)?.Content.ToString();
+
+            // Mengecek apakah semua field telah diisi
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(role))
+            {
+                MessageBox.Show("Please fill in all fields.");
+                return;
+            }
+
+            // Menciptakan instance user baru dan mendaftarkannya
             User newUser = new User(name, email, phoneNumber, password, role);
             bool result = newUser.Register();
             if (result)
@@ -49,11 +59,11 @@ namespace WpfApp_REFASH
                 MessageBox.Show("Registration successful!");
                 LoginWindow loginWindow = new LoginWindow();
                 loginWindow.Show();
-                this.Close();
+                this.Close();  // Menutup jendela registrasi saat ini
             }
             else
             {
-                MessageBox.Show("Registration failed. Please check your details.");
+                MessageBox.Show("Registration failed. Please check your details and try again.");
             }
         }
 
