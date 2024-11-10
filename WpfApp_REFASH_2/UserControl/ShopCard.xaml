@@ -22,10 +22,28 @@
                 <Label Content="{Binding ProductName}" FontSize="16" FontWeight="Bold" Margin="12,0,12,0"/>
                 <TextBlock Text="{Binding Price}" FontSize="12" FontWeight="Medium" Margin="12,0,12,0"/>
                 <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap" Margin="12,0,12,0"/>
+                <TextBlock Text="{Binding Stock, StringFormat='Stocks {0}'}" FontSize="12" TextWrapping="Wrap" Margin="12,0,12,0"/>
             </StackPanel>
 
-            <Button Content="Add to Cart" FontWeight="DemiBold" Foreground="White" Background="Black" BorderBrush="Transparent" 
-                    Grid.Row="1" Margin="0,0,0,12" Height="Auto" VerticalAlignment="Bottom"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Smaller space for the TextBox -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- Larger space for the Button -->
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Qty:"/>
+                <!-- Quantity Input TextBox -->
+                <TextBox x:Name="tb_qty" Grid.Column="1" Width="50" Margin="0,0,10,12" VerticalAlignment="Bottom"
+             Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+             HorizontalAlignment="Right" />
+
+                <!-- Add to Cart Button -->
+                <Button x:Name="btn_addToCart" Click="btn_addToCart_click" Content="Add to Cart" FontWeight="DemiBold" Foreground="White" Background="Black"
+            BorderBrush="Transparent" Grid.Column="2" Margin="0,0,0,12"
+            Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+            </Grid>
         </Grid>
     </Border>
 </UserControl>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Linq;
 using WpfApp_REFASH.DataAccess;
 
@@ -197,24 +198,75 @@ namespace WpfApp_REFASH
 
             return collections;
         }
+
+        public void AddCollection(Collection collection)
+        {
+            using (var conn = _dbManager.GetConnection())
+            {
+                conn.Open();
+                var cmd = new NpgsqlCommand("INSERT INTO collections (name, description, category, image_path, status, customer_email) VALUES (@name, @desc, @cat, @path, 'In Review', @e)", conn);
+                cmd.Parameters.AddWithValue("@name", collection.Name);
+                cmd.Parameters.AddWithValue("@desc", collection.Description);
+                cmd.Parameters.AddWithValue("@cat", collection.Category);
+                cmd.Parameters.AddWithValue("@path", collection.ImagePath);
+                cmd.Parameters.AddWithValue("@e", Email);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
         public ObservableCollection<Product> GetAllProductOffer()
         {
-            ObservableCollection<Product> list = new ObservableCollection<Product>
+            var products = new ObservableCollection<Product>();
+            try
             {
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
-            };
-            return list;
-        }
-        public ObservableCollection<Product> GetAllCart()
-        {
-            ObservableCollection<Product> list = new ObservableCollection<Product>
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT name, description, id AS productID, image_path AS image, price, category, size, stock 
+                FROM products";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                products.Add(new Product(
+                                    reader.GetString(reader.GetOrdinal("name")),
+                                    reader.GetString(reader.GetOrdinal("description")),
+                                    reader.GetInt32(reader.GetOrdinal("productID")),
+                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.GetDecimal(reader.GetOrdinal("price")),
+                                    reader.GetString(reader.GetOrdinal("category")),
+                                    reader.GetString(reader.GetOrdinal("size")),
+                                    reader.GetInt32(reader.GetOrdinal("stock"))
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
-            };
-            return list;
+                MessageBox.Show("Error fetching products from the database: " + ex.Message);
+            }
+
+            return products;
         }
+
+
+
+        //public ObservableCollection<Product> GetAllCart()
+        //{
+        //    ObservableCollection<Product> list = new ObservableCollection<Product>
+        //    {
+        //        new Product("Product 1", "Description 1", 2, "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
+        //        new Product("Product 2", "Description 2", 1, "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
+        //    };
+        //    return list;
+        //}
         public void AddToCart(string ProductID)
         {
 
