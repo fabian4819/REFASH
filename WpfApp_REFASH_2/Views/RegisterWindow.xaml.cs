@@ -40,8 +40,9 @@ namespace WpfApp_REFASH
             string name = tb_username.Text;
             string email = tb_email.Text;
             string phoneNumber = tb_phoneNumber.Text;
-            string password = tb_password.Text;
+            string password = tb_password.Password; // Changed from .Text to .Password
             string role = ((ComboBoxItem)cb_role.SelectedItem).Content.ToString();
+
             User newUser = new User(name, email, phoneNumber, password, role);
             bool result = newUser.Register();
             if (result)

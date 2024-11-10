@@ -42,7 +42,7 @@ namespace WpfApp_REFASH
         private void btn_login_click(object sender, RoutedEventArgs e)
         {
             string email = tb_email.Text;
-            string password = tb_password.Text;
+            string password = tb_password.Password;
             user = new User(email, password);
 
             //var (isAuthenticated, message, name, role, phoneNumber) = user.Login(email, password);
