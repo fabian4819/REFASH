@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml.Linq;
 using WpfApp_REFASH.DataAccess;
 
 namespace WpfApp_REFASH
@@ -17,7 +19,8 @@ namespace WpfApp_REFASH
         private string Address { get; set; }
         private int LoyaltyPoints { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
-        public ObservableCollection<Content> ContentItem { get; set; }
+        private ObservableCollection<Content> ContentItem { get; set; }
+        public ObservableCollection<Collection> collections { get; set; }
 
         public Customer(string name, string email, string phoneNumber, string password, string role)
         : base(name, email, phoneNumber, password, role)
@@ -76,46 +79,194 @@ namespace WpfApp_REFASH
         }
         public ObservableCollection<Content> GetAllContent()
         {
-            ObservableCollection<Content> list = new ObservableCollection<Content>
+            ObservableCollection<Content> contents = new ObservableCollection<Content>();
+            
+            try
             {
-                new Content
+                using (var conn = _dbManager.GetConnection())
                 {
-                    contentID = 0,
-                    title = "Lorem ipsum dolor sit amet",
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                    writer = "Author 1",
-                    imagePath = "../Assets/Logo.png"
-                },
-                new Content
-                {
-                    contentID = 1,
-                    title = "Another News Title",
-                    description = "This is another sample description for the news content.",
-                    writer = "Author 2",
-                    imagePath = "../Assets/Logo-Black-Transparant.png"
-                }
-            };
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                        SELECT c.id AS contentID, 
+                               c.title AS title, 
+                               c.description AS description, 
+                               u.name AS writer, 
+                               c.image_path AS imagePath 
+                        FROM contents AS c 
+                        JOIN admins AS a ON c.author_email = a.email 
+                        JOIN users AS u ON a.email = u.email";
 
-            return list;
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                using (var reader = cmd.ExecuteReader())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        var content = new Content
+                                        {
+                                            contentID = reader.GetInt32(reader.GetOrdinal("contentID")),
+                                            title = reader.GetString(reader.GetOrdinal("title")),
+                                            description = reader.GetString(reader.GetOrdinal("description")),
+                                            writer = reader.GetString(reader.GetOrdinal("writer")),
+                                            imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
+                                        };
+                                        contents.Add(content);
+                                    }
+                                }
+                            }
+
+                            transaction.Commit(); // Commit transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback transaction on error
+                            throw; // Re-throw the exception to handle it outside or log it
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle or log exception related to connection issues
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+            }
+
+            return contents;
         }
+        public ObservableCollection<Collection> GetAllCollections()
+        {
+            ObservableCollection<Collection> collections = new ObservableCollection<Collection>();
+
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                        SELECT id AS collectionID, 
+                               name, 
+                               description, 
+                               status, 
+                               category,
+                               image_path
+                        FROM collections 
+                        WHERE customer_email = @Email";
+
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@Email", Email);
+
+                                using (var reader = cmd.ExecuteReader())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        var collection = new Collection(
+                                            reader.GetString(reader.GetOrdinal("name")),
+                                            reader.GetString(reader.GetOrdinal("description")),
+                                            reader.GetInt32(reader.GetOrdinal("collectionID")),
+                                            reader.IsDBNull(reader.GetOrdinal("status")) ? null : reader.GetString(reader.GetOrdinal("status")),
+                                            reader.IsDBNull(reader.GetOrdinal("category")) ? null : reader.GetString(reader.GetOrdinal("category")),
+                                            reader.IsDBNull(reader.GetOrdinal("image_path")) ? null : reader.GetString(reader.GetOrdinal("image_path"))
+                                        );
+                                        collections.Add(collection);
+                                    }
+                                }
+                            }
+
+                            transaction.Commit(); // Commit the transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback the transaction on error
+                            throw; // Optionally re-throw to handle higher up
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+            }
+
+            return collections;
+        }
+
+        public void AddCollection(Collection collection)
+        {
+            using (var conn = _dbManager.GetConnection())
+            {
+                conn.Open();
+                var cmd = new NpgsqlCommand("INSERT INTO collections (name, description, category, image_path, status, customer_email) VALUES (@name, @desc, @cat, @path, 'In Review', @e)", conn);
+                cmd.Parameters.AddWithValue("@name", collection.Name);
+                cmd.Parameters.AddWithValue("@desc", collection.Description);
+                cmd.Parameters.AddWithValue("@cat", collection.Category);
+                cmd.Parameters.AddWithValue("@path", collection.ImagePath);
+                cmd.Parameters.AddWithValue("@e", Email);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
         public ObservableCollection<Product> GetAllProductOffer()
         {
-            ObservableCollection<Product> list = new ObservableCollection<Product>
+            var products = new ObservableCollection<Product>();
+            try
             {
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
-            };
-            return list;
-        }
-        public ObservableCollection<Product> GetAllCart()
-        {
-            ObservableCollection<Product> list = new ObservableCollection<Product>
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT name, description, id AS productID, image_path AS image, price, category, size, stock 
+                FROM products";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                products.Add(new Product(
+                                    reader.GetString(reader.GetOrdinal("name")),
+                                    reader.GetString(reader.GetOrdinal("description")),
+                                    reader.GetInt32(reader.GetOrdinal("productID")),
+                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.GetDecimal(reader.GetOrdinal("price")),
+                                    reader.GetString(reader.GetOrdinal("category")),
+                                    reader.GetString(reader.GetOrdinal("size")),
+                                    reader.GetInt32(reader.GetOrdinal("stock"))
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
-            };
-            return list;
+                MessageBox.Show("Error fetching products from the database: " + ex.Message);
+            }
+
+            return products;
         }
+
+
+
+        //public ObservableCollection<Product> GetAllCart()
+        //{
+        //    ObservableCollection<Product> list = new ObservableCollection<Product>
+        //    {
+        //        new Product("Product 1", "Description 1", 2, "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
+        //        new Product("Product 2", "Description 2", 1, "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
+        //    };
+        //    return list;
+        //}
         public void AddToCart(string ProductID)
         {
 

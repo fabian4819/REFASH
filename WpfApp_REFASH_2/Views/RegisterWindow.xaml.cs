@@ -37,11 +37,19 @@ namespace WpfApp_REFASH
 
         private void btn_register_Click(object sender, RoutedEventArgs e)
         {
-            string name = tb_username.Text;
-            string email = tb_email.Text;
-            string phoneNumber = tb_phoneNumber.Text;
-            string password = tb_password.Password; // Changed from .Text to .Password
-            string role = ((ComboBoxItem)cb_role.SelectedItem).Content.ToString();
+            string name = tb_username.Text.Trim();
+            string email = tb_email.Text.Trim();
+            string phoneNumber = tb_phoneNumber.Text.Trim(); 
+            string password = tb_password.Text;
+            string role = ((ComboBoxItem)cb_role.SelectedItem)?.Content.ToString();
+
+
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(role))
+            {
+                MessageBox.Show("Please fill in all fields.");
+                return;
+            }
+
 
             User newUser = new User(name, email, phoneNumber, password, role);
             bool result = newUser.Register();
@@ -54,7 +62,7 @@ namespace WpfApp_REFASH
             }
             else
             {
-                MessageBox.Show("Registration failed. Please check your details.");
+                MessageBox.Show("Registration failed. Please check your details and try again.");
             }
         }
 

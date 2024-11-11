@@ -32,7 +32,7 @@ namespace WpfApp_REFASH
                 MessageBox.Show("Customer data is missing.");
                 return;
             }
-            ProductItem = Customer.GetAllProductOffer();
+            ProductItem = customer.GetAllProductOffer();
             DataContext = this;
         }
 

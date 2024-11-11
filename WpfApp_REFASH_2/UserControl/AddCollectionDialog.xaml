@@ -16,65 +16,36 @@
             VerticalAlignment="Center"
             Padding="20">
         <StackPanel>
-            <TextBlock Text="Add New Collection" 
+            <TextBlock x:Name="tb_Title" Text="Add New Collection" 
                        FontSize="24" 
                        FontWeight="Bold" 
                        Margin="0,0,0,20"/>
 
-            <TextBlock Text="Title" 
-                       Margin="0,0,0,5"/>
-            <TextBox x:Name="TitleTextBox" 
-                     Height="30" 
-                     Margin="0,0,0,15"/>
+            <TextBlock x:Name="tb_NameLabel" Text="Name" Margin="0,0,0,5"/>
+            <TextBox x:Name="tb_NameTextBox" Height="30" Margin="0,0,0,15"/>
 
-            <TextBlock Text="Image URL" 
-                       Margin="0,0,0,5"/>
-            <TextBox x:Name="URLTextBox" 
-                     Height="30" 
-                     Margin="0,0,0,15"/>
+            <TextBlock x:Name="tb_DescriptionLabel" Text="Description" Margin="0,0,0,5"/>
+            <TextBox x:Name="tb_DescriptionTextBox" Height="30" Margin="0,0,0,15"/>
 
-            <TextBlock Text="Status" 
-                       Margin="0,0,0,5"/>
-            <ComboBox x:Name="StatusComboBox" 
-                      Height="30" 
-                      Margin="0,0,0,30">
-                <ComboBoxItem Content="Verified"/>
-                <ComboBoxItem Content="In Review" IsSelected="True"/>
-                <ComboBoxItem Content="Rejected"/>
+            <TextBlock x:Name="tb_CategoryLabel" Text="Category" Margin="0,0,0,5"/>
+            <ComboBox x:Name="tb_CategoryComboBox" Height="30" Margin="0,0,0,15">
+                <ComboBoxItem Content="Clothing" IsSelected="True"/>
+                <ComboBoxItem Content="Shoes"/>
+                <ComboBoxItem Content="Bags"/>
+                <ComboBoxItem Content="Accessories"/>
+                <ComboBoxItem Content="Jackets and Coats"/>
+                <ComboBoxItem Content="Sportswear"/>
+                <ComboBoxItem Content="Others"/>
             </ComboBox>
 
-            <StackPanel Orientation="Horizontal" 
-                        HorizontalAlignment="Right">
-                <Button Content="Cancel" 
-                        Width="100" 
-                        Height="35" 
-                        Margin="0,0,10,0"
-                        Click="btn_cancel_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="#E0E0E0"
-                                    CornerRadius="5">
-                                <ContentPresenter HorizontalAlignment="Center" 
-                                                VerticalAlignment="Center"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Content="Add" 
-                        Width="100" 
-                        Height="35"
-                        Click="btn_add_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="#323232"
-                                    CornerRadius="5">
-                                <ContentPresenter HorizontalAlignment="Center" 
-                                                VerticalAlignment="Center"
-                                                TextElement.Foreground="White"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+            <TextBlock x:Name="tb_ImageURLLabel" Text="Image URL" Margin="0,0,0,5"/>
+            <TextBox x:Name="tb_ImageURLTextBox" Height="30" Margin="0,0,0,15"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancel" Width="100" Height="35" Margin="0,0,10,0"
+                        Click="btn_cancel_Click"/>
+                <Button Content="Add" Width="100" Height="35"
+                        Click="btn_add_Click"/>
             </StackPanel>
         </StackPanel>
     </Border>
