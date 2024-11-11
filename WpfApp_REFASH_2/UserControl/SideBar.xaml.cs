@@ -31,15 +31,6 @@ namespace WpfApp_REFASH
             
         }
         
-        //public SideBar(Customer customer) : this()
-        //{
-        //    this.customer = customer;
-        //    if (this.customer == null)
-        //    {
-        //        MessageBox.Show("Customer data is missing.");
-        //        return;
-        //    }
-        //}
 
         private void btn_navigateNews_click(object sender, RoutedEventArgs e)
         {
