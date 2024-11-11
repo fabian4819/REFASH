@@ -40,7 +40,7 @@ namespace WpfApp_REFASH
             string name = tb_username.Text.Trim();
             string email = tb_email.Text.Trim();
             string phoneNumber = tb_phoneNumber.Text.Trim(); 
-            string password = tb_password.Text;
+            string password = tb_password.Password;
             string role = ((ComboBoxItem)cb_role.SelectedItem)?.Content.ToString();
 
 

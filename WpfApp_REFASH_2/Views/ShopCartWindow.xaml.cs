@@ -22,6 +22,7 @@ namespace WpfApp_REFASH
     {
         public Customer Customer { get; private set; }
         public ObservableCollection<Product> CartItems { get; set; }
+
         public ShopCartWindow(Customer customer)
         {
             InitializeComponent();
@@ -31,32 +32,63 @@ namespace WpfApp_REFASH
                 MessageBox.Show("Customer data is missing.");
                 return;
             }
+
             CartItems = new ObservableCollection<Product>
-            {
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 1", "Description 1", "P001", "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-                new Product("Product 2", "Description 2", "P002", "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
-            };
+        {
+            new Product(
+                name: "Product 1",
+                description: "Description 1",
+                productID: 1,
+                image: "../Assets/Logo.png",
+                price: 100000M,
+                category: "Category A",
+                size: "L",
+                stock: 10
+            ),
+            new Product(
+                name: "Product 1",
+                description: "Description 1",
+                productID: 2,
+                image: "../Assets/Logo.png",
+                price: 100000M,
+                category: "Category A",
+                size: "L",
+                stock: 10
+            ),
+            new Product(
+                name: "Product 1",
+                description: "Description 1",
+                productID: 3,
+                image: "../Assets/Logo.png",
+                price: 100000M,
+                category: "Category A",
+                size: "L",
+                stock: 10
+            ),
+            new Product(
+                name: "Product 1",
+                description: "Description 1",
+                productID: 4,
+                image: "../Assets/Logo.png",
+                price: 100000M,
+                category: "Category A",
+                size: "L",
+                stock: 10
+            ),
+            new Product(
+                name: "Product 2",
+                description: "Description 2",
+                productID: 5,
+                image: "../Assets/Logo.png",
+                price: 150000M,
+                category: "Category B",
+                size: "M",
+                stock: 5
+            )
+        };
             DataContext = this;
         }
+
         private void btn_deleteFromCart_click(object sender, RoutedEventArgs e)
         {
             var product = (sender as FrameworkElement)?.DataContext as Product;
@@ -65,6 +97,7 @@ namespace WpfApp_REFASH
                 CartItems.Remove(product);
             }
         }
+
         private void btn_checkout_click(object sender, RoutedEventArgs e)
         {
             // Implement checkout functionality here
