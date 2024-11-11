@@ -42,7 +42,7 @@ namespace WpfApp_REFASH
         private void btn_login_click(object sender, RoutedEventArgs e)
         {
             string email = tb_email.Text.Trim();
-            string password = tb_password.Text.Trim();
+            string password = tb_password.Password.Trim();
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {

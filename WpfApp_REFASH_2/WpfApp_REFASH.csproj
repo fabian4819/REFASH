@@ -249,6 +249,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControl\AdminSideBar.xaml.cs">
+      <DependentUpon>AdminSideBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ProductControl.xaml.cs">
+      <DependentUpon>ProductControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ProductDialog.xaml.cs">
+      <DependentUpon>ProductDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminCollectionWindow.xaml.cs">
+      <DependentUpon>AdminCollectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminShopWindow.xaml.cs">
+      <DependentUpon>AdminShopWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShopCartWindow.xaml.cs">
       <DependentUpon>ShopCartWindow.xaml</DependentUpon>
     </Compile>
@@ -302,6 +317,26 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="UserControl\AdminSideBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\ProductControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\ProductDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminCollectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminShopWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShopCartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
