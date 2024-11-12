@@ -180,7 +180,7 @@
                             </ListView.Template>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <local:ProductControl Margin="25,10,25,30"/>
+                                    <local:ProductControl Margin="20,10,20,30"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>

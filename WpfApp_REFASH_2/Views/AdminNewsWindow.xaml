@@ -1,0 +1,148 @@
+﻿<Window x:Class="WpfApp_REFASH.AdminNewsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_REFASH"
+        mc:Ignorable="d"
+        Title="Admin News" Height="720" Width="1280"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <!-- Color Resources -->
+        <Color x:Key="PrimaryDark">#1A1A2E</Color>
+        <Color x:Key="Primary">#16213E</Color>
+        <Color x:Key="Secondary">#0F3460</Color>
+        <Color x:Key="Accent">#E94560</Color>
+        <SolidColorBrush x:Key="HoverColor" Color="#233666"/>
+        <SolidColorBrush x:Key="PressedColor" Color="#162444"/>
+
+        <!-- Brushes -->
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDark}"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+
+        <!-- Button Style -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource HoverColor}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PressedColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <local:AdminSideBar Grid.Column="0"/>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Upper Bar -->
+            <Grid Grid.Row="0" Background="{StaticResource PrimaryDarkBrush}">
+                <local:UpperBar/>
+            </Grid>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header with Buttons -->
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="News Management" 
+                             FontSize="24" 
+                             FontWeight="Bold" 
+                             VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" 
+                              Orientation="Horizontal" 
+                              HorizontalAlignment="Right">
+                        <Button x:Name="AddNewsButton" 
+                                Content="Add News" 
+                                Style="{StaticResource PrimaryButton}" 
+                                Margin="0,0,10,0" 
+                                Click="AddNewsButton_Click"/>
+                        <Button x:Name="EditNewsButton" 
+                                Content="Edit News" 
+                                Style="{StaticResource PrimaryButton}" 
+                                Margin="0,0,10,0" 
+                                Click="EditNewsButton_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- News List -->
+                <ListView Grid.Row="1" 
+                         ItemsSource="{Binding News}" 
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="White" 
+                                    BorderBrush="{StaticResource PrimaryBrush}" 
+                                    BorderThickness="1" 
+                                    CornerRadius="10" 
+                                    Padding="15" 
+                                    Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- News Image -->
+                                    <Image Source="{Binding imagePath}" 
+                                           Width="180" 
+                                           Height="180"
+                                           Stretch="Uniform"/>
+
+                                    <!-- News Details -->
+                                    <StackPanel Grid.Column="1" 
+                                              Margin="20,0,0,0" 
+                                              VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding title}" 
+                                                 FontSize="20" 
+                                                 FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding writer}" 
+                                                 FontSize="16" 
+                                                 Margin="0,5"/>
+                                        <TextBlock Text="{Binding description}" 
+                                                 TextWrapping="Wrap" 
+                                                 MaxWidth="500"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

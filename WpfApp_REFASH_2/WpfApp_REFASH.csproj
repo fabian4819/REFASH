@@ -261,6 +261,12 @@
     <Compile Include="Views\AdminCollectionWindow.xaml.cs">
       <DependentUpon>AdminCollectionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AdminDashboardWindow.xaml.cs">
+      <DependentUpon>AdminDashboardWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminNewsWindow.xaml.cs">
+      <DependentUpon>AdminNewsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AdminShopWindow.xaml.cs">
       <DependentUpon>AdminShopWindow.xaml</DependentUpon>
     </Compile>
@@ -330,6 +336,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AdminCollectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminDashboardWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminNewsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

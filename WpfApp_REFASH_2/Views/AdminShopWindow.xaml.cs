@@ -70,7 +70,7 @@ namespace WpfApp_REFASH
         private void LoadProducts()
         {
             Products = new ObservableCollection<Product>();
-            // Add sample products here
+            //Add sample products here
             var sample = new Product(
                 name: "Sample Product",
                 description: "Sample Description",
