@@ -27,16 +27,16 @@ namespace WpfApp_REFASH
 
         private void btn_navigateDashboard_click(object sender, RoutedEventArgs e)
         {
-            //AdminDashboardWindow dashboardWindow = new AdminDashboardWindow();
-            //dashboardWindow.Show();
-            //Window.GetWindow(this)?.Close();
+            AdminDashboardWindow dashboardWindow = new AdminDashboardWindow();
+            dashboardWindow.Show();
+            Window.GetWindow(this)?.Close();
         }
 
         private void btn_navigateNews_click(object sender, RoutedEventArgs e)
         {
-            //AdminNewsWindow newsWindow = new AdminNewsWindow();
-            //newsWindow.Show();
-            //Window.GetWindow(this)?.Close();
+            AdminNewsWindow newsWindow = new AdminNewsWindow();
+            newsWindow.Show();
+            Window.GetWindow(this)?.Close();
         }
 
         private void btn_navigateCollection_click(object sender, RoutedEventArgs e)

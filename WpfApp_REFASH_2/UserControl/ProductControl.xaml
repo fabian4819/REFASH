@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfApp_REFASH"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="350">
+             d:DesignHeight="480" d:DesignWidth="350">
     <Grid>
-        <Rectangle HorizontalAlignment="Center" Height="450" Stroke="Black" VerticalAlignment="Center" Width="350" RadiusX="10" RadiusY="10">
+        <Rectangle HorizontalAlignment="Center" Height="480" Stroke="Black" VerticalAlignment="Center" Width="350" RadiusX="10" RadiusY="10">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="#D9D9D9" Offset="0.0"/>

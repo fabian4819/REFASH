@@ -25,11 +25,13 @@ namespace WpfApp_REFASH
     {
         private DatabaseManager dbManager;
         private User user;
+        private Admin admin;
         private Customer customer;
+
         public LoginWindow()
         {
             InitializeComponent();
-            var dbManager = new DatabaseManager();
+            dbManager = new DatabaseManager();
         }
 
         private void btn_register_click(object sender, RoutedEventArgs e)
@@ -50,22 +52,22 @@ namespace WpfApp_REFASH
                 return;
             }
 
-            User user = new User(email, password);
+            user = new User(email, password);
             var (isAuthenticated, message, name, role, phoneNumber) = user.Login(email, password);
 
             if (isAuthenticated)
             {
-                MessageBox.Show(message); 
+                MessageBox.Show(message);
 
                 switch (role)
                 {
                     case "Admin":
-                        MessageBox.Show("Logged in as Admin");
-                    //    AdminWindow adminWindow = new AdminWindow(); // Assuming there's an AdminWindow
-                    //    adminWindow.Show();
+                        admin = new Admin(name, email, phoneNumber, password, role, Guid.NewGuid().ToString());
+                        AdminDashboardWindow adminWindow = new AdminDashboardWindow();
+                        adminWindow.Show();
                         break;
                     case "Customer":
-                        Customer customer = new Customer(name, email, phoneNumber, password, role);
+                        customer = new Customer(name, email, phoneNumber, password, role);
                         NewsWindow newsWindow = new NewsWindow(customer);
                         newsWindow.Show();
                         break;
