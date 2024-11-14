@@ -42,12 +42,12 @@ namespace WpfApp_REFASH
         private void btn_login_click(object sender, RoutedEventArgs e)
         {
             string email = tb_email.Text.Trim(); // Trim to remove any extraneous whitespace
-            string password = tb_password.Text.Trim(); // Assuming this is a PasswordBox for security reasons
+            string password = tb_password.Pas; // Assuming this is a PasswordBox for security reasons
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Please enter both email and password.");
-                return; // Stop further execution if the fields are empty
+                return;
             }
 
             User user = new User(email, password);
@@ -55,7 +55,7 @@ namespace WpfApp_REFASH
 
             if (isAuthenticated)
             {
-                MessageBox.Show(message); // Display the success message
+                MessageBox.Show(message); 
 
                 switch (role)
                 {
@@ -74,11 +74,11 @@ namespace WpfApp_REFASH
                         break;
                 }
 
-                this.Close(); // Close the login window only after successful login
+                this.Close();
             }
             else
             {
-                MessageBox.Show(message); // Show error message if not authenticated
+                MessageBox.Show(message);
             }
         }
 

@@ -41,10 +41,10 @@ namespace WpfApp_REFASH
             string name = tb_username.Text.Trim();  // Trim untuk menghilangkan whitespace di awal dan akhir
             string email = tb_email.Text.Trim();
             string phoneNumber = tb_phoneNumber.Text.Trim(); 
-            string password = tb_password.Text;
+            string password = tb_password.Password;
             string role = ((ComboBoxItem)cb_role.SelectedItem)?.Content.ToString();
 
-            // Mengecek apakah semua field telah diisi
+
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(role))
             {
                 MessageBox.Show("Please fill in all fields.");
@@ -59,7 +59,7 @@ namespace WpfApp_REFASH
                 MessageBox.Show("Registration successful!");
                 LoginWindow loginWindow = new LoginWindow();
                 loginWindow.Show();
-                this.Close();  // Menutup jendela registrasi saat ini
+                this.Close();
             }
             else
             {
