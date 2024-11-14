@@ -46,7 +46,6 @@ namespace WpfApp_REFASH
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         public ShopCartWindow(Customer customer)
         {
             InitializeComponent();
