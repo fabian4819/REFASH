@@ -12,14 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
+using WpfApp_REFASH.ViewModels.WpfApp_REFASH.ViewModel;
 
 namespace WpfApp_REFASH
 {
     public partial class SideBar : UserControl
     {
-        // Define the Customer dependency property
         public static readonly DependencyProperty CustomerProperty = DependencyProperty.Register(
-            "Customer", typeof(Customer), typeof(SideBar), new PropertyMetadata(null));
+        "Customer", typeof(Customer), typeof(SideBar), new PropertyMetadata(null));
         public Customer Customer
         {
             get => (Customer)GetValue(CustomerProperty);
@@ -28,7 +29,7 @@ namespace WpfApp_REFASH
         public SideBar()
         {
             InitializeComponent();
-            
+
         }
         
 
@@ -41,7 +42,7 @@ namespace WpfApp_REFASH
                 return;
             }
 
-            NewsWindow newsWindow = new NewsWindow(Customer);
+            NewsWindow newsWindow = new NewsWindow();
             newsWindow.Show();
             Window.GetWindow(this)?.Close();
         }

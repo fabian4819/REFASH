@@ -12,7 +12,7 @@ namespace WpfApp_REFASH
 {
     public class User
     {
-        protected string Name { get; set; }
+        public string Name { get; set; }
         protected string Email { get; set; }
         protected string PhoneNumber { get; set; }
         protected string Password { get; set; }

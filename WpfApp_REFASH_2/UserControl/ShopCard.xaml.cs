@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -23,18 +24,23 @@ namespace WpfApp_REFASH
     public partial class ShopCard : UserControl
     {
         //public static readonly DependencyProperty CustomerProperty = DependencyProperty.Register(
-        //    "Customer", typeof(Customer), typeof(SideBar), new PropertyMetadata(null));
-        //public Customer Customer
+        //    "Customer", typeof(Customer), typeof(ShopCard), new PropertyMetadata(null));
+        public Customer Customer;
         //{
         //    get => (Customer)GetValue(CustomerProperty);
         //    set => SetValue(CustomerProperty, value);
         //}
 
-        public Customer Customer { get; set; }
+        //public Customer Customer { get; set; }
 
         public ShopCard()
         {
             InitializeComponent();
+            Customer = UserSession.CurrentCustomer;
+            if (Customer == null)
+            {
+                MessageBox.Show("Shop Card Customer is null");
+            }
         }
 
         private void btn_addToCart_click(object sender, RoutedEventArgs e)
@@ -60,7 +66,7 @@ namespace WpfApp_REFASH
                     return;
                 }
                 Customer.AddToCart(product.ProductID, quantity);
-                MessageBox.Show($"Adding {quantity} of product ID {product.ProductID} to the cart.");
+                MessageBox.Show($"Adding {quantity} of product ID {product.ProductID} to the cart. by {Customer.Name}");
             }
             else
             {

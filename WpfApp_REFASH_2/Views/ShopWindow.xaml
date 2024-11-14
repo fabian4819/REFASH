@@ -78,8 +78,7 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <!-- Adjusting width and margins to space items as needed -->
-                            <local:ShopCard Width="200" Height="300" Margin="10,5,10,5" DataContext="{Binding}"/>
+                            <local:ShopCard Width="200" Height="300" Margin="10,5,10,5"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
 

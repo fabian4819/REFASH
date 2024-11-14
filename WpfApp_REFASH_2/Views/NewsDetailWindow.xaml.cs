@@ -45,7 +45,7 @@ namespace WpfApp_REFASH
 
         private void btn_back_click(object sender, RoutedEventArgs e)
         {
-            NewsWindow newsWindow = new NewsWindow(customer);
+            NewsWindow newsWindow = new NewsWindow();
             newsWindow.Show();
             this.Close();
         }
