@@ -256,7 +256,46 @@ namespace WpfApp_REFASH
             return products;
         }
 
+        public ObservableCollection<Product> GetAllProductCart()
+        {
+            var products = new ObservableCollection<Product>();
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                select p.name as name, p.description as description, c.id as productID, p.image_path as image, p.price as price, p.category as category, p.size as size, c.quantity as stock from carts as c
+	JOIN products as p ON c.product_id = p.id";
 
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                products.Add(new Product(
+                                    reader.GetString(reader.GetOrdinal("name")),
+                                    reader.GetString(reader.GetOrdinal("description")),
+                                    reader.GetInt32(reader.GetOrdinal("productID")),
+                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.GetDecimal(reader.GetOrdinal("price")),
+                                    reader.GetString(reader.GetOrdinal("category")),
+                                    reader.GetString(reader.GetOrdinal("size")),
+                                    reader.GetInt32(reader.GetOrdinal("stock"))
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error fetching products from the database: " + ex.Message);
+            }
+
+            return products;
+        }
 
         public void AddToCart(int product_id, int qty)
         {
@@ -300,9 +339,45 @@ namespace WpfApp_REFASH
             }
         }
 
-        public void DeleteFromCart(string ProductID)
-        {
 
+
+        public void DeleteFromCart(int cartId)
+        {
+            using (var conn = _dbManager.GetConnection())
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Correct command text to use parameter placeholders correctly
+                        var cmd = new NpgsqlCommand("DELETE FROM carts WHERE id = @cart_id", conn);
+                        cmd.Transaction = trans;  // Ensure the command is enrolled in the transaction
+
+                        // Add the parameter for the cart ID correctly
+                        cmd.Parameters.AddWithValue("@cart_id", NpgsqlTypes.NpgsqlDbType.Integer, cartId);
+
+                        // Use ExecuteNonQuery for DELETE, UPDATE, and INSERT statements
+                        int rowsAffected = cmd.ExecuteNonQuery();  // This returns the number of rows affected
+
+                        if (rowsAffected > 0)
+                        {
+                            trans.Commit();  // Commit the transaction if the delete was successful
+                            MessageBox.Show("Delete successful.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("No records deleted.");  // Inform if no records were affected
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();  // Rollback the transaction on error
+                        MessageBox.Show($"An error occurred: {ex.Message}");
+                    }
+                }
+            }
         }
+
     }
 }

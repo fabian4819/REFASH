@@ -249,6 +249,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="ViewModels\CollectionViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModels.cs" />
+    <Compile Include="ViewModels\NewsViewModel.cs" />
+    <Compile Include="ViewModels\SideBarViewModel.cs" />
+    <Compile Include="ViewModels\UserSession.cs" />
     <Compile Include="Views\ShopCartWindow.xaml.cs">
       <DependentUpon>ShopCartWindow.xaml</DependentUpon>
     </Compile>
