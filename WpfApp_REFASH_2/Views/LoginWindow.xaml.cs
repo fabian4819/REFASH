@@ -26,6 +26,7 @@ namespace WpfApp_REFASH
     {
         private DatabaseManager dbManager;
         private User user;
+        private Admin admin;
         private Customer customer;
         private LoginViewModel _viewModel;
         public LoginWindow()

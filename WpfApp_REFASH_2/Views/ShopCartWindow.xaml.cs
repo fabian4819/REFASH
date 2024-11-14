@@ -46,6 +46,7 @@ namespace WpfApp_REFASH
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public ShopCartWindow(Customer customer)
         {
             InitializeComponent();
@@ -59,6 +60,7 @@ namespace WpfApp_REFASH
             CartItems = Customer.GetAllProductCart();
             DataContext = this;
         }
+
         private void btn_deleteFromCart_click(object sender, RoutedEventArgs e)
         {
             var product = (sender as FrameworkElement)?.DataContext as Product;
@@ -68,6 +70,7 @@ namespace WpfApp_REFASH
                 ReloadCartItems();
             }
         }
+
         private void btn_checkout_click(object sender, RoutedEventArgs e)
         {
             // Implement checkout functionality here

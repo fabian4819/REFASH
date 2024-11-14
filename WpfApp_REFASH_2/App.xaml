@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:WpfApp_REFASH"
              StartupUri="Views/LoginWindow.xaml">
     <Application.Resources>
-         
+        
     </Application.Resources>
 </Application>

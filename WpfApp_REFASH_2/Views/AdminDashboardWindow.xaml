@@ -1,0 +1,147 @@
+﻿<Window x:Class="WpfApp_REFASH.AdminDashboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_REFASH"
+        mc:Ignorable="d"
+        Title="Admin Dashboard" Height="720" Width="1280"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <!-- Color Resources -->
+        <Color x:Key="PrimaryDark">#1A1A2E</Color>
+        <Color x:Key="Primary">#16213E</Color>
+        <Color x:Key="Secondary">#0F3460</Color>
+        <Color x:Key="Accent">#E94560</Color>
+        <Color x:Key="HoverColor">#233666</Color>
+        <Color x:Key="PressedColor">#162444</Color>
+
+        <!-- Brushes -->
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDark}"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <local:AdminSideBar Grid.Column="0"/>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Upper Bar -->
+            <Grid Grid.Row="0" Background="{StaticResource PrimaryDarkBrush}">
+                <local:UpperBar/>
+            </Grid>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- News Section -->
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="News" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Right">
+                        <TextBlock Text="Total: " 
+                                   VerticalAlignment="Center" 
+                                   Margin="0,0,10,0"/>
+                        <TextBlock x:Name="NewsTotalText" 
+                                   VerticalAlignment="Center" 
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Collection Section -->
+                <Grid Grid.Row="1" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Collections" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Right">
+                        <TextBlock Text="Total: " 
+                                   VerticalAlignment="Center" 
+                                   Margin="0,0,10,0"/>
+                        <TextBlock x:Name="CollectionTotalText" 
+                                   VerticalAlignment="Center" 
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Shop Section -->
+                <Grid Grid.Row="2" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Shop" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Right">
+                        <TextBlock Text="Total Products: " 
+                                   VerticalAlignment="Center" 
+                                   Margin="0,0,10,0"/>
+                        <TextBlock x:Name="TotalProductsText" 
+                                   VerticalAlignment="Center" 
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="  |  Sold: " 
+                                   VerticalAlignment="Center" 
+                                   Margin="20,0,10,0"/>
+                        <TextBlock x:Name="SoldProductsText" 
+                                   VerticalAlignment="Center" 
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Sales Chart -->
+                <Grid Grid.Row="3">
+                    <TextBlock Text="Sales Chart" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               VerticalAlignment="Top"/>
+                    <!-- Add your sales chart here -->
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
