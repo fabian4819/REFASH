@@ -6,43 +6,35 @@
              xmlns:local="clr-namespace:WpfApp_REFASH"
              mc:Ignorable="d" 
              Height="400" Width="300">
-    <Border Background="White" BorderBrush="White" BorderThickness="4" CornerRadius="12">
-        <Border.Effect>
-            <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
-        </Border.Effect>
+    <Border Background="White" BorderThickness="4" CornerRadius="12">
         <Grid Margin="12">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" VerticalAlignment="Stretch">
-                <!-- Image binding with path -->
-                <Image Source="{Binding Image}" Stretch="UniformToFill" Width="240" Height="200"/>
-                <Label Content="{Binding ProductName}" FontSize="16" FontWeight="Bold" Margin="12,0,12,0"/>
-                <TextBlock Text="{Binding Price}" FontSize="12" FontWeight="Medium" Margin="12,0,12,0"/>
-                <TextBlock Text="{Binding Description}" FontSize="12" TextWrapping="Wrap" Margin="12,0,12,0"/>
-                <TextBlock Text="{Binding Stock, StringFormat='Stocks {0}'}" FontSize="12" TextWrapping="Wrap" Margin="12,0,12,0"/>
+            <StackPanel VerticalAlignment="Stretch">
+                <Image Source="{Binding Image}" Height="200" Stretch="UniformToFill"/>
+                <Label Content="{Binding ProductName}" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Price, StringFormat='Price: {0:C}'}" FontWeight="Medium"/>
+                <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Stock, StringFormat='Stocks: {0}'}"/>
+                <TextBlock Text="{Binding ProductID, StringFormat='ID: {0}'}"/>
             </StackPanel>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Smaller space for the TextBox -->
                     <ColumnDefinition Width="*"/>
-                    <!-- Larger space for the Button -->
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="Qty:"/>
-                <!-- Quantity Input TextBox -->
-                <TextBox x:Name="tb_qty" Grid.Column="1" Width="50" Margin="0,0,10,12" VerticalAlignment="Bottom"
-             Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
-             HorizontalAlignment="Right" />
-
-                <!-- Add to Cart Button -->
-                <Button x:Name="btn_addToCart" Click="btn_addToCart_click" Content="Add to Cart" FontWeight="DemiBold" Foreground="White" Background="Black"
-            BorderBrush="Transparent" Grid.Column="2" Margin="0,0,0,12"
-            Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+                <StackPanel Orientation="Horizontal">
+                <Label Content="Qty:"/>
+                <TextBox Name="tb_qty" Width="50" VerticalAlignment="Bottom"
+                         Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Add to Cart" Click="btn_addToCart_click" Foreground="White" Background="Black"
+                        Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Border>
