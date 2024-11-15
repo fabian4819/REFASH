@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,19 @@ namespace WpfApp_REFASH
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
         {
             OnCancel?.Invoke(this, e);
+        }
+        private void btn_browseImage_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png",
+                Title = "Select Product Image"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                tb_ImageURLTextBox.Text = openFileDialog.FileName;
+            }
         }
     }
 }

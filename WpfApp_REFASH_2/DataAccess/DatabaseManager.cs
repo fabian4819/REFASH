@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Npgsql;
+
 
 
 namespace WpfApp_REFASH.DataAccess
@@ -12,6 +12,7 @@ namespace WpfApp_REFASH.DataAccess
     public class DatabaseManager
     {
         private readonly string ConnectionString = "Host=localhost;Username=postgres;Password=12345678;Database=junpro100";
+
 
         public NpgsqlConnection GetConnection()
         {

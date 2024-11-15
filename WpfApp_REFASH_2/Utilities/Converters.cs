@@ -80,4 +80,23 @@ namespace WpfApp_REFASH
             throw new NotImplementedException();
         }
     }
+
+    public class DivideByFourConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is double width)
+            {
+                // Mengurangi margin total (50 pixel per item) dan padding tambahan
+                double availableWidth = width - (4 * 50) - 40;
+                return availableWidth / 4;
+            }
+            return 280; // default width
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
