@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Npgsql;
 using WpfApp_REFASH.DataAccess;
 
@@ -80,15 +81,15 @@ namespace WpfApp_REFASH
                         try
                         {
                             string query = @"
-                        SELECT c.id AS contentID, 
-                               c.title AS title, 
-                               c.description AS description, 
-                               u.name AS writer, 
-                               c.image_path AS imagePath 
-                        FROM contents AS c 
-                        JOIN admins AS a ON c.author_email = a.email 
-                        JOIN users AS u ON a.email = u.email
-                        WHERE c.author_email = @email";
+                SELECT c.id AS contentID, 
+                       c.title AS title, 
+                       c.description AS description, 
+                       u.name AS writer, 
+                       c.image_path AS imagePath 
+                FROM contents AS c 
+                JOIN admins AS a ON c.author_email = a.email 
+                JOIN users AS u ON a.email = u.email
+                WHERE c.author_email = @email";
 
                             using (var cmd = new NpgsqlCommand(query, conn, transaction))
                             {
@@ -128,7 +129,56 @@ namespace WpfApp_REFASH
 
             return contents;
         }
+        public void EditContent(Content content)
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                        UPDATE contents
+                        SET title = @title,
+                            description = @description,
+                            image_path = @imagePath
+                        WHERE id = @contentID";
 
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@contentID", content.contentID);
+                                cmd.Parameters.AddWithValue("@title", content.title);
+                                cmd.Parameters.AddWithValue("@description", content.description);
+                                cmd.Parameters.AddWithValue("@imagePath", content.imagePath ?? (object)DBNull.Value);
+
+                                int rowsAffected = cmd.ExecuteNonQuery();
+
+                                if (rowsAffected == 0)
+                                {
+                                    throw new Exception("No rows were updated. The content may not exist.");
+                                }
+                            }
+
+                            transaction.Commit(); // Commit transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback transaction on error
+                            throw new Exception("Error while updating content: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or display exception for connection issues
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+                throw new Exception("Failed to edit content.", ex);
+            }
+        }
         public ObservableCollection<Collection> GetAllCollections()
         {
             ObservableCollection<Collection> collections = new ObservableCollection<Collection>();
@@ -188,18 +238,34 @@ namespace WpfApp_REFASH
             return collections;
         }
 
-        public void AddCollection(Collection collection)
+        public void UpdateCollectionStatus(Collection collection, string newStatus)
         {
             using (var conn = _dbManager.GetConnection())
             {
                 conn.Open();
-                var cmd = new NpgsqlCommand("INSERT INTO collections (name, description, category, image_path, status, customer_email) VALUES (@name, @desc, @cat, @path, 'In Review', @e)", conn);
-                cmd.Parameters.AddWithValue("@name", collection.Name);
-                cmd.Parameters.AddWithValue("@desc", collection.Description);
-                cmd.Parameters.AddWithValue("@cat", collection.Category);
-                cmd.Parameters.AddWithValue("@path", collection.ImagePath);
-                cmd.Parameters.AddWithValue("@e", Email);
-                cmd.ExecuteNonQuery();
+                var cmd = new NpgsqlCommand(
+                    "UPDATE collections SET status = @status WHERE id = @id", conn);
+
+                // Bind parameters
+                cmd.Parameters.AddWithValue("@status", newStatus);
+                cmd.Parameters.AddWithValue("@id", collection.CollectionID);
+
+                // Execute the update
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    // Update the in-memory collection status
+                    collection.Status = newStatus;
+
+                    // Optional: Notify success
+                    MessageBox.Show($"Collection status updated to '{newStatus}'.", "Status Updated", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    // Notify failure if no rows were affected
+                    MessageBox.Show("No rows were updated. Ensure the collection exists.", "Update Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
     }

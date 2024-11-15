@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -32,10 +33,11 @@ namespace WpfApp_REFASH
                 OnPropertyChanged(nameof(FilteredCollections));
             }
         }
-
+        private Admin Admin {  get; set; }
         public AdminCollectionWindow()
         {
             InitializeComponent();
+            Admin = AdminSession.CurrentAdmin;
             LoadCollections();
             DataContext = this;
             StatusFilter.SelectedIndex = 0; // Select "All" by default
@@ -44,10 +46,7 @@ namespace WpfApp_REFASH
         private void LoadCollections()
         {
             // TODO: Load collections from database
-            _allCollections = new ObservableCollection<Collection>();
-            // Temporary sample data
-            _allCollections.Add(new Collection("Collection 1", "Description 1", "Category A", "../Assets/Logo.png") { Status = "InVerification" });
-            _allCollections.Add(new Collection("Collection 2", "Description 2", "Category B", "../Assets/Logo.png") { Status = "Verified" });
+            _allCollections = Admin.GetAllCollections();
             FilteredCollections = new ObservableCollection<Collection>(_allCollections);
         }
 
@@ -80,8 +79,7 @@ namespace WpfApp_REFASH
         private void UpdateCollectionStatus(Collection collection, string newStatus)
         {
             // TODO: Update status in database
-            collection.Status = newStatus;
-
+            Admin.UpdateCollectionStatus(collection, newStatus);
             // Optional: Show notification
             MessageBox.Show($"Collection status updated to {newStatus}", "Status Updated",
                 MessageBoxButton.OK, MessageBoxImage.Information);

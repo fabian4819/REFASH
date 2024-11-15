@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,29 +20,56 @@ namespace WpfApp_REFASH
     /// <summary>
     /// Interaction logic for AdminNewsWindow.xaml
     /// </summary>
-    public partial class AdminNewsWindow : Window
+    public partial class AdminNewsWindow : Window, INotifyPropertyChanged
     {
-        public ObservableCollection<Content> ContentItem { get; set; }
+        // Implement INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private ObservableCollection<Content> _contentItem;
+        public ObservableCollection<Content> ContentItem
+        {
+            get => _contentItem;
+            set
+            {
+                if (_contentItem != value)
+                {
+                    _contentItem = value;
+                    OnPropertyChanged(nameof(ContentItem));
+                }
+            }
+        }
+
         public AdminNewsWindow()
         {
             InitializeComponent();
+
             if (AdminSession.CurrentAdmin == null)
             {
                 MessageBox.Show("No Admin is logged in.");
                 Close();
                 return;
             }
+
+            // Load initial data
             ContentItem = AdminSession.CurrentAdmin.GetAllContent();
+
+            // Set the DataContext for binding
+            DataContext = this;
+        }
+        public void ReloadContent()
+        {
+            ContentItem = AdminSession.CurrentAdmin.GetAllContent();
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void AddNewsButton_Click(object sender, RoutedEventArgs e)
         {
-            // Add your logic to handle the "Add News" button click event
-        }
-
-        private void EditNewsButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Add your logic to handle the "Edit News" button click event
+            // Logic for adding news
+            MessageBox.Show("Add News functionality is not yet implemented.");
         }
     }
 }
