@@ -10,20 +10,18 @@ using WpfApp_REFASH.DataAccess;
 namespace WpfApp_REFASH
 {
     // Inheritance (User)
-    internal class Admin : User
+    public class Admin : User
     {
         // Properties for Admin
-        public string AdminID { get; private set; }
         private int TotalContent { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
         private ObservableCollection<Content> ContentItem { get; set; }
         public ObservableCollection<Collection> Collections { get; set; }
 
         // Constructor for Admin
-        public Admin(string name, string email, string phoneNumber, string password, string role, string adminID)
+        public Admin(string name, string email, string phoneNumber, string password, string role)
            : base(name, email, phoneNumber, password, role)
         {
-            AdminID = adminID;
             TotalContent = 0;
             GetData(Email);
         }
@@ -42,7 +40,7 @@ namespace WpfApp_REFASH
                 using (var conn = _dbManager.GetConnection())
                 {
                     conn.Open();
-                    using (var cmd = new NpgsqlCommand("SELECT id FROM admins WHERE email = @e", conn))
+                    using (var cmd = new NpgsqlCommand("SELECT email FROM admins WHERE email = @e", conn))
                     {
                         cmd.Parameters.AddWithValue("@e", email);
                         using (var reader = cmd.ExecuteReader())
@@ -50,7 +48,6 @@ namespace WpfApp_REFASH
                             if (reader.Read())
                             {
                                 var adminId = reader.IsDBNull(0) ? null : reader.GetString(0);
-                                AdminID = adminId;
 
                                 return (true, name, role, phoneNumber, dbPassword);
                             }
@@ -69,7 +66,7 @@ namespace WpfApp_REFASH
             }
         }
 
-        public ObservableCollection<Content> GetAllContent()
+        public override ObservableCollection<Content> GetAllContent()
         {
             ObservableCollection<Content> contents = new ObservableCollection<Content>();
 
@@ -90,10 +87,12 @@ namespace WpfApp_REFASH
                                c.image_path AS imagePath 
                         FROM contents AS c 
                         JOIN admins AS a ON c.author_email = a.email 
-                        JOIN users AS u ON a.email = u.email";
+                        JOIN users AS u ON a.email = u.email
+                        WHERE c.author_email = @email";
 
                             using (var cmd = new NpgsqlCommand(query, conn, transaction))
                             {
+                                cmd.Parameters.AddWithValue("@email", Email);
                                 using (var reader = cmd.ExecuteReader())
                                 {
                                     while (reader.Read())
