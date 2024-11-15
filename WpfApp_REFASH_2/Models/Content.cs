@@ -14,6 +14,11 @@ namespace WpfApp_REFASH
         public string writer { get; set; }
         public string imagePath { get; set; }
         public Customer Customer { get; set; }
-
+        //public Content(string title, string description, string imagePath)
+        //{
+        //    this.title = title;
+        //    this.description = description;
+        //    this.imagePath = imagePath;
+        //}
     }
 }

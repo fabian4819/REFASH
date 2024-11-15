@@ -129,6 +129,53 @@ namespace WpfApp_REFASH
 
             return contents;
         }
+        public void AddContent(Content content)
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                        INSERT INTO contents (title, description, image_path, author_email) values (@title, @description, @imagePath, @e)";
+
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@title", content.title);
+                                cmd.Parameters.AddWithValue("@description", content.description);
+                                cmd.Parameters.AddWithValue("@imagePath", content.imagePath ?? (object)DBNull.Value);
+                                cmd.Parameters.AddWithValue("@e", Email);
+
+                                int rowsAffected = cmd.ExecuteNonQuery();
+
+                                if (rowsAffected == 0)
+                                {
+                                    throw new Exception("No rows were updated. The content may not exist.");
+                                }
+                            }
+
+                            transaction.Commit(); // Commit transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback transaction on error
+                            throw new Exception("Error while updating content: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or display exception for connection issues
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+                throw new Exception("Failed to edit content.", ex);
+            }
+        }
+
         public void EditContent(Content content)
         {
             try
@@ -153,6 +200,50 @@ namespace WpfApp_REFASH
                                 cmd.Parameters.AddWithValue("@title", content.title);
                                 cmd.Parameters.AddWithValue("@description", content.description);
                                 cmd.Parameters.AddWithValue("@imagePath", content.imagePath ?? (object)DBNull.Value);
+
+                                int rowsAffected = cmd.ExecuteNonQuery();
+
+                                if (rowsAffected == 0)
+                                {
+                                    throw new Exception("No rows were updated. The content may not exist.");
+                                }
+                            }
+
+                            transaction.Commit(); // Commit transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback transaction on error
+                            throw new Exception("Error while updating content: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or display exception for connection issues
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+                throw new Exception("Failed to edit content.", ex);
+            }
+        }
+        public void DeleteContent(Content content)
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                        DELETE FROM contents
+                        WHERE id = @contentID";
+
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@contentID", content.contentID);
 
                                 int rowsAffected = cmd.ExecuteNonQuery();
 

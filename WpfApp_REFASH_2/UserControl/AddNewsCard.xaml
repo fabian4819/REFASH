@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="WpfApp_REFASH.AddNewsCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp_REFASH"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <!-- Color Resources -->
+        <Color x:Key="PrimaryDark">#1A1A2E</Color>
+        <Color x:Key="Primary">#16213E</Color>
+        <Color x:Key="Secondary">#0F3460</Color>
+        <Color x:Key="Accent">#E94560</Color>
+
+        <!-- Brushes -->
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDark}"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+
+        <!-- TextBox Style -->
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SecondaryBrush}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ComboBox Style -->
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <!-- Button Style -->
+        <Style x:Key="DialogButton" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                    CornerRadius="5"
+                    BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource PrimaryBrush}" 
+BorderThickness="0" 
+CornerRadius="10" 
+Width="500">
+
+        <StackPanel Margin="30,25">
+            <TextBlock x:Name="DialogTitle"
+          Text="Add New News" 
+          Foreground="White"
+          FontSize="24" 
+          FontWeight="Bold" 
+          Margin="0,0,0,25"/>
+
+            <!-- Product Name -->
+            <TextBlock Text="Title" 
+          Foreground="White"
+          FontSize="12" 
+          Margin="0,0,0,5"/>
+            <TextBox x:Name="tb_title" 
+        Style="{StaticResource ModernTextBox}"/>
+
+
+
+            <!-- Description -->
+            <TextBlock Text="Description" 
+          Foreground="White"
+          FontSize="12" 
+          Margin="0,0,0,5"/>
+            <TextBox x:Name="tb_description" 
+        Style="{StaticResource ModernTextBox}"
+        Height="80"
+        TextWrapping="Wrap"
+        AcceptsReturn="True"
+        VerticalContentAlignment="Top"/>
+
+
+
+            <!-- Image URL -->
+            <TextBlock Text="Image URL" 
+          Foreground="White"
+          FontSize="12" 
+          Margin="0,0,0,5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="tb_imageUrl" 
+            Style="{StaticResource ModernTextBox}"
+            Margin="0,5,5,15"/>
+                <Button Content="Browse" 
+            Grid.Column="1"
+            Height="40"
+            Width="80"
+            Margin="0,5,0,15"
+            Background="{StaticResource SecondaryBrush}"
+            Foreground="White"
+            Style="{StaticResource DialogButton}"
+            Click="btn_browseImage_Click"/>
+            </Grid>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" 
+          HorizontalAlignment="Right" 
+          Margin="0,20,0,0">
+                <Button Content="Cancel"
+            Style="{StaticResource DialogButton}"
+            Background="#F0F0F0"
+            Foreground="{StaticResource PrimaryDarkBrush}"
+            Click="btn_cancel_Click"/>
+                <Button Content="Save"
+            Style="{StaticResource DialogButton}"
+            Background="{StaticResource AccentBrush}"
+            Foreground="White"
+            Click="btn_save_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>
