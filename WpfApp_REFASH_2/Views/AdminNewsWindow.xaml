@@ -89,56 +89,21 @@
                         <Button x:Name="AddNewsButton" 
                                 Content="Add News" 
                                 Style="{StaticResource PrimaryButton}" 
-                                Margin="0,0,10,0" 
-                                Click="AddNewsButton_Click"/>
+                                Margin="0,0,10,0"/>
                         <Button x:Name="EditNewsButton" 
                                 Content="Edit News" 
                                 Style="{StaticResource PrimaryButton}" 
-                                Margin="0,0,10,0" 
-                                Click="EditNewsButton_Click"/>
+                                Margin="0,0,10,0"/>
                     </StackPanel>
                 </Grid>
 
                 <!-- News List -->
                 <ListView Grid.Row="1" 
-                         ItemsSource="{Binding News}" 
+                         ItemsSource="{Binding ContentItem}" 
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="White" 
-                                    BorderBrush="{StaticResource PrimaryBrush}" 
-                                    BorderThickness="1" 
-                                    CornerRadius="10" 
-                                    Padding="15" 
-                                    Margin="5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <!-- News Image -->
-                                    <Image Source="{Binding imagePath}" 
-                                           Width="180" 
-                                           Height="180"
-                                           Stretch="Uniform"/>
-
-                                    <!-- News Details -->
-                                    <StackPanel Grid.Column="1" 
-                                              Margin="20,0,0,0" 
-                                              VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding title}" 
-                                                 FontSize="20" 
-                                                 FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding writer}" 
-                                                 FontSize="16" 
-                                                 Margin="0,5"/>
-                                        <TextBlock Text="{Binding description}" 
-                                                 TextWrapping="Wrap" 
-                                                 MaxWidth="500"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
+                            <local:AdminNewsCard/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

@@ -249,6 +249,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControl\AdminNewsCard.xaml.cs">
+      <DependentUpon>AdminNewsCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="ViewModels\AdminSession.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
@@ -318,6 +321,10 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="UserControl\AdminNewsCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShopCartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

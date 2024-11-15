@@ -63,12 +63,9 @@ namespace WpfApp_REFASH.ViewModels
 
             if (isAuthenticated)
             {
-                MessageBox.Show(message);
-
                 switch (role)
                 {
                     case "Admin":
-                        MessageBox.Show("Logged in as Admin");
                         Admin admin = new Admin(name, Email, phoneNumber, Password, role);
                         AdminSession.CurrentAdmin = admin;
                         LoginSuccessAdmin(admin);
