@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
+using WpfApp_REFASH.ViewModels.WpfApp_REFASH.ViewModel;
 
 namespace WpfApp_REFASH
 {
@@ -20,14 +22,26 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class NewsCard : UserControl
     {
+        //public static readonly DependencyProperty CustomerProperty = DependencyProperty.Register(
+        //    nameof(Customer), typeof(Customer), typeof(NewsCard), new PropertyMetadata(null));
+        public Customer Customer;
+        //{
+        //    get => (Customer)GetValue(CustomerProperty);
+        //    set
+        //    {
+        //        SetValue(CustomerProperty, value);
+        //        DataContext = new SideBarViewModel(value); // Mengatur DataContext ke ViewModel
+        //    }
+        //}
         public NewsCard()
         {
             InitializeComponent();
+            Customer = UserSession.CurrentCustomer;
         }
         private void btn_detail_click(object sender, RoutedEventArgs e)
         {
             // Access Customer through DataContext (Content object)
-            if (DataContext is Content content && content.Customer != null)
+            if (DataContext is Content content && Customer != null)
             {
                 NewsDetailWindow newsDetailWindow = new NewsDetailWindow(content.Customer);
                 newsDetailWindow.Show();

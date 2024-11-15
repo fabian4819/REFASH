@@ -37,7 +37,8 @@ namespace WpfApp_REFASH
 
         private void btn_register_Click(object sender, RoutedEventArgs e)
         {
-            string name = tb_username.Text.Trim();
+            // Membaca input dari form
+            string name = tb_username.Text.Trim();  // Trim untuk menghilangkan whitespace di awal dan akhir
             string email = tb_email.Text.Trim();
             string phoneNumber = tb_phoneNumber.Text.Trim(); 
             string password = tb_password.Password;
@@ -50,7 +51,7 @@ namespace WpfApp_REFASH
                 return;
             }
 
-
+            // Menciptakan instance user baru dan mendaftarkannya
             User newUser = new User(name, email, phoneNumber, password, role);
             bool result = newUser.Register();
             if (result)

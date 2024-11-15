@@ -256,24 +256,128 @@ namespace WpfApp_REFASH
             return products;
         }
 
-
-
-        //public ObservableCollection<Product> GetAllCart()
-        //{
-        //    ObservableCollection<Product> list = new ObservableCollection<Product>
-        //    {
-        //        new Product("Product 1", "Description 1", 2, "../Assets/Logo.png", "Rp100.000", "Category A", "L", 10),
-        //        new Product("Product 2", "Description 2", 1, "../Assets/Logo.png", "Rp150.000", "Category B", "M", 5)
-        //    };
-        //    return list;
-        //}
-        public void AddToCart(string ProductID)
+        public ObservableCollection<Product> GetAllProductCart()
         {
+            var products = new ObservableCollection<Product>();
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                select p.name as name, p.description as description, c.id as productID, p.image_path as image, p.price as price, p.category as category, p.size as size, c.quantity as stock from carts as c
+	JOIN products as p ON c.product_id = p.id";
 
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                products.Add(new Product(
+                                    reader.GetString(reader.GetOrdinal("name")),
+                                    reader.GetString(reader.GetOrdinal("description")),
+                                    reader.GetInt32(reader.GetOrdinal("productID")),
+                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.GetDecimal(reader.GetOrdinal("price")),
+                                    reader.GetString(reader.GetOrdinal("category")),
+                                    reader.GetString(reader.GetOrdinal("size")),
+                                    reader.GetInt32(reader.GetOrdinal("stock"))
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error fetching products from the database: " + ex.Message);
+            }
+
+            return products;
         }
-        public void DeleteFromCart(string ProductID)
+
+        public void AddToCart(int product_id, int qty)
         {
+            using (var conn = _dbManager.GetConnection())
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Ensure the function name and parameter placeholders are correct
+                        var cmd = new NpgsqlCommand("SELECT add_to_cart(@customer_email, @qty, @product_id, @create_at, @update_at)", conn);
+                        cmd.Transaction = trans;  // Associate the command with the transaction
 
+                        // Make sure parameter names match those expected by the PostgreSQL function
+                        cmd.Parameters.AddWithValue("@customer_email", NpgsqlTypes.NpgsqlDbType.Varchar, Email); // Assuming 'Email' is a class property of type string
+                        cmd.Parameters.AddWithValue("@qty", NpgsqlTypes.NpgsqlDbType.Integer, qty);
+                        cmd.Parameters.AddWithValue("@product_id", NpgsqlTypes.NpgsqlDbType.Integer, product_id);
+                        cmd.Parameters.AddWithValue("@create_at", NpgsqlTypes.NpgsqlDbType.Date, DateTime.Now.Date);
+                        cmd.Parameters.AddWithValue("@update_at", NpgsqlTypes.NpgsqlDbType.Date, DateTime.Now.Date);
+
+                        // Execute the command and obtain the result
+                        int result = (int)cmd.ExecuteScalar();
+
+                        if (result == 1)
+                        {
+                            trans.Commit();
+                            MessageBox.Show("Insert successful.");
+                        }
+                        else if (result == 0)
+                        {
+                            MessageBox.Show("Insert failed: Combination of email and product already exists.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        MessageBox.Show($"An error occurred: {ex.Message}");
+                    }
+                }
+            }
         }
+
+
+
+        public void DeleteFromCart(int cartId)
+        {
+            using (var conn = _dbManager.GetConnection())
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Correct command text to use parameter placeholders correctly
+                        var cmd = new NpgsqlCommand("DELETE FROM carts WHERE id = @cart_id", conn);
+                        cmd.Transaction = trans;  // Ensure the command is enrolled in the transaction
+
+                        // Add the parameter for the cart ID correctly
+                        cmd.Parameters.AddWithValue("@cart_id", NpgsqlTypes.NpgsqlDbType.Integer, cartId);
+
+                        // Use ExecuteNonQuery for DELETE, UPDATE, and INSERT statements
+                        int rowsAffected = cmd.ExecuteNonQuery();  // This returns the number of rows affected
+
+                        if (rowsAffected > 0)
+                        {
+                            trans.Commit();  // Commit the transaction if the delete was successful
+                            MessageBox.Show("Delete successful.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("No records deleted.");  // Inform if no records were affected
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();  // Rollback the transaction on error
+                        MessageBox.Show($"An error occurred: {ex.Message}");
+                    }
+                }
+            }
+        }
+
     }
 }

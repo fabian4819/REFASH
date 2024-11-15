@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
+using WpfApp_REFASH.ViewModels.WpfApp_REFASH.ViewModel;
 
 namespace WpfApp_REFASH
 {
@@ -22,21 +24,23 @@ namespace WpfApp_REFASH
     {
         public Customer Customer { get; private set; }
         public ObservableCollection<Content> ContentItem { get; set; }
-        public NewsWindow(Customer customer)
+        public NewsWindow()
         {
             InitializeComponent();
-            Customer = customer;
-            if (Customer == null)
+            if (UserSession.CurrentCustomer == null)
             {
-                MessageBox.Show("Customer data is missing.");
+                MessageBox.Show("No customer is logged in.");
+                Close();
                 return;
             }
-            ContentItem = Customer.GetAllContent();
+            ContentItem = UserSession.CurrentCustomer.GetAllContent();
             foreach (var content in ContentItem)
             {
                 content.Customer = Customer; // Assign Customer to each Content item
             }
             DataContext = this;
+            sideBar.Customer = UserSession.CurrentCustomer;
+            sideBar.DataContext = new SideBarViewModel(UserSession.CurrentCustomer);
         }
 
         private void btn_closeApp_click(object sender, RoutedEventArgs e)
@@ -51,7 +55,15 @@ namespace WpfApp_REFASH
 
         private void btn_navigateNews_click(object sender, RoutedEventArgs e)
         {
-
+            NewsWindow newsWindow = new NewsWindow();
+            newsWindow.Show();
+            this.Close();
+        }
+        private void btn_navigateCollection_click(object sender, RoutedEventArgs e)
+        {
+            CollectionWindow collectionWindow = new CollectionWindow(Customer);
+            collectionWindow.Show();
+            this.Close();
         }
     }
 }

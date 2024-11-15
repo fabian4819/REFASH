@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,80 +13,50 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
     /// <summary>
     /// Interaction logic for ShopCartWindow.xaml
     /// </summary>
-    public partial class ShopCartWindow : Window
+    public partial class ShopCartWindow : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public Customer Customer { get; private set; }
-        public ObservableCollection<Product> CartItems { get; set; }
+        private ObservableCollection<Product> _cartItems;
+        public ObservableCollection<Product> CartItems
+        {
+            get { return _cartItems; }
+            set
+            {
+                if (_cartItems != value)
+                {
+                    _cartItems = value;
+                    OnPropertyChanged(nameof(CartItems));
+                }
+            }
+        }
+        private void ReloadCartItems()
+        {
+            CartItems = new ObservableCollection<Product>(Customer.GetAllProductCart());
+        }
 
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public ShopCartWindow(Customer customer)
         {
             InitializeComponent();
-            Customer = customer;
+            Customer = UserSession.CurrentCustomer;
+            //ViewModel = new MainViewModel(customer);
             if (Customer == null)
             {
                 MessageBox.Show("Customer data is missing.");
                 return;
             }
-
-            CartItems = new ObservableCollection<Product>
-        {
-            new Product(
-                name: "Product 1",
-                description: "Description 1",
-                productID: 1,
-                image: "../Assets/Logo.png",
-                price: 100000M,
-                category: "Category A",
-                size: "L",
-                stock: 10
-            ),
-            new Product(
-                name: "Product 1",
-                description: "Description 1",
-                productID: 2,
-                image: "../Assets/Logo.png",
-                price: 100000M,
-                category: "Category A",
-                size: "L",
-                stock: 10
-            ),
-            new Product(
-                name: "Product 1",
-                description: "Description 1",
-                productID: 3,
-                image: "../Assets/Logo.png",
-                price: 100000M,
-                category: "Category A",
-                size: "L",
-                stock: 10
-            ),
-            new Product(
-                name: "Product 1",
-                description: "Description 1",
-                productID: 4,
-                image: "../Assets/Logo.png",
-                price: 100000M,
-                category: "Category A",
-                size: "L",
-                stock: 10
-            ),
-            new Product(
-                name: "Product 2",
-                description: "Description 2",
-                productID: 5,
-                image: "../Assets/Logo.png",
-                price: 150000M,
-                category: "Category B",
-                size: "M",
-                stock: 5
-            )
-        };
+            CartItems = Customer.GetAllProductCart();
             DataContext = this;
         }
 
@@ -94,7 +65,8 @@ namespace WpfApp_REFASH
             var product = (sender as FrameworkElement)?.DataContext as Product;
             if (product != null)
             {
-                CartItems.Remove(product);
+                Customer.DeleteFromCart(product.ProductID);
+                ReloadCartItems();
             }
         }
 

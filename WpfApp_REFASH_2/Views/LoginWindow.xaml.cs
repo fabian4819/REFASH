@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using WpfApp_REFASH.DataAccess;
 using WpfApp_REFASH.Utilities;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -27,11 +28,14 @@ namespace WpfApp_REFASH
         private User user;
         private Admin admin;
         private Customer customer;
-
+        private LoginViewModel _viewModel;
         public LoginWindow()
         {
             InitializeComponent();
-            dbManager = new DatabaseManager();
+            var dbManager = new DatabaseManager();
+            _viewModel = new LoginViewModel();
+            DataContext = _viewModel;
+            _viewModel.LoginSuccess += OnLoginSuccess;
         }
 
         private void btn_register_click(object sender, RoutedEventArgs e)
@@ -40,48 +44,25 @@ namespace WpfApp_REFASH
             registerWindow.Show();
             this.Close();
         }
-
-        private void btn_login_click(object sender, RoutedEventArgs e)
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            string email = tb_email.Text.Trim();
-            string password = tb_password.Password.Trim();
-
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (DataContext != null)
             {
-                MessageBox.Show("Please enter both email and password.");
-                return;
+                _viewModel.Password = ((PasswordBox)sender).Password;
             }
+        }
 
-            user = new User(email, password);
-            var (isAuthenticated, message, name, role, phoneNumber) = user.Login(email, password);
-
-            if (isAuthenticated)
+        private void OnLoginSuccess(Customer customer)
+        {
+            if(customer == null)
             {
-                MessageBox.Show(message);
-
-                switch (role)
-                {
-                    case "Admin":
-                        admin = new Admin(name, email, phoneNumber, password, role, Guid.NewGuid().ToString());
-                        AdminDashboardWindow adminWindow = new AdminDashboardWindow();
-                        adminWindow.Show();
-                        break;
-                    case "Customer":
-                        customer = new Customer(name, email, phoneNumber, password, role);
-                        NewsWindow newsWindow = new NewsWindow(customer);
-                        newsWindow.Show();
-                        break;
-                    default:
-                        MessageBox.Show("Unknown role");
-                        break;
-                }
-
+                MessageBox.Show("Customer is missing in login");
+            }
+            Application.Current.Dispatcher.Invoke(() => {
+                var newsWindow = new NewsWindow();
+                newsWindow.Show();
                 this.Close();
-            }
-            else
-            {
-                MessageBox.Show(message);
-            }
+            });
         }
 
         private void btn_closeApp_click(object sender, RoutedEventArgs e)

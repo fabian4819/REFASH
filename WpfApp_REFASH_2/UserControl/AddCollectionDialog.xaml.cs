@@ -23,21 +23,7 @@ namespace WpfApp_REFASH
         public string CollectionDescription => tb_DescriptionTextBox.Text;
         public string CollectionCategory => (tb_CategoryComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
         public string CollectionImagePath => tb_ImageURLTextBox.Text;
-        //public VerificationStatus CollectionStatus
-        //{
-        //    get
-        //    {
-        //        switch (StatusComboBox.SelectedIndex)
-        //        {
-        //            case 0:
-        //                return VerificationStatus.Verified;
-        //            case 2:
-        //                return VerificationStatus.Rejected;
-        //            default:
-        //                return VerificationStatus.InVerification;
-        //        }
-        //    }
-        //}
+        
 
         public AddCollectionDialog()
         {

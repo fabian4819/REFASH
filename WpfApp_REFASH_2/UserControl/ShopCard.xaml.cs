@@ -13,43 +13,65 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
     /// <summary>
     /// Interaction logic for ShopCard.xaml
     /// </summary>
-    
+
     public partial class ShopCard : UserControl
     {
-        private int _quantity = 1;
-        public int Quantity
-        {
-            get => _quantity;
-            set
-            {
-                if (_quantity != value)
-                {
-                    _quantity = value;
-                    OnPropertyChanged(nameof(Quantity)); // Notify that property has changed if using INotifyPropertyChanged
-                }
-            }
-        }
+        //public static readonly DependencyProperty CustomerProperty = DependencyProperty.Register(
+        //    "Customer", typeof(Customer), typeof(ShopCard), new PropertyMetadata(null));
+        public Customer Customer;
+        //{
+        //    get => (Customer)GetValue(CustomerProperty);
+        //    set => SetValue(CustomerProperty, value);
+        //}
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public Customer Customer { get; set; }
+
         public ShopCard()
         {
             InitializeComponent();
-            btn_addToCart.Click += btn_addToCart_click;
+            Customer = UserSession.CurrentCustomer;
+            if (Customer == null)
+            {
+                MessageBox.Show("Shop Card Customer is null");
+            }
         }
 
-        private void btn_addToCart_click (object sender, RoutedEventArgs e)
+        private void btn_addToCart_click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"Adding {Quantity} units to cart.");
+            var product = this.DataContext as Product;
+            if (product != null)
+            {
+                if (!int.TryParse(tb_qty.Text, out int quantity))
+                {
+                    MessageBox.Show("Invalid quantity.");
+                    return; // Early exit if parsing fails
+                }
+
+                if (Customer == null)
+                {
+                    MessageBox.Show("Customer is null");
+                    return; // Early exit if customer is not set
+                }
+                quantity = int.Parse(tb_qty.Text);
+                if (Customer == null)
+                {
+                    MessageBox.Show("Customer is null");
+                    return;
+                }
+                Customer.AddToCart(product.ProductID, quantity);
+                MessageBox.Show($"Adding {quantity} of product ID {product.ProductID} to the cart. by {Customer.Name}");
+            }
+            else
+            {
+                MessageBox.Show("Product data is not available.");
+            }
         }
     }
 }
