@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -29,14 +30,18 @@ namespace WpfApp_REFASH
 
         private Product currentProduct;
         private bool isNewProduct;
+        private Admin Admin;
+        private bool editingMode = false;
 
         public ProductDialog()
         {
             InitializeComponent();
+            Admin = AdminSession.CurrentAdmin;
         }
 
         public void LoadProduct(Product product)
         {
+            editingMode = true;
             currentProduct = product;
             isNewProduct = false;
             DialogTitle.Text = "Edit Product";
@@ -63,6 +68,7 @@ namespace WpfApp_REFASH
 
         public void ClearForm()
         {
+            editingMode = false;
             currentProduct = null;
             isNewProduct = true;
             DialogTitle.Text = "Add New Product";
@@ -101,6 +107,15 @@ namespace WpfApp_REFASH
                     size,
                     stock
                 );
+                
+                if(editingMode == false)
+                {
+                    Admin.AddProductOffer(product);
+                }
+                if (editingMode == true)
+                {
+                    Admin.EditProduct(product);
+                }
 
                 OnSave?.Invoke(this, new ProductEventArgs
                 {
