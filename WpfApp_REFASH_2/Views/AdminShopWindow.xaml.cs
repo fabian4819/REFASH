@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -21,18 +22,20 @@ namespace WpfApp_REFASH
     public partial class AdminShopWindow : Window
     {
         private Grid modalBackground;
-        private ProductDialog productDialog;
+        private ProductDialog productDialog, editProductDialog;
         public ObservableCollection<Product> Products { get; set; }
+        private Admin Admin { get; set; }
 
         public AdminShopWindow()
         {
             InitializeComponent();
-            InitializeModalLayer();
+            Admin = AdminSession.CurrentAdmin;
+            InitializeModals();
             LoadProducts();
             DataContext = this;
         }
 
-        private void InitializeModalLayer()
+        private void InitializeModals()
         {
             modalBackground = new Grid
             {
@@ -54,6 +57,7 @@ namespace WpfApp_REFASH
             productDialog.HorizontalAlignment = HorizontalAlignment.Center;
             productDialog.VerticalAlignment = VerticalAlignment.Center;
 
+
             modalBackground.IsVisibleChanged += (s, e) =>
             {
                 if (modalBackground.Visibility == Visibility.Visible)
@@ -69,19 +73,23 @@ namespace WpfApp_REFASH
 
         private void LoadProducts()
         {
-            Products = new ObservableCollection<Product>();
-            //Add sample products here
-            var sample = new Product(
-                name: "Sample Product",
-                description: "Sample Description",
-                productID: 1,
-                image: "../Assets/Logo.png",
-                price: 100000M,
-                category: "Clothing",
-                size: "M",
-                stock: 10
-            );
-            Products.Add(sample);
+            Products = Admin.GetAllProductOffer();
+        }
+        
+        private void ProductControl_OnEdit(object sender, RoutedEventArgs e)
+        {
+            var productControl = sender as ProductControl;
+            if (productControl != null)
+            {
+                var product = productControl.DataContext as Product;
+                if (product != null)
+                {
+                    // You can now perform the deletion logic, such as:
+                    // Remove the product from the collection
+                    Products.Remove(product);
+                    MessageBox.Show($"Product {product.ProductName} deleted.");
+                }
+            }
         }
 
         private void btn_addProduct_Click(object sender, RoutedEventArgs e)
@@ -114,15 +122,11 @@ namespace WpfApp_REFASH
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    DeleteProduct(product);
+                    Admin.DeleteProduct(product);
+                    Products.Remove(product );
+                    LoadProducts();
                 }
             }
-        }
-
-        private void DeleteProduct(Product product)
-        {
-            // TODO: Delete from database
-            Products.Remove(product);
         }
 
         private void ProductDialog_OnSave(object sender, ProductEventArgs e)

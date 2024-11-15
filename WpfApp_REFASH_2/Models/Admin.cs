@@ -268,5 +268,176 @@ namespace WpfApp_REFASH
                 }
             }
         }
+
+        public override ObservableCollection<Product> GetAllProductOffer()
+        {
+            var products = new ObservableCollection<Product>();
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT name, description, id AS productID, image_path AS image, price, category, size, stock 
+                FROM products WHERE admin_email = @e";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@e", Email);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                products.Add(new Product(
+                                    reader.GetString(reader.GetOrdinal("name")),
+                                    reader.GetString(reader.GetOrdinal("description")),
+                                    reader.GetInt32(reader.GetOrdinal("productID")),
+                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.GetDecimal(reader.GetOrdinal("price")),
+                                    reader.GetString(reader.GetOrdinal("category")),
+                                    reader.GetString(reader.GetOrdinal("size")),
+                                    reader.GetInt32(reader.GetOrdinal("stock"))
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error fetching products from the database: " + ex.Message);
+            }
+
+            return products;
+        }
+        public void AddProductOffer(Product product)
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                INSERT INTO products 
+                (name, description, image_path, price, category, size, stock, admin_email)
+                VALUES 
+                (@name, @description, @image, @price, @category, @size, @stock, @admin_email)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@name", product.Name);
+                        cmd.Parameters.AddWithValue("@description", product.Description);
+                        //cmd.Parameters.AddWithValue("@id", product.ProductID);
+                        cmd.Parameters.AddWithValue("@image", product.Image ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@price", product.Price);
+                        cmd.Parameters.AddWithValue("@category", product.Category);
+                        cmd.Parameters.AddWithValue("@size", product.Size);
+                        cmd.Parameters.AddWithValue("@stock", product.Stock);
+                        cmd.Parameters.AddWithValue("@admin_email", Email); // Assuming `Email` is the logged-in admin's email
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Product added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to add product. Please try again.", "Failure", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error adding product to the database: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public void EditProduct(Product product)
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                UPDATE products
+                SET name = @name,
+                    description = @description,
+                    image_path = @image,
+                    price = @price,
+                    category = @category,
+                    size = @size,
+                    stock = @stock
+                WHERE id = @id AND admin_email = @admin_email";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@name", product.Name);
+                        cmd.Parameters.AddWithValue("@description", product.Description ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@image", product.Image ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@price", product.Price);
+                        cmd.Parameters.AddWithValue("@category", product.Category);
+                        cmd.Parameters.AddWithValue("@size", product.Size ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@stock", product.Stock);
+                        cmd.Parameters.AddWithValue("@id", product.ProductID);
+                        cmd.Parameters.AddWithValue("@admin_email", Email);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Product updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to update product. Ensure the product exists and you have permission to update it.", "Update Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error updating product in the database: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public void DeleteProduct(Product product)
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                DELETE FROM products
+                WHERE id = @id AND admin_email = @admin_email";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@name", product.Name);
+                        cmd.Parameters.AddWithValue("@description", product.Description ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@image", product.Image ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@price", product.Price);
+                        cmd.Parameters.AddWithValue("@category", product.Category);
+                        cmd.Parameters.AddWithValue("@size", product.Size ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@stock", product.Stock);
+                        cmd.Parameters.AddWithValue("@id", product.ProductID);
+                        cmd.Parameters.AddWithValue("@admin_email", Email);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Product deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to deleted product. Ensure the product exists and you have permission to update it.", "Update Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error updating product in the database: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }
