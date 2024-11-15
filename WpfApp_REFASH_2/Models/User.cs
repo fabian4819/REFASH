@@ -6,6 +6,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WpfApp_REFASH.DataAccess;
 using WpfApp_REFASH.Utilities;
 
@@ -289,6 +290,46 @@ namespace WpfApp_REFASH
             return collections;
         }
 
+        public virtual ObservableCollection<Product> GetAllProductOffer()
+        {
+            var products = new ObservableCollection<Product>();
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT name, description, id AS productID, image_path AS image, price, category, size, stock 
+                FROM products";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                products.Add(new Product(
+                                    reader.GetString(reader.GetOrdinal("name")),
+                                    reader.GetString(reader.GetOrdinal("description")),
+                                    reader.GetInt32(reader.GetOrdinal("productID")),
+                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.GetDecimal(reader.GetOrdinal("price")),
+                                    reader.GetString(reader.GetOrdinal("category")),
+                                    reader.GetString(reader.GetOrdinal("size")),
+                                    reader.GetInt32(reader.GetOrdinal("stock"))
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error fetching products from the database: " + ex.Message);
+            }
+
+            return products;
+        }
 
         //Logout
         public virtual void Logout()

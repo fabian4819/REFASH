@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
         }
+        
 
         private void btn_edit_click(object sender, RoutedEventArgs e)
         {
@@ -47,7 +49,34 @@ namespace WpfApp_REFASH
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Failed to update content: {ex.Message}");
+                    MessageBox.Show($"Failed to delete content: {ex.Message}");
+                }
+            }
+        }
+
+        private void btn_delete_click(object sender, RoutedEventArgs e)
+        {
+            if(DataContext is Content content)
+            {
+                try
+                {
+                    var result = MessageBox.Show(
+                    $"Are you sure you want to delete {content.title}?",
+                    "Confirm Delete",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                    );
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        AdminSession.CurrentAdmin.DeleteContent(content);
+                        var parentWindow = Window.GetWindow(this) as AdminNewsWindow;
+                        parentWindow?.ReloadContent();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to delete content: {ex.Message}");
                 }
             }
         }

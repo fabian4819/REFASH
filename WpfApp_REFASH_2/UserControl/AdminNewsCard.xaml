@@ -32,8 +32,9 @@
 
                 <TextBox x:Name="tb_description" Grid.Row="1" Text="{Binding description}" FontSize="12" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
                 <TextBox x:Name="tb_imagePath" Grid.Row="2" Text="{Binding imagePath}" FontSize="12" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                <StackPanel Grid.Row="3" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <StackPanel Grid.Row="3" HorizontalAlignment="Right" Margin="0,20,0,0" Orientation="Horizontal">
                     <Button Content="Edit" Width="120" Height="40" Background="Black" FontSize="12" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5" Click="btn_edit_click"/>
+                    <Button Content="Delete" Width="120" Height="40" Background="Black" FontSize="12" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5" Click="btn_delete_click"/>
                 </StackPanel>
 
                 <TextBlock Grid.Row="4" Text="{Binding writer}" FontSize="12" Foreground="Gray"/>
