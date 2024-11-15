@@ -21,6 +21,8 @@ namespace WpfApp_REFASH
     {
         public Product Product { get; set; }
         public bool IsNewProduct { get; set; }
+        public Content Content { get; set; }
+        public bool IsNewContent { get; set; }
     }
 
     public partial class ProductDialog : UserControl

@@ -17,13 +17,13 @@ using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
-    /// <summary>
-    /// Interaction logic for AdminNewsWindow.xaml
-    /// </summary>
+    
     public partial class AdminNewsWindow : Window, INotifyPropertyChanged
     {
-        // Implement INotifyPropertyChanged
+        
         public event PropertyChangedEventHandler PropertyChanged;
+        private Grid modalBackground;
+        private AddNewsCard addNewsCard;
 
         private ObservableCollection<Content> _contentItem;
         public ObservableCollection<Content> ContentItem
@@ -38,27 +38,26 @@ namespace WpfApp_REFASH
                 }
             }
         }
-
+        private Admin Admin { get; set; }
         public AdminNewsWindow()
         {
             InitializeComponent();
+            Admin = AdminSession.CurrentAdmin;
 
-            if (AdminSession.CurrentAdmin == null)
+            if (Admin == null)
             {
                 MessageBox.Show("No Admin is logged in.");
                 Close();
                 return;
             }
 
-            // Load initial data
-            ContentItem = AdminSession.CurrentAdmin.GetAllContent();
-
-            // Set the DataContext for binding
+            ContentItem = Admin.GetAllContent();
             DataContext = this;
         }
+
         public void ReloadContent()
         {
-            ContentItem = AdminSession.CurrentAdmin.GetAllContent();
+            ContentItem = Admin.GetAllContent();
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -68,8 +67,24 @@ namespace WpfApp_REFASH
 
         private void AddNewsButton_Click(object sender, RoutedEventArgs e)
         {
-            // Logic for adding news
-            MessageBox.Show("Add News functionality is not yet implemented.");
+            ModalContainer.Visibility = Visibility.Visible;
+            //MainGrid.Effect = (Effect)FindResource("BackgroundBlurEffect");
+            var addNewsCard = AddNewsCardModal as AddNewsCard;
+            addNewsCard.OnSave += AddNewsCard_OnSave;
+            addNewsCard.OnCancel += AddNewsCard_OnCancel;
+        }
+        private void AddNewsCard_OnSave(object sender, ProductEventArgs e)
+        {
+            ModalContainer.Visibility = Visibility.Collapsed;
+            //MainGrid.Effect = null;
+
+            // Optionally, reload content or add the new content to your list
+            ReloadContent();
+        }
+        private void AddNewsCard_OnCancel(object sender, RoutedEventArgs e)
+        {
+            ModalContainer.Visibility = Visibility.Collapsed;
+            //MainGrid.Effect = null;
         }
     }
 }
