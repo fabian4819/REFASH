@@ -13,13 +13,11 @@ namespace WpfApp_REFASH
     // Inheritance (User)
     public class Admin : User
     {
-        // Properties for Admin
         private int TotalContent { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
         private ObservableCollection<Content> ContentItem { get; set; }
         public ObservableCollection<Collection> Collections { get; set; }
 
-        // Constructor for Admin
         public Admin(string name, string email, string phoneNumber, string password, string role)
            : base(name, email, phoneNumber, password, role)
         {
@@ -27,13 +25,13 @@ namespace WpfApp_REFASH
             GetData(Email);
         }
 
-        protected override (bool, string, string, string, string) GetData(string email)
+        protected override (bool, string, string, string, string, string) GetData(string email)
         {
-            var (isFound, name, role, phoneNumber, dbPassword) = base.GetData(email);
+            var (isFound, name, role, phoneNumber, dbPassword, address) = base.GetData(email);
 
             if (!isFound)
             {
-                return (false, "Email not found in User table", null, null, null);
+                return (false, "Email not found in User table", null, null, null, null);
             }
 
             try
@@ -48,13 +46,11 @@ namespace WpfApp_REFASH
                         {
                             if (reader.Read())
                             {
-                                var adminId = reader.IsDBNull(0) ? null : reader.GetString(0);
-
-                                return (true, name, role, phoneNumber, dbPassword);
+                                return (true, name, role, phoneNumber, dbPassword, address);
                             }
                             else
                             {
-                                return (false, "Admin data not found", null, null, null);
+                                return (false, "Admin data not found", null, null, null, null);
                             }
                         }
                     }
@@ -63,7 +59,7 @@ namespace WpfApp_REFASH
             catch (Exception ex)
             {
                 Console.WriteLine($"Error during admin data retrieval: {ex.Message}");
-                return (false, "Error during admin data retrieval", null, null, null);
+                return (false, "Error during admin data retrieval", null, null, null, null);
             }
         }
 

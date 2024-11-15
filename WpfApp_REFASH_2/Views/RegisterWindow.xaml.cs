@@ -25,35 +25,51 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
             dbManager = new DatabaseManager();
+
+            // Move the initialization to after components are loaded
+            this.Loaded += (s, e) => {
+                addressPanel.Visibility = cb_role.SelectedIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+            };
         }
 
-        private void btn_login_click(object sender, RoutedEventArgs e)
+        private void cb_role_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Show();
-            this.Close();
+            if (addressPanel != null) // Add null check
+            {
+                addressPanel.Visibility = cb_role.SelectedIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
-
 
         private void btn_register_Click(object sender, RoutedEventArgs e)
         {
-            // Membaca input dari form
-            string name = tb_username.Text.Trim();  // Trim untuk menghilangkan whitespace di awal dan akhir
+            // Reading input from form
+            string name = tb_username.Text.Trim();
             string email = tb_email.Text.Trim();
-            string phoneNumber = tb_phoneNumber.Text.Trim(); 
+            string phoneNumber = tb_phoneNumber.Text.Trim();
             string password = tb_password.Password;
             string role = ((ComboBoxItem)cb_role.SelectedItem)?.Content.ToString();
+            string address = tb_address.Text.Trim();
 
-
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(role))
+            // Validate required fields
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) ||
+                string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(password) ||
+                string.IsNullOrEmpty(role))
             {
-                MessageBox.Show("Please fill in all fields.");
+                MessageBox.Show("Please fill in all required fields.");
                 return;
             }
 
-            // Menciptakan instance user baru dan mendaftarkannya
-            User newUser = new User(name, email, phoneNumber, password, role);
+            // Validate address for Customer role
+            if (role == "Customer" && string.IsNullOrEmpty(address))
+            {
+                MessageBox.Show("Please enter your address.");
+                return;
+            }
+
+            // Create new user instance and register
+            User newUser = new User(name, email, phoneNumber, password, role, address);
             bool result = newUser.Register();
+
             if (result)
             {
                 MessageBox.Show("Registration successful!");
@@ -75,6 +91,13 @@ namespace WpfApp_REFASH
         private void btn_minimaize_app_click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void btn_login_click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+            this.Close();
         }
     }
 }

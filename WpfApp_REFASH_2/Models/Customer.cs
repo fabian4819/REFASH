@@ -16,14 +16,14 @@ namespace WpfApp_REFASH
     public class Customer : User
     {
         private string CustomerID { get; set; }
-        private string Address { get; set; }
+        // Remove Address property since it's now in base class
         private int LoyaltyPoints { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
         private ObservableCollection<Content> ContentItem { get; set; }
         public ObservableCollection<Collection> collections { get; set; }
 
-        public Customer(string name, string email, string phoneNumber, string password, string role)
-        : base(name, email, phoneNumber, password, role)
+        public Customer(string name, string email, string phoneNumber, string password, string role, string address = null)
+        : base(name, email, phoneNumber, password, role, address)
         {
             Name = name;
             Email = email;
@@ -33,13 +33,13 @@ namespace WpfApp_REFASH
             GetData(Email);
         }
 
-        protected override (bool, string, string, string, string) GetData(string email)
+        protected override (bool, string, string, string, string, string) GetData(string email)
         {
-            var (isFound, name, role, phoneNumber, dbPassword) = base.GetData(email);
+            var (isFound, name, role, phoneNumber, dbPassword, address) = base.GetData(email);
 
             if (!isFound)
             {
-                return (false, "Email not found in User table", null, null, null);
+                return (false, "Email not found in User table", null, null, null, null);
             }
 
             try
@@ -47,25 +47,23 @@ namespace WpfApp_REFASH
                 using (var conn = _dbManager.GetConnection())
                 {
                     conn.Open();
-                    using (var cmd = new NpgsqlCommand("SELECT address, loyalty_points, id FROM customers WHERE email = @e", conn))
+                    using (var cmd = new NpgsqlCommand("SELECT loyalty_points, id FROM customers WHERE email = @e", conn))
                     {
                         cmd.Parameters.AddWithValue("@e", email);
                         using (var reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                var address = reader.IsDBNull(0) ? null : reader.GetString(0);
-                                var loyaltyPoints = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
-                                var customerId = reader.IsDBNull(2) ? null : reader.GetString(2);
-                                Address = address;
+                                var loyaltyPoints = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+                                var customerId = reader.IsDBNull(1) ? null : reader.GetString(1);
                                 LoyaltyPoints = loyaltyPoints;
                                 CustomerID = customerId;
 
-                                return (true, name, role, phoneNumber, dbPassword);
+                                return (true, name, role, phoneNumber, dbPassword, address);
                             }
                             else
                             {
-                                return (false, "Customer data not found", null, null, null);
+                                return (false, "Customer data not found", null, null, null, null);
                             }
                         }
                     }
@@ -74,7 +72,7 @@ namespace WpfApp_REFASH
             catch (Exception ex)
             {
                 Console.WriteLine($"Error during customer data retrieval: {ex.Message}");
-                return (false, "Error during customer data retrieval", null, null, null);
+                return (false, "Error during customer data retrieval", null, null, null, null);
             }
         }
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_REFASH"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="720" Width="1280"
+        Title="RegisterWindow" Height="1024" Width="1280"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowState="Maximized">
@@ -76,7 +76,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Background="{StaticResource PrimaryDarkBrush}">
+    <Grid Background="{StaticResource PrimaryDarkBrush}" Margin="0,0,0,-91">
         <!-- Window Controls -->
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
@@ -140,13 +140,14 @@
         </StackPanel>
 
         <!-- Register Card -->
-        <Border Width="508" Height="805" 
-                Background="{StaticResource PrimaryBrush}"
-                BorderThickness="0"
-                CornerRadius="20"
-                Effect="{StaticResource CardShadow}"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Top" Margin="0,121,0,0">
+        <Border Width="508" 
+        Background="{StaticResource PrimaryBrush}"
+        BorderThickness="0"
+        CornerRadius="20"
+        Effect="{StaticResource CardShadow}"
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Top" 
+        Margin="0,121,0,0">
 
             <StackPanel Margin="40,30">
                 <!-- Logo -->
@@ -179,10 +180,25 @@
                             FontSize="18"/>
 
                 <Label Content="Register as" Foreground="White" FontSize="16" Margin="0,0,0,5"/>
-                <ComboBox Name="cb_role" Style="{StaticResource ModernComboBox}" SelectedIndex="0" FontSize="18">
+                <ComboBox Name="cb_role" 
+          Style="{StaticResource ModernComboBox}" 
+          SelectedIndex="0" 
+          FontSize="18"
+          SelectionChanged="cb_role_SelectionChanged">
                     <ComboBoxItem Content="Customer"/>
                     <ComboBoxItem Content="Admin"/>
                 </ComboBox>
+
+                <!-- New Address field that will be shown/hidden -->
+                <StackPanel Name="addressPanel" Visibility="Visible">
+                    <Label Content="Address" Foreground="White" FontSize="16" Margin="0,0,0,5"/>
+                    <TextBox Name="tb_address" 
+             Style="{StaticResource ModernTextBox}" 
+             FontSize="18"
+             Height="80"
+             TextWrapping="Wrap"
+             AcceptsReturn="True"/>
+                </StackPanel>
 
                 <!-- Register Button -->
                 <Button Height="45" 

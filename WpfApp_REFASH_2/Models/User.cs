@@ -18,31 +18,32 @@ namespace WpfApp_REFASH
         protected string PhoneNumber { get; set; }
         protected string Password { get; set; }
         protected string Role { get; set; }
+        protected string Address { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
 
-
-
-        //Constructor
-        public User(string name, string email, string phoneNumber, string password, string role)
+        // Modified Constructor to include address
+        public User(string name, string email, string phoneNumber, string password, string role, string address = null)
         {
             Name = name;
             Email = email;
             PhoneNumber = phoneNumber;
             Password = password;
             Role = role;
+            Address = address;
         }
+
         public User(string email, string password)
         {
             Email = email;
             Password = password;
         }
 
-        // GetData
-        protected virtual (bool, string, string, string, string) GetData(string email)
+        // Modified GetData to include address
+        protected virtual (bool, string, string, string, string, string) GetData(string email)
         {
             if (_dbManager == null)
             {
-                return (false, "Database Manager not initialized", null, null, null);
+                return (false, "Database Manager not initialized", null, null, null, null);
             }
 
             try
@@ -50,7 +51,7 @@ namespace WpfApp_REFASH
                 using (var conn = _dbManager.GetConnection())
                 {
                     conn.Open();
-                    using (var cmd = new NpgsqlCommand("SELECT name, role, phone_number, password FROM users WHERE email = @e", conn))
+                    using (var cmd = new NpgsqlCommand("SELECT name, role, phone_number, password, address FROM users WHERE email = @e", conn))
                     {
                         cmd.Parameters.AddWithValue("@e", email);
                         using (var reader = cmd.ExecuteReader())
@@ -61,12 +62,13 @@ namespace WpfApp_REFASH
                                 var role = reader.GetString(1);
                                 var phoneNumber = reader.GetString(2);
                                 var dbPassword = reader.GetString(3);
+                                var address = reader.IsDBNull(4) ? null : reader.GetString(4);
 
-                                return (true, name, role, phoneNumber, dbPassword);
+                                return (true, name, role, phoneNumber, dbPassword, address);
                             }
                             else
                             {
-                                return (false, "Email not found", null, null, null);
+                                return (false, "Email not found", null, null, null, null);
                             }
                         }
                     }
@@ -75,24 +77,22 @@ namespace WpfApp_REFASH
             catch (Exception ex)
             {
                 Console.WriteLine($"Error during data retrieval: {ex.Message}");
-                return (false, "Error during data retrieval", null, null, null);
+                return (false, "Error during data retrieval", null, null, null, null);
             }
         }
 
-        //Login
+        // Modified Login to include address
         public (bool, string, string, string, string) Login(string email, string password)
         {
-            var (userFound, name, role, phoneNumber, dbPassword) = GetData(email);
+            var (userFound, name, role, phoneNumber, dbPassword, _) = GetData(email);
 
             if (!userFound)
             {
                 return (false, "User not found.", null, null, null);
             }
 
-            // Hash the input password
             var inputPasswordHash = SecurityUtils.HashPassword(password);
 
-            // Compare hashes using the constant time string comparison
             if (SecurityUtils.PasswordComparison(inputPasswordHash, dbPassword))
             {
                 Name = name;
@@ -106,10 +106,7 @@ namespace WpfApp_REFASH
             }
         }
 
-
-
-
-
+        // Modified Register to include address
         public bool Register()
         {
             NpgsqlTransaction transaction = null;
@@ -120,13 +117,16 @@ namespace WpfApp_REFASH
                     conn.Open();
                     transaction = conn.BeginTransaction();
 
-                    using (var cmd = new NpgsqlCommand("INSERT INTO users (name, email, phone_number, password, role) VALUES (@n, @e, @ph, @p, @r) RETURNING email", conn, transaction))
+                    // Modified INSERT query to include address
+                    using (var cmd = new NpgsqlCommand("INSERT INTO users (name, email, phone_number, password, role, address) VALUES (@n, @e, @ph, @p, @r, @a) RETURNING email", conn, transaction))
                     {
                         cmd.Parameters.AddWithValue("@n", Name);
                         cmd.Parameters.AddWithValue("@e", Email);
                         cmd.Parameters.AddWithValue("@ph", PhoneNumber);
                         cmd.Parameters.AddWithValue("@p", SecurityUtils.HashPassword(Password));
                         cmd.Parameters.AddWithValue("@r", Role);
+                        cmd.Parameters.AddWithValue("@a", Address ?? (object)DBNull.Value);
+
                         var userEmail = cmd.ExecuteScalar()?.ToString();
 
                         if (string.IsNullOrEmpty(userEmail))
@@ -145,9 +145,10 @@ namespace WpfApp_REFASH
                     }
                     else if (Role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
                     {
-                        using (var cmd = new NpgsqlCommand("INSERT INTO customers (email) VALUES (@e)", conn, transaction))
+                        using (var cmd = new NpgsqlCommand("INSERT INTO customers (email, address) VALUES (@e, @a)", conn, transaction))
                         {
                             cmd.Parameters.AddWithValue("@e", Email);
+                            cmd.Parameters.AddWithValue("@a", Address ?? (object)DBNull.Value);
                             cmd.ExecuteNonQuery();
                         }
                     }
