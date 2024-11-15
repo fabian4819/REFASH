@@ -250,6 +250,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="ViewModels\AdminSession.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModels.cs" />
     <Compile Include="ViewModels\NewsViewModel.cs" />

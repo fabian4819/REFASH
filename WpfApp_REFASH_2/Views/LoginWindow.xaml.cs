@@ -36,6 +36,7 @@ namespace WpfApp_REFASH
             _viewModel = new LoginViewModel();
             DataContext = _viewModel;
             _viewModel.LoginSuccess += OnLoginSuccess;
+            _viewModel.LoginSuccessAdmin += OnLoginSuccessAdmin;
         }
 
         private void btn_register_click(object sender, RoutedEventArgs e)
@@ -51,7 +52,18 @@ namespace WpfApp_REFASH
                 _viewModel.Password = ((PasswordBox)sender).Password;
             }
         }
-
+        private void OnLoginSuccessAdmin(Admin admin)
+        {
+            if (admin == null)
+            {
+                MessageBox.Show("Customer is missing in login");
+            }
+            Application.Current.Dispatcher.Invoke(() => {
+                var adminDashboardWindo = new AdminDashboardWindow();
+                adminDashboardWindo.Show();
+                this.Close();
+            });
+        }
         private void OnLoginSuccess(Customer customer)
         {
             if(customer == null)
