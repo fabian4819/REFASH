@@ -41,6 +41,7 @@ namespace WpfApp_REFASH.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event Action<Customer> LoginSuccess;
+        public event Action<Admin> LoginSuccessAdmin;
 
         public LoginViewModel()
         {
@@ -68,7 +69,9 @@ namespace WpfApp_REFASH.ViewModels
                 {
                     case "Admin":
                         MessageBox.Show("Logged in as Admin");
-                        // Navigasi ke AdminWindow
+                        Admin admin = new Admin(name, Email, phoneNumber, Password, role);
+                        AdminSession.CurrentAdmin = admin;
+                        LoginSuccessAdmin(admin);
                         break;
                     case "Customer":
                         Customer customer = new Customer(name, Email, phoneNumber, Password, role);

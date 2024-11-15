@@ -79,31 +79,47 @@
 
                 <!-- ScrollViewer for ListView -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10,0,10,10">
-                    <ListView ItemsSource="{Binding Collections}" 
-                            HorizontalAlignment="Stretch" 
-                            VerticalAlignment="Stretch"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="4"/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                        <ListView.Template>
-                            <ControlTemplate>
-                                <ItemsPresenter/>
-                            </ControlTemplate>
-                        </ListView.Template>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <local:CollectionControl 
-        Title="{Binding Title}" 
-        URL="{Binding URL}" 
-        Status="{Binding Status}"
-        Margin="25,10,25,30"/>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <ListView Grid.Row="0"
+                  ItemsSource="{Binding Collections}" 
+                  HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Top"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="4"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.Template>
+                                <ControlTemplate>
+                                    <ItemsPresenter/>
+                                </ControlTemplate>
+                            </ListView.Template>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <local:CollectionControl 
+                        Title="{Binding Title}" 
+                        URL="{Binding URL}" 
+                        Status="{Binding Status}"
+                        Margin="-10,10,25,30">
+                                        <local:CollectionControl.Width>
+                                            <Binding Path="ActualWidth" ElementName="MainGrid">
+                                                <Binding.Converter>
+                                                    <local:DivideByFourConverter/>
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </local:CollectionControl.Width>
+                                    </local:CollectionControl>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </Grid>

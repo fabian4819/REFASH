@@ -48,10 +48,11 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
             InitializeModalLayer();
-            // Initialize the collections list with sample data
-            var collections = customer.GetAllCollections();
-            var collectionItems = ConvertToCollectionItems(collections);
-            Collections = collectionItems;
+            Customer = customer;
+
+            // Initialize collections
+            RefreshCollections();
+
             // Subscribe to CollectionChanged event
             Collections.CollectionChanged += (s, e) =>
             {
@@ -59,7 +60,12 @@ namespace WpfApp_REFASH
             };
 
             DataContext = this;
-            Customer = customer;
+        }
+
+        private void RefreshCollections()
+        {
+            var collections = Customer.GetAllCollections();
+            Collections = ConvertToCollectionItems(collections);
         }
 
         private VerificationStatus MapStatusToVerificationStatus(string status)
@@ -81,7 +87,7 @@ namespace WpfApp_REFASH
                 collectionItems.Add(new CollectionItem
                 {
                     Title = collection.Name,
-                    URL = collection.ImagePath, // Directly using Category as URL
+                    URL = collection.ImagePath,
                     Status = MapStatusToVerificationStatus(collection.Status)
                 });
             }
@@ -131,18 +137,37 @@ namespace WpfApp_REFASH
 
         private void AddDialog_OnAdd(object sender, RoutedEventArgs e)
         {
-            // Assuming you have a method in Customer class to add collections
-            var newCollection = new Collection(
-            addDialog.CollectionName,
-            addDialog.CollectionDescription,
-            addDialog.CollectionCategory,
-            addDialog.CollectionImagePath
-            );
+            if (string.IsNullOrWhiteSpace(addDialog.CollectionName))
+            {
+                MessageBox.Show("Collection name is required", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            Customer.AddCollection(newCollection);
+            try
+            {
+                // Create and add new collection
+                var newCollection = new Collection(
+                    addDialog.CollectionName,
+                    addDialog.CollectionDescription,
+                    addDialog.CollectionCategory,
+                    addDialog.CollectionImagePath
+                );
 
-            // Update UI or close dialog
-            modalBackground.Visibility = Visibility.Collapsed;
+                Customer.AddCollection(newCollection);
+
+                // Refresh the collections list
+                RefreshCollections();
+
+                // Close dialog
+                modalBackground.Visibility = Visibility.Collapsed;
+
+                // Optional: Show success message
+                MessageBox.Show("Collection added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adding collection: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void AddDialog_OnCancel(object sender, RoutedEventArgs e)

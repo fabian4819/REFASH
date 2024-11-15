@@ -20,17 +20,9 @@ namespace WpfApp_REFASH
     public partial class NewsDetailWindow : Window
     {
         private Customer customer;
-        public NewsDetailWindow(Customer customer)
+        public NewsDetailWindow(int id)
         {
             InitializeComponent();
-            this.customer = customer;
-
-            // Make sure customer is not null before creating Sidebar or other operations
-            if (this.customer == null)
-            {
-                MessageBox.Show("Customer data is missing.");
-                return;
-            }
         }
 
         private void btn_closeApp_click(object sender, RoutedEventArgs e)

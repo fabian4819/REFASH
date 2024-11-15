@@ -41,16 +41,23 @@ namespace WpfApp_REFASH
         private void btn_detail_click(object sender, RoutedEventArgs e)
         {
             // Access Customer through DataContext (Content object)
-            if (DataContext is Content content && Customer != null)
+            if(AdminSession.CurrentAdmin != null)
             {
-                NewsDetailWindow newsDetailWindow = new NewsDetailWindow(content.Customer);
+                AdminNewsWindow adminNewsWindow = new AdminNewsWindow();
+                adminNewsWindow.Show();
+                Window parentWindow = Window.GetWindow(this);
+                parentWindow.Close();
+            }
+            else if (DataContext is Content content && Customer != null)
+            {
+                NewsDetailWindow newsDetailWindow = new NewsDetailWindow(content.contentID);
                 newsDetailWindow.Show();
                 Window parentWindow = Window.GetWindow(this);
                 parentWindow?.Close();
             }
             else
             {
-                MessageBox.Show("Customer data is missing.");
+                MessageBox.Show("Session data is missing.");
             }
         }
     }
