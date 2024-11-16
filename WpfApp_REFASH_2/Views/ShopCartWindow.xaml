@@ -70,11 +70,15 @@
                                     <!-- Product Details -->
                                     <StackPanel Grid.Column="1" Margin="10,0">
                                         <!-- Product Name -->
-                                        <TextBlock Text="{Binding ProductName}" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding Price}" FontSize="14" Margin="0,5"/>
-                                        <TextBlock Text="Category: {Binding Category}" FontSize="12"/>
-                                        <TextBlock Text="Size: {Binding Size}" FontSize="12"/>
-                                        <TextBlock Text="Stock: {Binding Stock}" FontSize="12"/>
+                                        <TextBlock Text="{Binding ProductName}" 
+                                                   FontWeight="Bold" 
+                                                   FontSize="16" 
+                                                   Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding Price, StringFormat='Price: {0:C}',ConverterCulture='id-ID'}"
+                                                   FontSize="14" Margin="0,5"/>
+                                        <TextBlock Text="{Binding Category, StringFormat='Category : {0}'}" FontSize="12"/>
+                                        <TextBlock Text="{Binding Size, StringFormat='Size: {0}'}" FontSize="12"/>
+                                        <TextBlock Text="{Binding Stock, StringFormat='Quantity: {0}'}" FontSize="12"/>
                                     </StackPanel>
 
                                     <!-- Delete Button -->

@@ -16,7 +16,7 @@
             <StackPanel VerticalAlignment="Stretch">
                 <Image Source="{Binding Image}" Height="200" Stretch="UniformToFill"/>
                 <Label Content="{Binding ProductName}" FontSize="16" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Price, StringFormat='Price: {0:C}'}" FontWeight="Medium"/>
+                <TextBlock Text="{Binding Price, StringFormat='Price: {0:C}',ConverterCulture='id-ID'}" FontWeight="Medium"/>
                 <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
                 <TextBlock Text="{Binding Stock, StringFormat='Stocks: {0}'}"/>
                 <TextBlock Text="{Binding ProductID, StringFormat='ID: {0}'}"/>
