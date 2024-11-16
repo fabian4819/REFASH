@@ -257,9 +257,7 @@
     </Compile>
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="ViewModels\AdminSession.cs" />
-    <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModels.cs" />
-    <Compile Include="ViewModels\NewsViewModel.cs" />
     <Compile Include="ViewModels\SideBarViewModel.cs" />
     <Compile Include="ViewModels\UserSession.cs" />
     <Compile Include="Views\ShopCartWindow.xaml.cs">
@@ -309,7 +307,6 @@
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\DatabaseManager.cs" />
-    <Compile Include="DataAccess\UserRepository.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Collection.cs" />
     <Compile Include="Models\Content.cs" />
