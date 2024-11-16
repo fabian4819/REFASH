@@ -42,5 +42,11 @@ namespace WpfApp_REFASH
             shopCartWindow.Show();
             this.Close();
         }
+        private void btn_transaction_click(object sender, RoutedEventArgs e)
+        {
+            ShopTransactionWindow shopTransactionWindow = new ShopTransactionWindow();
+            shopTransactionWindow.Show();
+            this.Close();
+        }
     }
 }

@@ -53,7 +53,7 @@
                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,-5,0,0"/>
                     </Grid>
                 </Button>
-                <Button Background="Transparent" BorderBrush="Transparent" Click="btn_cart_click">
+                <Button Background="Transparent" BorderBrush="Transparent" Click="btn_transaction_click">
                     <Grid>
                         <!-- Cart Icon -->
                         <Image Source="../Assets/ShopListLogo.png" Height="40" VerticalAlignment="Center"/>
