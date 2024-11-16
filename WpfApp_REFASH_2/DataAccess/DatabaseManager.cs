@@ -4,45 +4,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 
 
 namespace WpfApp_REFASH.DataAccess
 {
     public class DatabaseManager
+{
+    private readonly string ConnectionString;
+
+    public DatabaseManager()
     {
-        private readonly string ConnectionString = "Host=localhost;Username=postgres;Password=12345678;Database=junpro100";
+        ConnectionString = Environment.GetEnvironmentVariable("REFASH_CONNECTION_STRING")
+                           ?? throw new InvalidOperationException("Connection string not found in environment variables.");
+    }
 
+    public NpgsqlConnection GetConnection()
+    {
+        return new NpgsqlConnection(ConnectionString);
+    }
 
-        public NpgsqlConnection GetConnection()
+    public bool CheckConnection()
+    {
+        try
         {
-            return new NpgsqlConnection(ConnectionString);
-        }
-
-        public bool CheckConnection()
-        {
-            try
+            using (var conn = GetConnection())
             {
-                using (var conn = GetConnection())
+                conn.Open();
+                if (conn.State == System.Data.ConnectionState.Open)
                 {
-                    conn.Open(); 
-                    if (conn.State == System.Data.ConnectionState.Open)
-                    {
-                        Console.WriteLine("Connection successful.");
-                        return true;  
-                    }
-                    else
-                    {
-                        Console.WriteLine("Connection failed.");
-                        return false;  
-                    }
+                    Console.WriteLine("Connection successful.");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Connection failed.");
+                    return false;
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Connection failed with error: {ex.Message}");
-                return false;
-            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Connection failed with error: {ex.Message}");
+            return false;
         }
     }
+}
 }
