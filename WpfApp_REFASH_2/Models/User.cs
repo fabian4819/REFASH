@@ -19,7 +19,7 @@ namespace WpfApp_REFASH
         protected string PhoneNumber { get; set; }
         protected string Password { get; set; }
         protected string Role { get; set; }
-        protected string Address { get; set; }
+        public string Address { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
 
         // Modified Constructor to include address
@@ -52,7 +52,7 @@ namespace WpfApp_REFASH
                 using (var conn = _dbManager.GetConnection())
                 {
                     conn.Open();
-                    using (var cmd = new NpgsqlCommand("SELECT name, role, phone_number, password, address FROM users WHERE email = @e", conn))
+                    using (var cmd = new NpgsqlCommand("SELECT name, role, phone_number, password FROM users WHERE email = @e", conn))
                     {
                         cmd.Parameters.AddWithValue("@e", email);
                         using (var reader = cmd.ExecuteReader())
@@ -63,9 +63,8 @@ namespace WpfApp_REFASH
                                 var role = reader.GetString(1);
                                 var phoneNumber = reader.GetString(2);
                                 var dbPassword = reader.GetString(3);
-                                var address = reader.IsDBNull(4) ? null : reader.GetString(4);
 
-                                return (true, name, role, phoneNumber, dbPassword, address);
+                                return (true, name, role, phoneNumber, dbPassword, null);
                             }
                             else
                             {
@@ -85,7 +84,7 @@ namespace WpfApp_REFASH
         // Modified Login to include address
         public (bool, string, string, string, string) Login(string email, string password)
         {
-            var (userFound, name, role, phoneNumber, dbPassword, _) = GetData(email);
+            var (userFound, name, role, phoneNumber, dbPassword, address) = GetData(email);
 
             if (!userFound)
             {
@@ -119,14 +118,13 @@ namespace WpfApp_REFASH
                     transaction = conn.BeginTransaction();
 
                     // Modified INSERT query to include address
-                    using (var cmd = new NpgsqlCommand("INSERT INTO users (name, email, phone_number, password, role, address) VALUES (@n, @e, @ph, @p, @r, @a) RETURNING email", conn, transaction))
+                    using (var cmd = new NpgsqlCommand("INSERT INTO users (name, email, phone_number, password, role) VALUES (@n, @e, @ph, @p, @r) RETURNING email", conn, transaction))
                     {
                         cmd.Parameters.AddWithValue("@n", Name);
                         cmd.Parameters.AddWithValue("@e", Email);
                         cmd.Parameters.AddWithValue("@ph", PhoneNumber);
                         cmd.Parameters.AddWithValue("@p", SecurityUtils.HashPassword(Password));
                         cmd.Parameters.AddWithValue("@r", Role);
-                        cmd.Parameters.AddWithValue("@a", Address ?? (object)DBNull.Value);
 
                         var userEmail = cmd.ExecuteScalar()?.ToString();
 
