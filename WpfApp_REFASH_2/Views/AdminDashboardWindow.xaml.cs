@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -19,9 +20,18 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class AdminDashboardWindow : Window
     {
+        private Admin Admin;
         public AdminDashboardWindow()
         {
             InitializeComponent();
+            Admin = AdminSession.CurrentAdmin;
+            int NewsCount = Admin.GetAllContent().Count;
+            int CollectionCount = Admin.GetAllContent().Count;
+            int ProductCount = Admin.GetAllProductOffer().Count;
+            NewsTotalText.Text = NewsCount.ToString();
+            CollectionTotalText.Text = CollectionCount.ToString();
+            TotalProductsText.Text = ProductCount.ToString();
+            
         }
     }
 }
