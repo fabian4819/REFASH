@@ -22,17 +22,7 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class NewsCard : UserControl
     {
-        //public static readonly DependencyProperty CustomerProperty = DependencyProperty.Register(
-        //    nameof(Customer), typeof(Customer), typeof(NewsCard), new PropertyMetadata(null));
         public Customer Customer;
-        //{
-        //    get => (Customer)GetValue(CustomerProperty);
-        //    set
-        //    {
-        //        SetValue(CustomerProperty, value);
-        //        DataContext = new SideBarViewModel(value); // Mengatur DataContext ke ViewModel
-        //    }
-        //}
         public NewsCard()
         {
             InitializeComponent();

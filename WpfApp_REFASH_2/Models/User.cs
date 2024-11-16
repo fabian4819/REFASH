@@ -46,7 +46,6 @@ namespace WpfApp_REFASH
             {
                 return (false, "Database Manager not initialized", null, null, null, null);
             }
-
             try
             {
                 using (var conn = _dbManager.GetConnection())
@@ -63,7 +62,6 @@ namespace WpfApp_REFASH
                                 var role = reader.GetString(1);
                                 var phoneNumber = reader.GetString(2);
                                 var dbPassword = reader.GetString(3);
-
                                 return (true, name, role, phoneNumber, dbPassword, null);
                             }
                             else
@@ -85,14 +83,11 @@ namespace WpfApp_REFASH
         public (bool, string, string, string, string) Login(string email, string password)
         {
             var (userFound, name, role, phoneNumber, dbPassword, address) = GetData(email);
-
             if (!userFound)
             {
                 return (false, "User not found.", null, null, null);
             }
-
             var inputPasswordHash = SecurityUtils.HashPassword(password);
-
             if (SecurityUtils.PasswordComparison(inputPasswordHash, dbPassword))
             {
                 Name = name;
@@ -125,15 +120,12 @@ namespace WpfApp_REFASH
                         cmd.Parameters.AddWithValue("@ph", PhoneNumber);
                         cmd.Parameters.AddWithValue("@p", SecurityUtils.HashPassword(Password));
                         cmd.Parameters.AddWithValue("@r", Role);
-
                         var userEmail = cmd.ExecuteScalar()?.ToString();
-
                         if (string.IsNullOrEmpty(userEmail))
                         {
                             throw new Exception("Failed to insert user data");
                         }
                     }
-
                     if (Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                     {
                         using (var cmd = new NpgsqlCommand("INSERT INTO admins (email) VALUES (@e)", conn, transaction))
@@ -151,7 +143,6 @@ namespace WpfApp_REFASH
                             cmd.ExecuteNonQuery();
                         }
                     }
-
                     transaction.Commit();
                     return true;
                 }
@@ -168,7 +159,6 @@ namespace WpfApp_REFASH
         public virtual ObservableCollection<Content> GetAllContent()
         {
             ObservableCollection<Content> contents = new ObservableCollection<Content>();
-
             try
             {
                 using (var conn = _dbManager.GetConnection())
@@ -224,6 +214,67 @@ namespace WpfApp_REFASH
             }
 
             return contents;
+        }
+        public Content GetContentById(int contentID)
+        {
+            Content content = null;
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                SELECT c.id AS contentID, 
+                       c.title AS title, 
+                       c.description AS description, 
+                       u.name AS writer, 
+                       c.image_path AS imagePath 
+                FROM contents AS c 
+                JOIN admins AS a ON c.author_email = a.email 
+                JOIN users AS u ON a.email = u.email
+                WHERE c.id = @contentID";
+
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@contentID", contentID);
+
+                                using (var reader = cmd.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        content = new Content
+                                        {
+                                            contentID = reader.GetInt32(reader.GetOrdinal("contentID")),
+                                            title = reader.GetString(reader.GetOrdinal("title")),
+                                            description = reader.GetString(reader.GetOrdinal("description")),
+                                            writer = reader.GetString(reader.GetOrdinal("writer")),
+                                            imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
+                                        };
+                                    }
+                                }
+                            }
+
+                            transaction.Commit(); // Commit transaction after successful execution
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback(); // Rollback transaction on error
+                            throw; // Re-throw the exception to handle it outside or log it
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle or log exception related to connection issues
+                Console.WriteLine("Database connection or transaction error: " + ex.Message);
+            }
+
+            return content;
         }
 
         public ObservableCollection<Collection> GetAllCollections()

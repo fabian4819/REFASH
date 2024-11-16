@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -19,10 +20,15 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class NewsDetailWindow : Window
     {
-        private Customer customer;
+        private Customer Customer {  get; set; }
         public NewsDetailWindow(int id)
         {
             InitializeComponent();
+            Customer = UserSession.CurrentCustomer;
+            // Create and populate data
+            var newsContent = Customer.GetContentById(id);
+            this.DataContext = newsContent;
+
         }
 
         private void btn_closeApp_click(object sender, RoutedEventArgs e)
