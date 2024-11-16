@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -15,7 +16,6 @@ namespace WpfApp_REFASH
     // Inheritance (User)
     public class Customer : User
     {
-        private string CustomerID { get; set; }
         // Remove Address property since it's now in base class
         private int LoyaltyPoints { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
@@ -23,7 +23,7 @@ namespace WpfApp_REFASH
         public ObservableCollection<Collection> collections { get; set; }
 
         public Customer(string name, string email, string phoneNumber, string password, string role, string address = null)
-        : base(name, email, phoneNumber, password, role, address)
+        : base(name, email, phoneNumber, password, role)
         {
             Name = name;
             Email = email;
@@ -31,6 +31,7 @@ namespace WpfApp_REFASH
             Password = password;
             Role = role;
             GetData(Email);
+            MessageBox.Show("adress - " + Address + " - " + Name);
         }
 
         protected override (bool, string, string, string, string, string) GetData(string email)
@@ -47,7 +48,7 @@ namespace WpfApp_REFASH
                 using (var conn = _dbManager.GetConnection())
                 {
                     conn.Open();
-                    using (var cmd = new NpgsqlCommand("SELECT loyalty_points, id FROM customers WHERE email = @e", conn))
+                    using (var cmd = new NpgsqlCommand("SELECT loyalty_point, address FROM customers WHERE email = @e", conn))
                     {
                         cmd.Parameters.AddWithValue("@e", email);
                         using (var reader = cmd.ExecuteReader())
@@ -55,9 +56,8 @@ namespace WpfApp_REFASH
                             if (reader.Read())
                             {
                                 var loyaltyPoints = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
-                                var customerId = reader.IsDBNull(1) ? null : reader.GetString(1);
+                                Address = reader.IsDBNull(1) ? null : reader.GetString(1);
                                 LoyaltyPoints = loyaltyPoints;
-                                CustomerID = customerId;
 
                                 return (true, name, role, phoneNumber, dbPassword, address);
                             }

@@ -46,7 +46,7 @@ namespace WpfApp_REFASH
                         {
                             if (reader.Read())
                             {
-                                return (true, name, role, phoneNumber, dbPassword, address);
+                                return (true, name, role, phoneNumber, dbPassword, null);
                             }
                             else
                             {
