@@ -31,7 +31,6 @@ namespace WpfApp_REFASH
             Password = password;
             Role = role;
             GetData(Email);
-            MessageBox.Show("adress - " + Address + " - " + Name);
         }
 
         protected override (bool, string, string, string, string, string) GetData(string email)
@@ -75,7 +74,6 @@ namespace WpfApp_REFASH
                 return (false, "Error during customer data retrieval", null, null, null, null);
             }
         }
-
         public void AddCollection(Collection collection)
         {
             using (var conn = _dbManager.GetConnection())
@@ -90,10 +88,6 @@ namespace WpfApp_REFASH
                 cmd.ExecuteNonQuery();
             }
         }
-
-
-        
-
         public ObservableCollection<Product> GetAllProductCart()
         {
             var products = new ObservableCollection<Product>();
@@ -104,10 +98,10 @@ namespace WpfApp_REFASH
                     conn.Open();
                     string query = @"
                 select p.name as name, p.description as description, c.id as productID, p.image_path as image, p.price as price, p.category as category, p.size as size, c.quantity as stock from carts as c
-	JOIN products as p ON c.product_id = p.id";
-
+	JOIN products as p ON c.product_id = p.id WHERE c.customer_email = @e";
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
+                        cmd.Parameters.AddWithValue("@e", Email);
                         using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -134,7 +128,6 @@ namespace WpfApp_REFASH
 
             return products;
         }
-
         public void AddToCart(int product_id, int qty)
         {
             using (var conn = _dbManager.GetConnection())
@@ -176,9 +169,6 @@ namespace WpfApp_REFASH
                 }
             }
         }
-
-
-
         public void DeleteFromCart(int cartId)
         {
             using (var conn = _dbManager.GetConnection())
@@ -216,6 +206,80 @@ namespace WpfApp_REFASH
                 }
             }
         }
-
+        public void Checkout(ObservableCollection<Product> CartItems)
+        {
+            using (var conn = _dbManager.GetConnection())
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Membuat order pada tabel order id
+                        string insertOrderQUery = "INSERT INTO orders (customer_email, create_at, status) VALUES (@customerEmail, @createAt, 'Packaging') RETURNING id;";
+                        int orderId;
+                        using (var cmd = new NpgsqlCommand(insertOrderQUery, conn, trans))
+                        {
+                            cmd.Parameters.AddWithValue("@customerEmail", Email);
+                            cmd.Parameters.AddWithValue("@createAt", DateTime.Now);
+                            orderId = (int)cmd.ExecuteScalar();
+                        }
+                        MessageBox.Show("Create Order Successfully");
+                        // Memasukkan setiap product yang ada di cart ke order detail dan update stock
+                        foreach (var product in CartItems)
+                        {
+                            string checkStockQuery = "SELECT stock FROM products AS p JOIN carts AS c ON p.id = c.product_id WHERE c.id = @cart_id;";
+                            int currentStock;
+                            using ( var cmd = new NpgsqlCommand(checkStockQuery, conn, trans))
+                            {
+                                cmd.Parameters.AddWithValue("@cart_id", product.ProductID);
+                                currentStock = (int)cmd.ExecuteScalar();
+                            }
+                            if (currentStock < product.Stock)
+                            {
+                                throw new Exception($"Insufficient stock for product: {product.Name}. Avaliable: {currentStock}, Requested: {product.Stock}");
+                            }
+                            // Memasukkan ke order detail
+                            string insertOrderDetailQuery = "INSERT INTO order_details (order_id, product_id, quantity) SELECT @orderId, product_id, @quantity FROM carts WHERE id = @cartId;";
+                            using (var cmd = new NpgsqlCommand(insertOrderDetailQuery, conn, trans))
+                            {
+                                cmd.Parameters.AddWithValue("@orderId", orderId);
+                                cmd.Parameters.AddWithValue("@cartId", product.ProductID);
+                                cmd.Parameters.AddWithValue("@quantity", product.Stock);
+                                cmd.ExecuteNonQuery();
+                            }
+                            MessageBox.Show("insert order detail successfully");
+                            // Memperbarui product stock
+                            string updateStockQuery = "UPDATE products SET stock = stock - @quantity WHERE id = (SELECT product_id FROM carts WHERE carts.id = @cartId);";
+                            using (var cmd = new NpgsqlCommand(updateStockQuery, conn, trans))
+                            {
+                                cmd.Parameters.AddWithValue("@quantity", product.Stock);
+                                cmd.Parameters.AddWithValue("@cartId", product.ProductID);
+                                cmd.ExecuteNonQuery();
+                            }
+                            MessageBox.Show("Update product stock successfully");
+                            // Hapus cart
+                            string deleteFromCartQuery = "DELETE FROM carts WHERE customer_email = @customerEmail AND id = @cartId;";
+                            using (var cmd = new NpgsqlCommand(deleteFromCartQuery, conn, trans))
+                            {
+                                cmd.Parameters.AddWithValue("@customerEmail", Email);
+                                cmd.Parameters.AddWithValue("@cartId", product.ProductID);
+                                cmd.ExecuteNonQuery();
+                            }
+                            MessageBox.Show("delete cart successfully");
+                        }
+                        // commit the transaction
+                        trans.Commit();
+                        MessageBox.Show("Checkout successfull");
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        MessageBox.Show($"Checkout failed: {ex.Message}");
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }

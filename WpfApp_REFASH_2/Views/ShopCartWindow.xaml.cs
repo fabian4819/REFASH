@@ -72,8 +72,18 @@ namespace WpfApp_REFASH
 
         private void btn_checkout_click(object sender, RoutedEventArgs e)
         {
-            // Implement checkout functionality here
-            MessageBox.Show("Proceeding to checkout");
+            try
+            {
+                Customer.Checkout(CartItems);
+                MessageBox.Show("Checkout successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Refresh cart items
+                ReloadCartItems();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Checkout failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btn_back_click(object sender, RoutedEventArgs e)
