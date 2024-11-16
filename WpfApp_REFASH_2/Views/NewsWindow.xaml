@@ -32,16 +32,19 @@
 
                 <local:UpperBar Grid.Row="0"/>
             </Grid>
-
-            <StackPanel Grid.Row="1" Margin="10">
-                <ItemsControl ItemsSource="{Binding ContentItem}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <local:NewsCard/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+            <ScrollViewer Grid.Row="1" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel >
+                
+                    <ItemsControl ItemsSource="{Binding ContentItem}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:NewsCard/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                
             </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>

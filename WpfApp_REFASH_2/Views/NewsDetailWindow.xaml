@@ -33,12 +33,51 @@
                 <local:UpperBar Grid.Row="0"/>
             </Grid>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="12">
-                    <Button HorizontalAlignment="Left" FontSize="16" FontWeight="DemiBold" Background="Transparent" BorderBrush="Transparent" Margin="-8,0,0,10" Click="btn_back_click">Back</Button>
-                    <Label FontSize="48" FontWeight="Black" Margin="0,0,0,10">Title</Label>
-                    <Label FontSize="16" Foreground="Gray" Margin="0,0,0,20">Author</Label>
-                    <TextBlock FontSize="16" TextWrapping="Wrap" Text="Description" Margin="0,0,0,10"/>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+                <StackPanel>
+                    <!-- Back Button -->
+                    <Button HorizontalAlignment="Left" 
+                            FontSize="16" 
+                            FontWeight="DemiBold" 
+                            Background="#16213E" 
+                            Foreground="White" 
+                            BorderBrush="Transparent" 
+                            Padding="10" 
+                            Margin="0,0,0,20" 
+                            Click="btn_back_click">
+                        ← Back
+                    </Button>
+
+                    <!-- Title -->
+                    <TextBlock FontSize="36" 
+                               FontWeight="Bold" 
+                               Text="{Binding title}" 
+                               Foreground="#2C3E50" 
+                               Margin="0,0,0,10" 
+                               TextWrapping="Wrap"/>
+
+                    <!-- Author -->
+                    <TextBlock FontSize="14" 
+                               FontWeight="Medium" 
+                               Foreground="Gray" 
+                               Text="{Binding writer}" 
+                               Margin="0,0,0,20"/>
+
+                    <!-- Content -->
+                    <TextBlock FontSize="16" 
+                               TextWrapping="Wrap"  
+                               Foreground="#4F4F4F" 
+                               LineHeight="28" 
+                               Margin="0,0,0,10">
+                        <Run Text="{Binding description}"/>
+                    </TextBlock>
+
+                    <!-- Additional Image -->
+                    <Image Source="{Binding imagePath}" 
+                           MaxHeight="300" 
+                           Margin="0,20,0,0" 
+                           HorizontalAlignment="Center" 
+                           Stretch="Uniform"/>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
