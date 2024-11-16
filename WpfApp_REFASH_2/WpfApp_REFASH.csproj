@@ -249,6 +249,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Views\ShopTransactionWindow.xaml.cs">
+      <DependentUpon>ShopTransactionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\AddNewsCard.xaml.cs">
       <DependentUpon>AddNewsCard.xaml</DependentUpon>
     </Compile>
@@ -321,6 +325,10 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="Views\ShopTransactionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControl\AddNewsCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
