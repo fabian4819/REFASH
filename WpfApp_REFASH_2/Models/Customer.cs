@@ -281,5 +281,66 @@ namespace WpfApp_REFASH
                 }
             }
         }
+        public ObservableCollection<Transaction> GetAllTransactions()
+        {
+            var transactions = new ObservableCollection<Transaction>();
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT o.id AS OrderID, 
+                       o.create_at AS OrderDate, 
+                       p.name AS ProductName, 
+                       p.description AS Description, 
+                       p.image_path AS Image, 
+                       p.price AS Price, 
+                       p.category AS Category, 
+                       p.size AS Size, 
+                       od.quantity AS Quantity, 
+                       (od.quantity * p.price) AS TotalPricePerItem, 
+                       SUM(od.quantity * p.price) OVER (PARTITION BY o.id) AS TotalOrderPrice,
+                       o.status AS Status
+                FROM orders AS o
+                JOIN order_details AS od ON o.id = od.order_id
+                JOIN products AS p ON p.id = od.product_id
+                WHERE o.customer_email = @e";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@e", Email);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                transactions.Add(new Transaction(
+                                    orderID: reader.GetInt32(reader.GetOrdinal("OrderID")),
+                                    orderDate: reader.GetDateTime(reader.GetOrdinal("OrderDate")),
+                                    productName: reader.GetString(reader.GetOrdinal("ProductName")),
+                                    description: reader.GetString(reader.GetOrdinal("Description")),
+                                    image: reader.GetString(reader.GetOrdinal("Image")),
+                                    price: reader.GetDecimal(reader.GetOrdinal("Price")),
+                                    category: reader.GetString(reader.GetOrdinal("Category")),
+                                    size: reader.GetString(reader.GetOrdinal("Size")),
+                                    stock: 0, // Stock is not part of this query
+                                    quantity: reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                    totalPricePerItem: reader.GetDecimal(reader.GetOrdinal("TotalPricePerItem")),
+                                    totalOrderPrice: reader.GetDecimal(reader.GetOrdinal("TotalOrderPrice")),
+                                    status: reader.GetString(reader.GetOrdinal("Status"))
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error fetching transactions from the database: " + ex.Message);
+            }
+
+            return transactions;
+        }
+
     }
 }
