@@ -31,6 +31,31 @@ namespace WpfApp_REFASH
             Password = password;
             Role = role;
             GetData(Email);
+            // Initialize cart items
+            CartItems = GetAllProductCart();
+        }
+        // Add CartItems property
+        public ObservableCollection<Product> CartItems
+        {
+            get
+            {
+                // Lazy loading of cart items
+                if (_cartItems == null)
+                {
+                    _cartItems = GetAllProductCart();
+                }
+                return _cartItems;
+            }
+            private set
+            {
+                _cartItems = value;
+            }
+        }
+        private ObservableCollection<Product> _cartItems;
+
+        public int GetCartItemCount()
+        {
+            return CartItems?.Count ?? 0;
         }
 
         protected override (bool, string, string, string, string, string) GetData(string email)
