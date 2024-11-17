@@ -5,36 +5,160 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp_REFASH"
              mc:Ignorable="d" 
-             Height="400" Width="300">
-    <Border Background="White" BorderThickness="4" CornerRadius="12">
-        <Grid Margin="12">
+             Height="549" Width="350">
+
+    <Border Background="White" 
+            CornerRadius="15" 
+            Margin="10">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="15" 
+                            ShadowDepth="5" 
+                            Direction="270" 
+                            Opacity="0.2"/>
+        </Border.Effect>
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel VerticalAlignment="Stretch">
-                <Image Source="{Binding Image}" Height="200" Stretch="UniformToFill"/>
-                <Label Content="{Binding ProductName}" FontSize="16" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Price, StringFormat='Price: {0:C}',ConverterCulture='id-ID'}" FontWeight="Medium"/>
-                <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
-                <TextBlock Text="{Binding Stock, StringFormat='Stocks: {0}'}"/>
-                <TextBlock Text="{Binding ProductID, StringFormat='ID: {0}'}"/>
+            <!-- Image Container -->
+            <Border Grid.Row="0" 
+                    Height="250" 
+                    CornerRadius="15,15,0,0" 
+                    ClipToBounds="True">
+                <Image Source="{Binding Image}" 
+                       Stretch="UniformToFill"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+            </Border>
+
+            <!-- Product Info -->
+            <StackPanel Grid.Row="1" 
+                        Margin="20,15">
+                <TextBlock Text="{Binding ProductName}" 
+                           FontSize="22" 
+                           FontWeight="Bold"
+                           Foreground="#1A1A1A"
+                           TextTrimming="CharacterEllipsis"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock Text="{Binding Price, StringFormat='Rp. {0:N0}'}" 
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Foreground="#2C3E50"
+                           Margin="0,5"/>
+
+                <TextBlock Text="{Binding Description}" 
+                           TextWrapping="Wrap"
+                           Foreground="#666666"
+                           FontSize="14"
+                           MaxHeight="60"
+                           TextTrimming="CharacterEllipsis"
+                           Margin="0,8"/>
+
+                <StackPanel Orientation="Horizontal" 
+                           Margin="0,8,0,0">
+                    <TextBlock Text="Stock: " 
+                              Foreground="#666666"
+                              FontSize="14"/>
+                    <TextBlock Text="{Binding Stock}"
+                              Foreground="#16213E"
+                              FontWeight="SemiBold"
+                              FontSize="14"/>
+                </StackPanel>
             </StackPanel>
 
-            <Grid Grid.Row="1">
+            <!-- Action Section -->
+            <Grid Grid.Row="2" 
+                  Margin="20,0,20,20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal">
-                <Label Content="Qty:"/>
-                <TextBox Name="tb_qty" Width="50" VerticalAlignment="Bottom"
-                         Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Content="Add to Cart" Click="btn_addToCart_click" Foreground="White" Background="Black"
-                        Height="Auto" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
-                </StackPanel>
+
+                <!-- Quantity Input -->
+                <Border Grid.Column="0"
+                        Background="#F8F9FA"
+                        CornerRadius="10"
+                        Width="80"
+                        Height="40"
+                        Margin="0,0,10,0">
+                    <Grid>
+                        <TextBox x:Name="tb_qty"
+         Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+         Background="White"
+         BorderThickness="1"
+         BorderBrush="#E0E0E0"
+         TextAlignment="Center"
+         VerticalAlignment="Center"
+         VerticalContentAlignment="Center"
+         HorizontalContentAlignment="Center"
+         FontSize="16"
+         Height="35"
+         Width="60"
+         Padding="0">
+                            <TextBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </TextBox.Resources>
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="TextBox">
+                                                <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                                                    <ScrollViewer x:Name="PART_ContentHost"
+                                        Margin="{TemplateBinding Padding}"
+                                        VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="BorderBrush" Value="#2C3E50"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsFocused" Value="True">
+                                                        <Setter Property="BorderBrush" Value="#16213E"/>
+                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                </Border>
+
+                <!-- Add to Cart Button -->
+                <Button Grid.Column="1"
+                        Content="Add to Cart"
+                        Height="40"
+                        Background="#16213E"
+                        Foreground="White"
+                        FontWeight="SemiBold"
+                        Click="btn_addToCart_click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="20"
+                                    Padding="15,8">
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#1F2937"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </Grid>
         </Grid>
     </Border>
