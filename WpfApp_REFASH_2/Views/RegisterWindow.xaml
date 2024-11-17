@@ -151,7 +151,7 @@
 
             <StackPanel Margin="40,30">
                 <!-- Logo -->
-                <Image Source="../Assets/Logo-Black-Transparant.png" Width="100" Margin="0,0,0,20"/>
+                <Image Source="../Assets/Logo-White-Transparant.png" Width="100" Margin="0,0,0,20"/>
 
                 <!-- Register Form -->
                 <TextBlock Text="Create Account" 

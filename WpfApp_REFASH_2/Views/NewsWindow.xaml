@@ -5,11 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_REFASH"
         mc:Ignorable="d"
-        Title="NewsWindow" Height="720" Width="1280"
+        Title="NewsWindow" 
+        Height="720" 
+        Width="1280"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowState="Maximized"
-        >
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <Style x:Key="ModernScrollViewer" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter Grid.Column="0"/>
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                     Grid.Column="1"
+                                     Value="{TemplateBinding VerticalOffset}"
+                                     Maximum="{TemplateBinding ScrollableHeight}"
+                                     ViewportSize="{TemplateBinding ViewportHeight}"
+                                     Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -24,26 +51,38 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#000000" HorizontalAlignment="Stretch" Height="Auto">
+            <!-- Upper Bar -->
+            <Grid Grid.Row="0" 
+                  Background="#000000" 
+                  HorizontalAlignment="Stretch" 
+                  Height="Auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <local:UpperBar x:Name="upperBar" Grid.Row="0" Grid.ColumnSpan="2"/>
+                <local:UpperBar x:Name="upperBar" 
+                               Grid.Row="0" 
+                               Grid.ColumnSpan="2"/>
             </Grid>
-            <ScrollViewer Grid.Row="1" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel >
-                
-                    <ItemsControl ItemsSource="{Binding ContentItem}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <local:NewsCard/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                
-            </StackPanel>
+
+            <!-- Content Area -->
+            <ScrollViewer Grid.Row="1" 
+                         Margin="20,15,20,15" 
+                         Style="{StaticResource ModernScrollViewer}"
+                         VerticalScrollBarVisibility="Auto" 
+                         HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding ContentItem}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:NewsCard Margin="0,0,0,20"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </ScrollViewer>
         </Grid>
     </Grid>

@@ -140,7 +140,7 @@
 
             <StackPanel Margin="40,30">
                 <!-- Logo -->
-                <Image Source="../Assets/Logo-Black-Transparant.png" Width="100" Margin="0,0,0,30"/>
+                <Image Source="../Assets/Logo-White-Transparant.png" Width="100" Margin="0,0,0,30"/>
 
                 <!-- Login Form -->
                 <TextBlock Text="Welcome Back" 

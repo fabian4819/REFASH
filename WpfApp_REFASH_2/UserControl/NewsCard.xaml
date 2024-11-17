@@ -5,21 +5,126 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignWidth="600"
-             Height="240px">
-    <Border Background="White" CornerRadius="10" BorderBrush="Gray" BorderThickness="1" Padding="10">
-        <Grid>
+             MinHeight="280">
+    <UserControl.Resources>
+        <!-- Card Styles -->
+        <Style x:Key="NewsCardButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#333333"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NewsCardBorder" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="10,5,10,15"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" 
+                                    ShadowDepth="3" 
+                                    Direction="270" 
+                                    Opacity="0.2" 
+                                    Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="15" 
+                                            ShadowDepth="5" 
+                                            Direction="270" 
+                                            Opacity="0.3" 
+                                            Color="#000000"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ImageBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+            <Setter Property="Margin" Value="0,0,15,0"/>
+            <Setter Property="MinHeight" Value="200"/>
+            <Setter Property="MaxHeight" Value="400"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" 
+                                    ShadowDepth="2" 
+                                    Direction="270" 
+                                    Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TitleTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#1A1A1A"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="1" 
+                                    ShadowDepth="1" 
+                                    Direction="270" 
+                                    Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Style="{StaticResource NewsCardBorder}">
+        <Grid Margin="15">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.2*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Image Section -->
-            <Border Grid.Column="0" Background="LightGray" CornerRadius="5" Margin="0,0,10,0">
-                <Image Source="{Binding imagePath}" Stretch="UniformToFill"/>
+            <Border Grid.Column="0" Style="{StaticResource ImageBorderStyle}">
+                <Image Source="{Binding imagePath}" 
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="HighQuality">
+                    <Image.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.LayoutTransform>
+                </Image>
             </Border>
 
             <!-- Content Section -->
-            <Grid Grid.Column="1" Margin="10,0,0,0">
+            <Grid Grid.Column="1" Margin="5,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -27,15 +132,42 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="{Binding title}" FontSize="24" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
+                <!-- Title -->
+                <TextBlock Grid.Row="0" 
+                          Text="{Binding title}"
+                          Style="{StaticResource TitleTextStyle}"/>
 
-                <TextBlock Grid.Row="1" Text="{Binding description}" FontSize="12" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                <!-- Description -->
+                <TextBlock Grid.Row="1" 
+                          Text="{Binding description}" 
+                          FontSize="14" 
+                          Foreground="#4A4A4A" 
+                          TextWrapping="Wrap" 
+                          LineHeight="20"
+                          Margin="0,0,0,12"/>
 
-                <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="0,20,0,0">
-                    <Button Content="Selengkapnya" Width="120" Height="40" Background="Black" FontSize="12" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5" Click="btn_detail_click"/>
+                <!-- Button -->
+                <StackPanel Grid.Row="2" 
+                          HorizontalAlignment="Right" 
+                          Margin="0,8,0,12">
+                    <Button Content="More" 
+                            Style="{StaticResource NewsCardButton}"
+                            Click="btn_detail_click"/>
                 </StackPanel>
 
-                <TextBlock Grid.Row="3" Text="{Binding writer}" FontSize="12" Foreground="Gray"/>
+                <!-- Writer -->
+                <StackPanel Grid.Row="3" 
+                          Orientation="Horizontal" 
+                          Margin="0,5,0,0">
+                    <TextBlock Text="Written by: " 
+                             FontSize="12" 
+                             Foreground="#808080"/>
+                    <TextBlock Text="{Binding writer}" 
+                             FontSize="12" 
+                             Foreground="#404040" 
+                             FontWeight="SemiBold" 
+                             Margin="4,0,0,0"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Border>
