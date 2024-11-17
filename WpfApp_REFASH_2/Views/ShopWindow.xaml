@@ -37,7 +37,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <local:UpperBar Grid.Column="0"/>
+                <local:UpperBar x:Name="upperBar" Grid.Row="0" Grid.ColumnSpan="2"/>
             </Grid>
 
             <!-- Cart Icon Row -->

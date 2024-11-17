@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WpfApp_REFASH.DataAccess;
 using WpfApp_REFASH.Utilities;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -381,10 +382,39 @@ namespace WpfApp_REFASH
         }
 
         //Logout
-        public virtual void Logout()
+        public void Logout()
         {
-            Console.WriteLine($"{Name} logged out.");
+            try
+            {
+                // Reset semua properti dasar User
+                Name = null;
+                Email = null;
+                PhoneNumber = null;
+                Password = null;
+                Address = null;
+
+                // Reset Session berdasarkan Role
+                if (Role?.ToLower() == "admin")
+                {
+                    UserSession.CurrentAdmin = null;
+                }
+                else if (Role?.ToLower() == "customer")
+                {
+                    UserSession.CurrentCustomer = null;
+                }
+
+                // Reset Role setelah pengecekan
+                Role = null;
+
+                MessageBox.Show("Successfully logged out!", "Logout Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during logout: {ex.Message}", "Logout Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
         }
+
         //Change Password
         public void ChangePassword()
         {

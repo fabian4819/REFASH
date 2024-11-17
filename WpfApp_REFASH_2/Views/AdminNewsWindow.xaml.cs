@@ -53,6 +53,7 @@ namespace WpfApp_REFASH
 
             ContentItem = Admin.GetAllContent();
             DataContext = this;
+            upperBar.WelcomeName = Admin.Name;
         }
 
         public void ReloadContent()

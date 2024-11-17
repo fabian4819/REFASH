@@ -27,12 +27,17 @@ namespace WpfApp_REFASH
         public NewsWindow()
         {
             InitializeComponent();
+            
             if (UserSession.CurrentCustomer == null)
             {
                 MessageBox.Show("No customer is logged in.");
                 Close();
                 return;
             }
+
+            Customer = UserSession.CurrentCustomer;
+            upperBar.WelcomeName = Customer.Name;
+
             ContentItem = UserSession.CurrentCustomer.GetAllContent();
             foreach (var content in ContentItem)
             {

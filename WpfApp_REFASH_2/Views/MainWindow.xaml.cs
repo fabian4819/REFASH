@@ -25,10 +25,7 @@ namespace WpfApp_REFASH
             InitializeComponent();
         }
 
-        private void Click_CloseApp(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        
 
         private void btn_register_Click(object sender, RoutedEventArgs e)
         {
@@ -42,6 +39,15 @@ namespace WpfApp_REFASH
             LoginWindow loginWindow = new LoginWindow();    
             loginWindow.Show();
             this.Close();
+        }
+        private void btn_minimizeApp_click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void btn_closeApp_click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

@@ -42,9 +42,7 @@
             </Grid.RowDefinitions>
 
             <!-- Upper Bar -->
-            <Grid Grid.Row="0" Background="{StaticResource PrimaryDarkBrush}">
-                <local:UpperBar/>
-            </Grid>
+            <local:UpperBar x:Name="upperBar" Grid.Row="0" Grid.ColumnSpan="2"/>
 
             <!-- Main Content -->
             <Grid Grid.Row="1" Margin="20">

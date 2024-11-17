@@ -44,7 +44,8 @@ namespace WpfApp_REFASH
 
         private void btn_back_click(object sender, RoutedEventArgs e)
         {
-            // Close the current window
+            ShopWindow shopWindow = new ShopWindow(Customer);
+            shopWindow.Show();
             this.Close();
         }
 
