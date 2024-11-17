@@ -20,6 +20,15 @@ namespace WpfApp_REFASH
     /// </summary>
     public partial class AdminSideBar : UserControl
     {
+        public static readonly DependencyProperty AdminProperty = DependencyProperty.Register(
+        "Admin", typeof(Admin), typeof(AdminSideBar), new PropertyMetadata(null));
+
+        public Admin Admin
+        {
+            get => (Admin)GetValue(AdminProperty);
+            set => SetValue(AdminProperty, value);
+        }
+
         public AdminSideBar()
         {
             InitializeComponent();
@@ -51,6 +60,28 @@ namespace WpfApp_REFASH
             AdminShopWindow shopWindow = new AdminShopWindow();
             shopWindow.Show();
             Window.GetWindow(this)?.Close();
+        }
+
+        private void btn_logout_click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to logout?",
+                "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    Admin?.Logout();
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    Window.GetWindow(this)?.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error during logout process: {ex.Message}",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

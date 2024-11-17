@@ -27,7 +27,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <local:UpperBar Grid.Column="0"/>
+                <local:UpperBar x:Name="upperBar" Grid.Row="0" Grid.ColumnSpan="2"/>
             </Grid>
             <!-- Main Content Area -->
             <Grid Grid.Row="1" Margin="0,10,0,0">

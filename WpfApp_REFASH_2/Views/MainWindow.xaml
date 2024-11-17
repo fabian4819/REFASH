@@ -72,83 +72,122 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Upper Bar -->
-        <Grid Grid.Row="0" Background="{StaticResource PrimaryDarkBrush}">
-            <local:UpperBar/>
-        </Grid>
+        <!-- Window Controls -->
+        <StackPanel Grid.Row="0" 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Margin="10,0">
+
+            <!-- Minimize Button -->
+            <Button Style="{StaticResource WindowControlButton}"
+                Margin="0,0,8,0"
+                Click="btn_minimizeApp_click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                            Background="Transparent" 
+                            CornerRadius="4">
+                            <Path x:Name="icon"
+                            Data="M19,13H5V11H19V13Z"
+                            Fill="White"
+                            Width="14"
+                            Height="14"
+                            Stretch="Uniform"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource HoverLightBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PressedLightBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- Close Button -->
+            <Button Style="{StaticResource WindowControlButton}"
+                Click="btn_closeApp_click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                            Background="Transparent"
+                            CornerRadius="4">
+                            <Path x:Name="icon"
+                            Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                            Fill="White"
+                            Width="14"
+                            Height="14"
+                            Stretch="Uniform"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource CloseHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource ClosePressedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
 
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Border Background="{StaticResource PrimaryDarkBrush}" 
-                    Padding="40">
+                Padding="40">
+                <!-- Konten yang sudah ada -->
                 <StackPanel VerticalAlignment="Center" MaxWidth="800">
                     <!-- Logo -->
                     <Image Source="../Assets/Logo-White-Transparant.png" 
-                           Width="120" 
-                           Margin="0,0,0,20"/>
+                       Width="120" 
+                       Margin="0,0,0,20"/>
 
                     <!-- Title -->
                     <TextBlock Text="REFASH"
-                             Foreground="White"
-                             HorizontalAlignment="Center" 
-                             FontSize="60" 
-                             FontWeight="Bold" 
-                             Margin="0,0,0,30"/>
+                         Foreground="White"
+                         HorizontalAlignment="Center" 
+                         FontSize="60" 
+                         FontWeight="Bold" 
+                         Margin="0,0,0,30"/>
 
                     <!-- Welcome Text -->
                     <TextBlock Foreground="White"
-                             HorizontalAlignment="Center" 
-                             FontSize="25" 
-                             TextWrapping="Wrap" 
-                             TextAlignment="Justify" 
-                             Margin="0,0,0,40"
-                             LineHeight="24">
-                        Style with Purpose, Fashion with Future
+                         HorizontalAlignment="Center" 
+                         FontSize="25" 
+                         TextWrapping="Wrap" 
+                         TextAlignment="Justify" 
+                         Margin="0,0,0,40"
+                         LineHeight="24">
+                    Style with Purpose, Fashion with Future
                     </TextBlock>
 
                     <!-- Buttons -->
                     <StackPanel HorizontalAlignment="Center">
                         <!-- Register Button -->
                         <Button Name="btn_register"
-                                Style="{StaticResource MainButton}"
-                                Background="{StaticResource AccentBrush}"
-                                Foreground="White"
-                                BorderThickness="0"
-                                Click="btn_register_Click">
+                            Style="{StaticResource MainButton}"
+                            Background="{StaticResource AccentBrush}"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Click="btn_register_Click">
                             <Button.Content>Register</Button.Content>
-                            <Button.Triggers>
-                                <EventTrigger RoutedEvent="MouseEnter">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource HoverColor}"
-                                                        Duration="0:0:0.2"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </Button.Triggers>
+                            <!-- Button triggers... -->
                         </Button>
 
                         <!-- Login Button -->
                         <Button Name="btn_login"
-                                Style="{StaticResource MainButton}"
-                                Background="Transparent"
-                                Foreground="White"
-                                BorderBrush="{StaticResource AccentBrush}"
-                                BorderThickness="2"
-                                Click="btn_login_Click">
+                            Style="{StaticResource MainButton}"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderBrush="{StaticResource AccentBrush}"
+                            BorderThickness="2"
+                            Click="btn_login_Click">
                             <Button.Content>Login</Button.Content>
-                            <Button.Triggers>
-                                <EventTrigger RoutedEvent="MouseEnter">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                                        To="{StaticResource HoverColor}"
-                                                        Duration="0:0:0.2"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </Button.Triggers>
+                            <!-- Button triggers... -->
                         </Button>
                     </StackPanel>
                 </StackPanel>

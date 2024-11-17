@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
@@ -60,6 +61,9 @@ namespace WpfApp_REFASH
             };
 
             DataContext = this;
+
+            Customer = UserSession.CurrentCustomer;
+            upperBar.WelcomeName = Customer.Name;
         }
 
         private void RefreshCollections()

@@ -31,7 +31,7 @@ namespace WpfApp_REFASH
             NewsTotalText.Text = NewsCount.ToString();
             CollectionTotalText.Text = CollectionCount.ToString();
             TotalProductsText.Text = ProductCount.ToString();
-            
+            upperBar.WelcomeName = Admin.Name;
         }
     }
 }

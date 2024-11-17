@@ -33,6 +33,7 @@ namespace WpfApp_REFASH
             InitializeModals();
             LoadProducts();
             DataContext = this;
+            upperBar.WelcomeName = Admin.Name;
         }
 
         private void InitializeModals()

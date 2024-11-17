@@ -12,14 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
-    /// <summary>
-    /// Interaction logic for UpperBar.xaml
-    /// </summary>
     public partial class UpperBar : UserControl
     {
+        public static readonly DependencyProperty WelcomeNameProperty =
+            DependencyProperty.Register("WelcomeName", typeof(string), typeof(UpperBar),
+                new PropertyMetadata("Guest"));
+
+        public string WelcomeName
+        {
+            get => (string)GetValue(WelcomeNameProperty);
+            set => SetValue(WelcomeNameProperty, value);
+        }
+
         public UpperBar()
         {
             InitializeComponent();

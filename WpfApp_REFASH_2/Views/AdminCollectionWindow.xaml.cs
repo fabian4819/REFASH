@@ -41,6 +41,7 @@ namespace WpfApp_REFASH
             LoadCollections();
             DataContext = this;
             StatusFilter.SelectedIndex = 0; // Select "All" by default
+            upperBar.WelcomeName = Admin.Name;
         }
 
         private void LoadCollections()

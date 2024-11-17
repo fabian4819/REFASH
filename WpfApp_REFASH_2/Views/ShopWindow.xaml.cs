@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using WpfApp_REFASH.ViewModels;
 namespace WpfApp_REFASH
 {
     /// <summary>
@@ -34,6 +35,8 @@ namespace WpfApp_REFASH
             }
             ProductItem = customer.GetAllProductOffer();
             DataContext = this;
+            Customer = UserSession.CurrentCustomer;
+            upperBar.WelcomeName = Customer.Name;
         }
 
         private void btn_cart_click(object sender, RoutedEventArgs e)

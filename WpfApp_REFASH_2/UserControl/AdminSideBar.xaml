@@ -101,26 +101,89 @@
         <StackPanel Margin="20">
             <!-- Logo -->
             <Image Source="../Assets/Logo-White-Transparant.png" 
-                  Height="100" 
-                  Margin="0,10,0,30"
-                  RenderOptions.BitmapScalingMode="HighQuality"/>
+           Height="100" 
+           Margin="0,10,0,30"
+           RenderOptions.BitmapScalingMode="HighQuality"/>
 
             <!-- Navigation Buttons -->
             <Button Content="Dashboard" 
-                   Style="{StaticResource NavButton}"
-                   Click="btn_navigateDashboard_click"/>
+            Style="{StaticResource NavButton}"
+            Click="btn_navigateDashboard_click"/>
 
             <Button Content="News" 
-                   Style="{StaticResource NavButton}"
-                   Click="btn_navigateNews_click"/>
+            Style="{StaticResource NavButton}"
+            Click="btn_navigateNews_click"/>
 
             <Button Content="Collection" 
-                   Style="{StaticResource NavButton}"
-                   Click="btn_navigateCollection_click"/>
+            Style="{StaticResource NavButton}"
+            Click="btn_navigateCollection_click"/>
 
             <Button Content="Shop" 
-                   Style="{StaticResource NavButton}"
-                   Click="btn_navigateShop_click"/>
+            Style="{StaticResource NavButton}"
+            Click="btn_navigateShop_click"/>
+
+            <!-- Separator -->
+            <Separator Height="1" 
+               Margin="0,20"
+               Background="#4DFFFFFF"/>
+
+            <!-- Logout Button -->
+            <Button Content="Logout" 
+            Height="48"
+            Width="200"
+            Margin="0,5"
+            Click="btn_logout_click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                       Background="#E94560"
+                       BorderThickness="0"
+                       CornerRadius="10"
+                       Padding="16,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Icon -->
+                                <Path x:Name="icon" 
+                             Grid.Column="0"
+                             Width="18" 
+                             Height="18"
+                             Fill="White"
+                             Stretch="Uniform"
+                             Margin="0,0,12,0"
+                             Data="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"/>
+
+                                <!-- Text -->
+                                <TextBlock Grid.Column="1" 
+                                  Text="Logout"
+                                  FontSize="16"
+                                  FontWeight="DemiBold"
+                                  VerticalAlignment="Center"
+                                  Foreground="White"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF3250"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#E94560" 
+                                                BlurRadius="15" 
+                                                ShadowDepth="0" 
+                                                Opacity="0.5"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#D63A52"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
     </Border>
 </UserControl>
