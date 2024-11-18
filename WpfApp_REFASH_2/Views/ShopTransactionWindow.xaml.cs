@@ -30,6 +30,7 @@ namespace WpfApp_REFASH
 
             // Assuming `UserSession.CurrentCustomer` gives the logged-in customer object
             Customer = UserSession.CurrentCustomer;
+            upperbar.WelcomeName = Customer.Name;
 
             // Fetch all transactions for the logged-in customer
             Transactions = Customer.GetAllTransactions();

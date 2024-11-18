@@ -23,20 +23,11 @@ namespace WpfApp_REFASH
 
     public partial class ShopCard : UserControl
     {
-        //public static readonly DependencyProperty CustomerProperty = DependencyProperty.Register(
-        //    "Customer", typeof(Customer), typeof(ShopCard), new PropertyMetadata(null));
-        public Customer Customer;
-        //{
-        //    get => (Customer)GetValue(CustomerProperty);
-        //    set => SetValue(CustomerProperty, value);
-        //}
-
-        //public Customer Customer { get; set; }
-
+        private Customer Customer = UserSession.CurrentCustomer;
+        
         public ShopCard()
         {
             InitializeComponent();
-            Customer = UserSession.CurrentCustomer;
             if (Customer == null)
             {
                 MessageBox.Show("Shop Card Customer is null");
@@ -50,7 +41,7 @@ namespace WpfApp_REFASH
             {
                 if (!int.TryParse(tb_qty.Text, out int quantity))
                 {
-                    MessageBox.Show("Invalid quantity.");
+                    MessageBox.Show("Fill the quantity.");
                     return; // Early exit if parsing fails
                 }
 

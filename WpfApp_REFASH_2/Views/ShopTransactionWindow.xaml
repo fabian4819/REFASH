@@ -66,7 +66,7 @@
                                                        FontSize="14"/>
                                             <TextBlock Text="{Binding Items[0].Status, StringFormat='Status: {0}'}" 
                                                        FontSize="14"/>
-                                            <TextBlock Text="{Binding Items[0].TotalOrderPrice, StringFormat='Total Order Price: {0:C}'}" 
+                                            <TextBlock Text="{Binding Items[0].TotalOrderPrice, StringFormat='Total Order Price: {0:C}', ConverterCulture='id-ID'}" 
                                                 FontSize="14" FontWeight="Bold" Foreground="Green"/>
                                         </StackPanel>
                                     </Border>
@@ -87,8 +87,8 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding ProductName, StringFormat='Product Name: {0}'}" FontSize="14" FontWeight="Bold" />
                                     <TextBlock Text="{Binding Quantity, StringFormat='Quantity: {0}'}" FontSize="12" />
-                                    <TextBlock Text="{Binding Price, StringFormat='Price per Item: {0}'}" FontSize="12" />
-                                    <TextBlock Text="{Binding TotalPricePerItem, StringFormat='Total Price: {0}'}" FontSize="12" />
+                                    <TextBlock Text="{Binding Price, StringFormat='Price per Item: {0:C}', ConverterCulture='id-ID'}" FontSize="12" />
+                                    <TextBlock Text="{Binding TotalPricePerItem, StringFormat='Total Price: {0:C}', ConverterCulture='id-ID'}" FontSize="12" />
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

@@ -25,6 +25,7 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
             Customer = UserSession.CurrentCustomer;
+            upperbar.WelcomeName = Customer.Name;
             // Create and populate data
             var newsContent = Customer.GetContentById(id);
             this.DataContext = newsContent;
