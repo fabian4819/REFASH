@@ -17,6 +17,7 @@ namespace WpfApp_REFASH
         private string currentSearchText = string.Empty;
         public int CartItemCount { get; set; }
 
+        // Kembalikan parameter customer di constructor
         public ShopWindow(Customer customer)
         {
             InitializeComponent();
@@ -28,12 +29,11 @@ namespace WpfApp_REFASH
             }
 
             // Initialize products
-            AllProducts = customer.GetAllProductOffer();
+            AllProducts = Customer.GetAllProductOffer();
             ProductItem = new ObservableCollection<Product>(AllProducts);
 
             // Set initial values
             DataContext = this;
-            Customer = UserSession.CurrentCustomer;
             upperBar.WelcomeName = Customer.Name;
 
             // Initialize filters
@@ -131,7 +131,7 @@ namespace WpfApp_REFASH
 
         private void btn_cart_click(object sender, RoutedEventArgs e)
         {
-            ShopCartWindow shopCartWindow = new ShopCartWindow(Customer);
+            ShopCartWindow shopCartWindow = new ShopCartWindow();
             shopCartWindow.Show();
             this.Close();
         }

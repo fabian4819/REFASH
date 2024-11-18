@@ -32,12 +32,12 @@
             </Grid.RowDefinitions>
 
             <!-- Upper Bar -->
-            <Grid Grid.Row="0" Background="#000000" HorizontalAlignment="Stretch" Height="Auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <local:UpperBar Grid.Column="0"/>
+            <!-- Upper Bar -->
+            <Grid Grid.Row="0" 
+      Background="#000000" 
+      HorizontalAlignment="Stretch" 
+      Height="Auto">
+                <local:UpperBar x:Name="upperBar" Grid.ColumnSpan="2"/>
             </Grid>
 
             <!-- Back Button -->
@@ -104,13 +104,7 @@
             </ScrollViewer>
 
             <!-- Checkout Button -->
-            <Grid Grid.Row="3" HorizontalAlignment="Right" Margin="10">
-                <Button Background="Transparent" BorderBrush="Transparent" Click="btn_checkout_click">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Checkout" FontSize="16" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
+            
         </Grid>
     </Grid>
 </Window>
