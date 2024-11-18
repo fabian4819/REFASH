@@ -41,6 +41,7 @@ namespace WpfApp_REFASH
 
             // Bind grouped transactions to the DataContext
             DataContext = collectionView;
+            upperBar.WelcomeName = Customer.Name;
         }
 
         private void btn_back_click(object sender, RoutedEventArgs e)

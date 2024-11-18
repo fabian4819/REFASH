@@ -29,6 +29,7 @@ namespace WpfApp_REFASH
             }
         }
 
+        // Kembalikan parameter customer di constructor
         public ShopWindow(Customer customer)
         {
             InitializeComponent();
@@ -142,7 +143,7 @@ namespace WpfApp_REFASH
 
         private void btn_cart_click(object sender, RoutedEventArgs e)
         {
-            ShopCartWindow shopCartWindow = new ShopCartWindow(Customer);
+            ShopCartWindow shopCartWindow = new ShopCartWindow();
             shopCartWindow.Show();
             this.Close();
         }
