@@ -49,7 +49,7 @@ namespace WpfApp_REFASH
         {
             InitializeComponent();
             InitializeModalLayer();
-            Customer = customer;
+            Customer = UserSession.CurrentCustomer;
 
             // Initialize collections
             RefreshCollections();

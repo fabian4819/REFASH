@@ -202,7 +202,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Margin="15,-8,-8,0">
-                                <TextBlock Text="{Binding CartItemCount}"
+                                <TextBlock Text="{Binding CartItemCount, StringFormat='{}{0}'}"
                                            Foreground="White"
                                            FontWeight="Bold"
                                            HorizontalAlignment="Center"

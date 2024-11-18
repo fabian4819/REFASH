@@ -494,8 +494,8 @@ namespace WpfApp_REFASH
                 {
                     conn.Open();
                     string query = @"
-                DELETE FROM products
-                WHERE id = @id AND admin_email = @admin_email";
+                    DELETE FROM order_details WHERE product_id = @id;
+                    DELETE FROM products WHERE id = @id AND admin_email = @admin_email;";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {

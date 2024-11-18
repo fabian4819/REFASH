@@ -117,7 +117,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <local:UpperBar Grid.Row="0"/>
+                <local:UpperBar x:Name="upperbar" Grid.Row="0"/>
             </Grid>
 
             <!-- Content Area -->

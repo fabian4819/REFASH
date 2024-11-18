@@ -15,12 +15,24 @@ namespace WpfApp_REFASH
         public ObservableCollection<Product> ProductItem { get; set; }
         private ObservableCollection<Product> AllProducts { get; set; }
         private string currentSearchText = string.Empty;
-        public int CartItemCount { get; set; }
+        private int _cartItemCount;
+        public int CartItemCount
+        {
+            get => _cartItemCount;
+            set
+            {
+                if (_cartItemCount != value)
+                {
+                    _cartItemCount = value;
+                    OnPropertyChanged(nameof(CartItemCount));
+                }
+            }
+        }
 
         public ShopWindow(Customer customer)
         {
             InitializeComponent();
-            Customer = customer;
+            Customer = UserSession.CurrentCustomer;
             if (Customer == null)
             {
                 MessageBox.Show("Customer data is missing.");
@@ -28,12 +40,11 @@ namespace WpfApp_REFASH
             }
 
             // Initialize products
-            AllProducts = customer.GetAllProductOffer();
+            AllProducts = Customer.GetAllProductOffer();
             ProductItem = new ObservableCollection<Product>(AllProducts);
 
             // Set initial values
             DataContext = this;
-            Customer = UserSession.CurrentCustomer;
             upperBar.WelcomeName = Customer.Name;
 
             // Initialize filters
