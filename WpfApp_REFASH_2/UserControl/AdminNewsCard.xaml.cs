@@ -17,16 +17,12 @@ using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
-    /// <summary>
-    /// Interaction logic for AdminNewsCard.xaml
-    /// </summary>
     public partial class AdminNewsCard : UserControl
     {
         public AdminNewsCard()
         {
             InitializeComponent();
         }
-        
 
         private void btn_edit_click(object sender, RoutedEventArgs e)
         {
@@ -34,49 +30,55 @@ namespace WpfApp_REFASH
             {
                 try
                 {
-                    // Simulate content editing
-                    content.title = tb_title.Text.Trim(); // Replace with actual editing logic
-                    content.description = tb_description.Text.Trim();
+                    content.title = tb_title.Text?.Trim() ?? string.Empty;
+                    content.description = tb_description.Text?.Trim() ?? string.Empty;
 
-                    // Update the content in the database
-                    AdminSession.CurrentAdmin.EditContent(content);
+                    AdminSession.CurrentAdmin?.EditContent(content);
+                    MessageBox.Show("Content updated successfully.", "Success",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    MessageBox.Show("Content updated successfully.");
-
-                    // Reload the parent window's data
-                    var parentWindow = Window.GetWindow(this) as AdminNewsWindow;
-                    parentWindow?.ReloadContent();
+                    // Reload parent window's data
+                    if (Window.GetWindow(this) is AdminNewsWindow parentWindow)
+                    {
+                        parentWindow.ReloadContent();
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Failed to delete content: {ex.Message}");
+                    MessageBox.Show($"Failed to update content: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
         private void btn_delete_click(object sender, RoutedEventArgs e)
         {
-            if(DataContext is Content content)
+            if (DataContext is Content content)
             {
                 try
                 {
                     var result = MessageBox.Show(
-                    $"Are you sure you want to delete {content.title}?",
-                    "Confirm Delete",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning
+                        $"Are you sure you want to delete \"{content.title}\"?",
+                        "Confirm Delete",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning
                     );
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        AdminSession.CurrentAdmin.DeleteContent(content);
-                        var parentWindow = Window.GetWindow(this) as AdminNewsWindow;
-                        parentWindow?.ReloadContent();
+                        AdminSession.CurrentAdmin?.DeleteContent(content);
+
+                        // Reload parent window's data
+                        if (Window.GetWindow(this) is AdminNewsWindow parentWindow)
+                        {
+                            parentWindow.ReloadContent();
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Failed to delete content: {ex.Message}");
+                    MessageBox.Show($"Failed to delete content: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
