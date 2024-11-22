@@ -5,39 +5,243 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp_REFASH"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Border Background="White" CornerRadius="10" BorderBrush="Gray" BorderThickness="1" Padding="10">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="newsCard">
+
+    <UserControl.Resources>
+        <!-- Base Button Style -->
+        <Style x:Key="BaseButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="5" 
+                                                        ShadowDepth="1" 
+                                                        Direction="270" 
+                                                        Color="#20000000"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Edit Button Style -->
+        <Style x:Key="EditButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Foreground" Value="#2980B9"/>
+            <Setter Property="BorderBrush" Value="#BDE0F3"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EBF5FB"/>
+                    <Setter Property="BorderBrush" Value="#2980B9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Delete Button Style -->
+        <Style x:Key="DeleteButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Foreground" Value="#E74C3C"/>
+            <Setter Property="BorderBrush" Value="#FFDED8"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFF5F5"/>
+                    <Setter Property="BorderBrush" Value="#E74C3C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TextBox Style -->
+        <Style x:Key="CardTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                        Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8F9FA"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#636E72"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="White" 
+            CornerRadius="12" 
+            BorderBrush="#E8ECF0" 
+            BorderThickness="1" 
+            Padding="20">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" 
+                            ShadowDepth="2" 
+                            Direction="270" 
+                            Opacity="0.1"/>
+        </Border.Effect>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Image Section -->
-            <Border Grid.Column="0" Background="LightGray" CornerRadius="5" Margin="0,0,10,0">
-                <Image Source="{Binding imagePath}" Stretch="UniformToFill"/>
+            <Border Grid.Column="0" 
+                    CornerRadius="8" 
+                    ClipToBounds="True"
+                    Margin="0,0,20,0">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" 
+                                    ShadowDepth="2" 
+                                    Direction="270" 
+                                    Color="#15000000"/>
+                </Border.Effect>
+                <Grid>
+                    <Viewbox Stretch="Uniform" 
+                             StretchDirection="Both">
+                        <Grid>
+                            <!-- Maintain aspect ratio using a hidden rectangle -->
+                            <Rectangle Width="16" Height="9" Opacity="0"/>
+                            <Image Source="{Binding imagePath}" 
+                                   Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="HighQuality">
+                                <Image.Effect>
+                                    <DropShadowEffect BlurRadius="20"
+                                                    ShadowDepth="0"
+                                                    Direction="0"
+                                                    Color="#20000000"/>
+                                </Image.Effect>
+                            </Image>
+                        </Grid>
+                    </Viewbox>
+                    <!-- Optional overlay for better text visibility -->
+                    <Border Background="#10000000" 
+                            CornerRadius="8"/>
+                </Grid>
             </Border>
 
             <!-- Content Section -->
-            <Grid Grid.Column="1" Margin="10,0,0,0">
+            <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBox x:Name="tb_title" Grid.Row="0" Text="{Binding title}" FontSize="24" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
+                <!-- Title -->
+                <TextBox x:Name="tb_title" 
+                        Grid.Row="0" 
+                        Text="{Binding title}" 
+                        FontSize="24" 
+                        FontWeight="Bold" 
+                        Style="{StaticResource CardTextBox}"
+                        Margin="0,0,0,15"
+                        Foreground="#2D3436"/>
 
-                <TextBox x:Name="tb_description" Grid.Row="1" Text="{Binding description}" FontSize="12" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                <TextBox x:Name="tb_imagePath" Grid.Row="2" Text="{Binding imagePath}" FontSize="12" Foreground="Black" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                <StackPanel Grid.Row="3" HorizontalAlignment="Right" Margin="0,20,0,0" Orientation="Horizontal">
-                    <Button Content="Edit" Width="120" Height="40" Background="Black" FontSize="12" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5" Click="btn_edit_click"/>
-                    <Button Content="Delete" Width="120" Height="40" Background="Black" FontSize="12" Foreground="White" BorderBrush="Transparent" Padding="10,5,10,5" Click="btn_delete_click"/>
-                </StackPanel>
+                <!-- Description -->
+                <TextBox x:Name="tb_description" 
+                        Grid.Row="1" 
+                        Text="{Binding description}" 
+                        Style="{StaticResource CardTextBox}"
+                        FontSize="14" 
+                        TextWrapping="Wrap" 
+                        Margin="0,0,0,15"
+                        VerticalAlignment="Top"
+                        Foreground="#636E72"/>
 
-                <TextBlock Grid.Row="4" Text="{Binding writer}" FontSize="12" Foreground="Gray"/>
+                <!-- Image Path (Hidden) -->
+                <TextBox x:Name="tb_imagePath" 
+                        Grid.Row="2" 
+                        Text="{Binding imagePath}" 
+                        Style="{StaticResource CardTextBox}"
+                        Visibility="Collapsed"/>
+
+                <!-- Action Buttons -->
+                <Grid Grid.Row="3" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Writer Info -->
+                    <StackPanel Grid.Column="0" 
+                              Orientation="Horizontal" 
+                              VerticalAlignment="Center">
+                        <StackPanel>
+                            <TextBlock Text="Author" 
+                                     FontSize="12" 
+                                     Foreground="#636E72"/>
+                            <TextBlock Text="{Binding writer}" 
+                                     FontWeight="SemiBold" 
+                                     Foreground="#2D3436"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Buttons -->
+                    <StackPanel Grid.Column="1" 
+                              Orientation="Horizontal" 
+                              HorizontalAlignment="Right">
+                        <Button Style="{StaticResource EditButton}"
+                                Width="120"
+                                Margin="0,0,10,0"
+                                Click="btn_edit_click">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" 
+                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                      Stretch="Uniform"
+                                      Width="14"
+                                      Height="14"
+                                      Margin="0,0,6,0"/>
+                                <TextBlock Text="Edit News"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource DeleteButton}"
+                                Width="120"
+                                Click="btn_delete_click">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" 
+                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                      Stretch="Uniform"
+                                      Width="14"
+                                      Height="14"
+                                      Margin="0,0,6,0"/>
+                                <TextBlock Text="Delete"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
     </Border>
