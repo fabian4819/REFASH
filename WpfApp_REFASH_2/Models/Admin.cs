@@ -526,5 +526,171 @@ namespace WpfApp_REFASH
                 MessageBox.Show("Error updating product in the database: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public int GetSoldProductsCount()
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                    SELECT COALESCE(SUM(od.quantity), 0)
+                    FROM order_details od
+                    JOIN products p ON od.product_id = p.id
+                    WHERE p.admin_email = @email";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", Email);
+                        return Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting sold products count: {ex.Message}");
+                return 0;
+            }
+        }
+
+        public ObservableCollection<Order> GetAllOrders()
+        {
+            var orders = new ObservableCollection<Order>();
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                    SELECT DISTINCT 
+                        o.id AS order_id,
+                        o.customer_email,
+                        o.create_at AS order_date,
+                        o.status,
+                        COALESCE(SUM(p.price * od.quantity) OVER (PARTITION BY o.id), 0) as total_amount
+                    FROM orders o
+                    JOIN order_details od ON o.id = od.order_id
+                    JOIN products p ON od.product_id = p.id
+                    WHERE p.admin_email = @email
+                    ORDER BY o.create_at DESC";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", Email);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                orders.Add(new Order
+                                {
+                                    OrderId = reader.GetInt32(reader.GetOrdinal("order_id")),
+                                    CustomerEmail = reader.GetString(reader.GetOrdinal("customer_email")),
+                                    OrderDate = reader.GetDateTime(reader.GetOrdinal("order_date")),
+                                    Status = reader.GetString(reader.GetOrdinal("status")),
+                                    TotalAmount = reader.GetDecimal(reader.GetOrdinal("total_amount"))
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching orders: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return orders;
+        }
+
+
+        public List<DailySales> GetDailySalesData()
+        {
+            var salesData = new List<DailySales>();
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                    SELECT 
+                        DATE(o.create_at) as sale_date,
+                        SUM(p.price * od.quantity) as daily_total
+                    FROM orders o
+                    JOIN order_details od ON o.id = od.order_id
+                    JOIN products p ON od.product_id = p.id
+                    WHERE p.admin_email = @email
+                    AND o.create_at >= CURRENT_DATE - INTERVAL '30 days'
+                    GROUP BY DATE(o.create_at)
+                    ORDER BY sale_date";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", Email);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                salesData.Add(new DailySales
+                                {
+                                    Date = reader.GetDateTime(0),
+                                    Amount = reader.GetDecimal(1)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching sales data: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return salesData;
+        }
+
+
+        public void UpdateOrderStatus(int orderId, string newStatus)
+        {
+            try
+            {
+                using (var conn = _dbManager.GetConnection())
+                {
+                    conn.Open();
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            string query = @"
+                            UPDATE orders 
+                            SET status = @status,
+                                update_at = CURRENT_TIMESTAMP
+                            WHERE id = @id";
+
+                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@status", newStatus);
+                                cmd.Parameters.AddWithValue("@id", orderId);
+
+                                int rowsAffected = cmd.ExecuteNonQuery();
+                                if (rowsAffected == 0)
+                                {
+                                    throw new Exception("Order not found");
+                                }
+                            }
+                            transaction.Commit();
+                        }
+                        catch
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to update order status: {ex.Message}");
+            }
+        }
     }
 }
