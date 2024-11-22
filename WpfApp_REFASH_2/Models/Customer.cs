@@ -273,7 +273,7 @@ namespace WpfApp_REFASH
                                 cmd.Parameters.AddWithValue("@quantity", product.Stock);
                                 cmd.ExecuteNonQuery();
                             }
-                            MessageBox.Show("insert order detail successfully");
+                            //MessageBox.Show("insert order detail successfully");
                             // Memperbarui product stock
                             string updateStockQuery = "UPDATE products SET stock = stock - @quantity WHERE id = (SELECT product_id FROM carts WHERE carts.id = @cartId);";
                             using (var cmd = new NpgsqlCommand(updateStockQuery, conn, trans))
@@ -282,7 +282,7 @@ namespace WpfApp_REFASH
                                 cmd.Parameters.AddWithValue("@cartId", product.ProductID);
                                 cmd.ExecuteNonQuery();
                             }
-                            MessageBox.Show("Update product stock successfully");
+                            //MessageBox.Show("Update product stock successfully");
                             // Hapus cart
                             string deleteFromCartQuery = "DELETE FROM carts WHERE customer_email = @customerEmail AND id = @cartId;";
                             using (var cmd = new NpgsqlCommand(deleteFromCartQuery, conn, trans))
@@ -291,11 +291,11 @@ namespace WpfApp_REFASH
                                 cmd.Parameters.AddWithValue("@cartId", product.ProductID);
                                 cmd.ExecuteNonQuery();
                             }
-                            MessageBox.Show("delete cart successfully");
+                            //MessageBox.Show("delete cart successfully");
                         }
                         // commit the transaction
                         trans.Commit();
-                        MessageBox.Show("Checkout successfull");
+                        //MessageBox.Show("Checkout successfull");
                     }
                     catch (Exception ex)
                     {
