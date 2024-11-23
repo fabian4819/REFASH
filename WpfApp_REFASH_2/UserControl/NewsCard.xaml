@@ -109,7 +109,7 @@
 
             <!-- Image Section -->
             <Border Grid.Column="0" Style="{StaticResource ImageBorderStyle}">
-                <Image Source="{Binding imagePath}" 
+                <Image Source="{Binding bitmapImage}" 
                        Stretch="Uniform"
                        RenderOptions.BitmapScalingMode="HighQuality">
                     <Image.LayoutTransform>
