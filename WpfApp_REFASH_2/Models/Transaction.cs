@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace WpfApp_REFASH
 {
@@ -21,7 +22,7 @@ namespace WpfApp_REFASH
             DateTime orderDate,
             string productName,
             string description,
-            string image,
+            BitmapImage bitmapImage,
             decimal price,
             string category,
             string size,
@@ -30,7 +31,7 @@ namespace WpfApp_REFASH
             decimal totalPricePerItem,
             decimal totalOrderPrice,
             string status
-        ) : base(productName, description, 0, image, price, category, size, stock)
+        ) : base(productName, description, 0, bitmapImage, price, category, size, stock)
         {
             OrderID = orderID;
             OrderDate = orderDate;
@@ -38,6 +39,7 @@ namespace WpfApp_REFASH
             TotalPricePerItem = totalPricePerItem;
             TotalOrderPrice = totalOrderPrice;
             Status = status;
+            BitmapImage = bitmapImage;
         }
     }
 }

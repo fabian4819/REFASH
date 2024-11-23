@@ -58,16 +58,16 @@
                             <GroupStyle.HeaderTemplate>
                                 <DataTemplate>
                                     <!-- Card Header -->
-                                    <Border Background="#FFDDDDDD" Padding="10" Margin="5" CornerRadius="5">
+                                    <Border Background="#FFEEEEEE" Padding="15" Margin="5,10,5,0" CornerRadius="10">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Name, StringFormat='Order ID: {0}'}" 
-                                                       FontWeight="Bold" FontSize="16"/>
+                                           FontWeight="Bold" FontSize="18" Foreground="#FF333333"/>
                                             <TextBlock Text="{Binding Items[0].OrderDate, StringFormat='Order Date: {0:yyyy-MM-dd}'}" 
-                                                       FontSize="14"/>
+                                           FontSize="14" Foreground="#FF555555"/>
                                             <TextBlock Text="{Binding Items[0].Status, StringFormat='Status: {0}'}" 
-                                                       FontSize="14"/>
+                                           FontSize="14" Foreground="#FF555555"/>
                                             <TextBlock Text="{Binding Items[0].TotalOrderPrice, StringFormat='Total Order Price: {0:C}', ConverterCulture='id-ID'}" 
-                                                FontSize="14" FontWeight="Bold" Foreground="Green"/>
+                                    FontSize="16" FontWeight="Bold" Foreground="#FF008000"/>
                                         </StackPanel>
                                     </Border>
                                 </DataTemplate>
@@ -83,13 +83,26 @@
                     <!-- Card Body -->
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="10" Margin="5" CornerRadius="5">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding ProductName, StringFormat='Product Name: {0}'}" FontSize="14" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding Quantity, StringFormat='Quantity: {0}'}" FontSize="12" />
-                                    <TextBlock Text="{Binding Price, StringFormat='Price per Item: {0:C}', ConverterCulture='id-ID'}" FontSize="12" />
-                                    <TextBlock Text="{Binding TotalPricePerItem, StringFormat='Total Price: {0:C}', ConverterCulture='id-ID'}" FontSize="12" />
-                                </StackPanel>
+                            <Border Background="White" BorderBrush="#FFDADADA" BorderThickness="1" Padding="15" Margin="5,5,5,10" CornerRadius="10" >
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <!-- Image Column -->
+                                        <ColumnDefinition Width="*" />
+                                        <!-- Text Column -->
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Product Image -->
+                                    <Image Grid.Column="0" Width="80" Height="80" Margin="5" 
+                               Source="{Binding BitmapImage}" 
+                               Stretch="UniformToFill" ClipToBounds="True" />
+                                    <!-- Product Details -->
+                                    <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                                        <TextBlock Text="{Binding ProductName, StringFormat='Product Name: {0}'}" FontSize="16" FontWeight="Bold" Foreground="#FF333333" />
+                                        <TextBlock Text="{Binding Quantity, StringFormat='Quantity: {0}'}" FontSize="14" Foreground="#FF555555" />
+                                        <TextBlock Text="{Binding Price, StringFormat='Price per Item: {0:C}', ConverterCulture='id-ID'}" FontSize="14" Foreground="#FF555555" />
+                                        <TextBlock Text="{Binding TotalPricePerItem, StringFormat='Total Price: {0:C}', ConverterCulture='id-ID'}" FontSize="14" FontWeight="Bold" Foreground="#FF008000" />
+                                    </StackPanel>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -97,11 +110,12 @@
                     <!-- Items Panel -->
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel/>
+                            <StackPanel Margin="5"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                 </ListView>
             </ScrollViewer>
+
 
             <!-- Checkout Button -->
             
