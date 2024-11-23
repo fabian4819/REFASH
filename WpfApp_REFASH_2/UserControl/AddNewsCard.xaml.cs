@@ -46,7 +46,7 @@ namespace WpfApp_REFASH
             CurrentContent = contentToEdit;
             tb_title.Text = contentToEdit.title;
             tb_description.Text = contentToEdit.description;
-            tb_imageUrl.Text = contentToEdit.imagePath;
+            //tb_imageUrl.Text = contentToEdit.imagePath;
         }
 
         private void btn_save_Click(object sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ namespace WpfApp_REFASH
                 {
                     title = tb_title.Text,
                     description = tb_description.Text,
-                    imagePath = tb_imageUrl.Text,
+                    //imagePath = tb_imageUrl.Text,
                     imageData = currentImageData
                 };
 
