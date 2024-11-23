@@ -16,7 +16,7 @@ namespace WpfApp_REFASH.DataAccess
 
     public DatabaseManager()
     {
-            ConnectionString = "Host=localhost;Database=junpro100;Username=postgres;Password=12345678";
+        ConnectionString = Environment.GetEnvironmentVariable("REFASH_CONNECTION_STRING") ?? throw new InvalidOperationException("Connection string not found in environment variables.");
     }
 
     public NpgsqlConnection GetConnection()
