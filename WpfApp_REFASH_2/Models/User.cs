@@ -236,7 +236,7 @@ namespace WpfApp_REFASH
                        c.title AS title, 
                        c.description AS description, 
                        u.name AS writer, 
-                       c.image_path AS imagePath 
+                       c.image_data AS imageData
                 FROM contents AS c 
                 JOIN admins AS a ON c.author_email = a.email 
                 JOIN users AS u ON a.email = u.email
@@ -256,7 +256,7 @@ namespace WpfApp_REFASH
                                             title = reader.GetString(reader.GetOrdinal("title")),
                                             description = reader.GetString(reader.GetOrdinal("description")),
                                             writer = reader.GetString(reader.GetOrdinal("writer")),
-                                            //imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
+                                            bitmapImage = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : ConvertToBitmapImage((byte[])reader["imageData"])
                                         };
                                     }
                                 }
@@ -354,7 +354,7 @@ namespace WpfApp_REFASH
                 {
                     conn.Open();
                     string query = @"
-                SELECT name, description, id AS productID, image_path AS image, price, category, size, stock 
+                SELECT name, description, id AS productID, image_data AS imageData, price, category, size, stock 
                 FROM products";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
@@ -367,7 +367,7 @@ namespace WpfApp_REFASH
                                     reader.GetString(reader.GetOrdinal("name")),
                                     reader.GetString(reader.GetOrdinal("description")),
                                     reader.GetInt32(reader.GetOrdinal("productID")),
-                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : ConvertToBitmapImage((byte[])reader["imageData"]),
                                     reader.GetDecimal(reader.GetOrdinal("price")),
                                     reader.GetString(reader.GetOrdinal("category")),
                                     reader.GetString(reader.GetOrdinal("size")),

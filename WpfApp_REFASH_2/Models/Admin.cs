@@ -372,7 +372,7 @@ namespace WpfApp_REFASH
                 {
                     conn.Open();
                     string query = @"
-                SELECT name, description, id AS productID, image_path AS image, price, category, size, stock 
+                SELECT name, description, id AS productID, image_data AS imageData, price, category, size, stock 
                 FROM products WHERE admin_email = @e";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
@@ -386,7 +386,7 @@ namespace WpfApp_REFASH
                                     reader.GetString(reader.GetOrdinal("name")),
                                     reader.GetString(reader.GetOrdinal("description")),
                                     reader.GetInt32(reader.GetOrdinal("productID")),
-                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : ConvertToBitmapImage((byte[])reader["imageData"]),
                                     reader.GetDecimal(reader.GetOrdinal("price")),
                                     reader.GetString(reader.GetOrdinal("category")),
                                     reader.GetString(reader.GetOrdinal("size")),
@@ -413,16 +413,15 @@ namespace WpfApp_REFASH
                     conn.Open();
                     string query = @"
                 INSERT INTO products 
-                (name, description, image_path, price, category, size, stock, admin_email)
+                (name, description, image_data, price, category, size, stock, admin_email)
                 VALUES 
-                (@name, @description, @image, @price, @category, @size, @stock, @admin_email)";
+                (@name, @description, @imageData, @price, @category, @size, @stock, @admin_email)";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@name", product.Name);
                         cmd.Parameters.AddWithValue("@description", product.Description);
-                        //cmd.Parameters.AddWithValue("@id", product.ProductID);
-                        cmd.Parameters.AddWithValue("@image", product.Image ?? (object)DBNull.Value);
+                        cmd.Parameters.Add("@imageData", NpgsqlTypes.NpgsqlDbType.Bytea).Value = product.ImageData ?? (object)DBNull.Value;
                         cmd.Parameters.AddWithValue("@price", product.Price);
                         cmd.Parameters.AddWithValue("@category", product.Category);
                         cmd.Parameters.AddWithValue("@size", product.Size);

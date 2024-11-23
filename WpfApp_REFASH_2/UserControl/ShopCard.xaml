@@ -28,7 +28,7 @@
                     Height="250" 
                     CornerRadius="15,15,0,0" 
                     ClipToBounds="True">
-                <Image Source="{Binding Image}" 
+                <Image Source="{Binding BitmapImage}" 
                        Stretch="UniformToFill"
                        RenderOptions.BitmapScalingMode="HighQuality"/>
             </Border>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace WpfApp_REFASH
 {
@@ -19,6 +20,9 @@ namespace WpfApp_REFASH
         private string _size;
         private int _stock;
         private string _description;
+        private byte[] _image_data;
+        private BitmapImage _bitmapImage;
+
 
         public int ProductID
         {
@@ -67,6 +71,16 @@ namespace WpfApp_REFASH
             get => _description;
             set => SetField(ref _description, value);
         }
+        public byte[] ImageData
+        {
+            get => _image_data;
+            set => SetField(ref _image_data, value);
+        }
+        public BitmapImage BitmapImage
+        {
+            get => _bitmapImage;
+            set => SetField(ref _bitmapImage, value);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -90,6 +104,30 @@ namespace WpfApp_REFASH
             ProductID = productID;
             Description = description;
             Image = image;
+            Price = price;
+            Category = category;
+            Size = size;
+            Stock = stock;
+        }
+        public Product(string name, string description, int productID, byte[] imageData, decimal price, string category, string size, int stock)
+            : base(name, description)  // Assuming Goods also takes these parameters.
+        {
+            ProductName = name;
+            ProductID = productID;
+            Description = description;
+            ImageData = imageData;
+            Price = price;
+            Category = category;
+            Size = size;
+            Stock = stock;
+        }
+        public Product(string name, string description, int productID, BitmapImage bitmapImage, decimal price, string category, string size, int stock)
+            : base(name, description)  // Assuming Goods also takes these parameters.
+        {
+            ProductName = name;
+            ProductID = productID;
+            Description = description;
+            BitmapImage = bitmapImage;
             Price = price;
             Category = category;
             Size = size;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace WpfApp_REFASH
         private bool isNewProduct;
         private Admin Admin;
         private bool editingMode = false;
+        private byte[] currentImageData;
 
         public ProductDialog()
         {
@@ -103,7 +105,7 @@ namespace WpfApp_REFASH
                     productName,
                     description,
                     productId,
-                    image,
+                    currentImageData,
                     price,
                     category,
                     size,
@@ -177,6 +179,15 @@ namespace WpfApp_REFASH
             if (openFileDialog.ShowDialog() == true)
             {
                 tb_imageUrl.Text = openFileDialog.FileName;
+                try
+                {
+                    currentImageData = File.ReadAllBytes(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to read the image file: {ex.Message}", "File Read Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
         }
     }
