@@ -91,7 +91,7 @@ namespace WpfApp_REFASH
                 collectionItems.Add(new CollectionItem
                 {
                     Title = collection.Name,
-                    URL = collection.ImagePath,
+                    BitmapImage = collection.BitmapImage,
                     Status = MapStatusToVerificationStatus(collection.Status)
                 });
             }
@@ -154,7 +154,7 @@ namespace WpfApp_REFASH
                     addDialog.CollectionName,
                     addDialog.CollectionDescription,
                     addDialog.CollectionCategory,
-                    addDialog.CollectionImagePath
+                    addDialog.CollectionImageData
                 );
 
                 Customer.AddCollection(newCollection);
@@ -191,7 +191,7 @@ namespace WpfApp_REFASH
     public class CollectionItem
     {
         public string Title { get; set; }
-        public string URL { get; set; }
+        public BitmapImage BitmapImage { get; set; }
         public VerificationStatus Status { get; set; }
     }
 }

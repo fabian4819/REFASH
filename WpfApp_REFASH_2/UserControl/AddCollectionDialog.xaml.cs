@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,8 @@ namespace WpfApp_REFASH
         public string CollectionDescription => tb_DescriptionTextBox.Text;
         public string CollectionCategory => (tb_CategoryComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
         public string CollectionImagePath => tb_ImageURLTextBox.Text;
-        
+        public byte[] CollectionImageData;
+
 
         public AddCollectionDialog()
         {
@@ -51,6 +53,15 @@ namespace WpfApp_REFASH
             if (openFileDialog.ShowDialog() == true)
             {
                 tb_ImageURLTextBox.Text = openFileDialog.FileName;
+                try
+                {
+                    CollectionImageData = File.ReadAllBytes(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to read the image file: {ex.Message}", "File Read Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
         }
     }
