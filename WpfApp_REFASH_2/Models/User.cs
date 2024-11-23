@@ -256,7 +256,7 @@ namespace WpfApp_REFASH
                                             title = reader.GetString(reader.GetOrdinal("title")),
                                             description = reader.GetString(reader.GetOrdinal("description")),
                                             writer = reader.GetString(reader.GetOrdinal("writer")),
-                                            imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
+                                            //imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
                                         };
                                     }
                                 }
