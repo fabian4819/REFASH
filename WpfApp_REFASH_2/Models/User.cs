@@ -300,7 +300,8 @@ namespace WpfApp_REFASH
                                description, 
                                status, 
                                category,
-                               image_path
+                               image_path,
+                               image_data
                         FROM collections 
                         WHERE customer_email = @Email";
 
@@ -318,7 +319,8 @@ namespace WpfApp_REFASH
                                             reader.GetInt32(reader.GetOrdinal("collectionID")),
                                             reader.IsDBNull(reader.GetOrdinal("status")) ? null : reader.GetString(reader.GetOrdinal("status")),
                                             reader.IsDBNull(reader.GetOrdinal("category")) ? null : reader.GetString(reader.GetOrdinal("category")),
-                                            reader.IsDBNull(reader.GetOrdinal("image_path")) ? null : reader.GetString(reader.GetOrdinal("image_path"))
+                                            reader.IsDBNull(reader.GetOrdinal("image_path")) ? null : reader.GetString(reader.GetOrdinal("image_path")),
+                                            reader.IsDBNull(reader.GetOrdinal("image_data")) ? null : ConvertToBitmapImage((byte[])reader["image_data"])
                                         );
                                         collections.Add(collection);
                                     }

@@ -104,11 +104,11 @@ namespace WpfApp_REFASH
             using (var conn = _dbManager.GetConnection())
             {
                 conn.Open();
-                var cmd = new NpgsqlCommand("INSERT INTO collections (name, description, category, image_path, status, customer_email) VALUES (@name, @desc, @cat, @path, 'In Review', @e)", conn);
+                var cmd = new NpgsqlCommand("INSERT INTO collections (name, description, category, image_data, status, customer_email) VALUES (@name, @desc, @cat, @data, 'In Review', @e)", conn);
                 cmd.Parameters.AddWithValue("@name", collection.Name);
                 cmd.Parameters.AddWithValue("@desc", collection.Description);
                 cmd.Parameters.AddWithValue("@cat", collection.Category);
-                cmd.Parameters.AddWithValue("@path", collection.ImagePath);
+                cmd.Parameters.AddWithValue("@data", collection.ImageData);
                 cmd.Parameters.AddWithValue("@e", Email);
                 cmd.ExecuteNonQuery();
             }

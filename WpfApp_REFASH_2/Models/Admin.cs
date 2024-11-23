@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using Npgsql;
 using WpfApp_REFASH.DataAccess;
 
@@ -175,7 +176,7 @@ namespace WpfApp_REFASH
             }
         }
 
-            public void EditContent(Content content)
+        public void EditContent(Content content)
         {
             try
             {
@@ -289,7 +290,8 @@ namespace WpfApp_REFASH
                                description, 
                                status, 
                                category,
-                               image_path
+                               image_path,
+                               image_data
                         FROM collections";
 
                             using (var cmd = new NpgsqlCommand(query, conn, transaction))
@@ -304,7 +306,8 @@ namespace WpfApp_REFASH
                                             reader.GetInt32(reader.GetOrdinal("collectionID")),
                                             reader.IsDBNull(reader.GetOrdinal("status")) ? null : reader.GetString(reader.GetOrdinal("status")),
                                             reader.IsDBNull(reader.GetOrdinal("category")) ? null : reader.GetString(reader.GetOrdinal("category")),
-                                            reader.IsDBNull(reader.GetOrdinal("image_path")) ? null : reader.GetString(reader.GetOrdinal("image_path"))
+                                            reader.IsDBNull(reader.GetOrdinal("image_path")) ? null : reader.GetString(reader.GetOrdinal("image_path")),
+                                            reader.IsDBNull(reader.GetOrdinal("image_data")) ? null : ConvertToBitmapImage((byte[])reader["image_data"])
                                         );
                                         collections.Add(collection);
                                     }

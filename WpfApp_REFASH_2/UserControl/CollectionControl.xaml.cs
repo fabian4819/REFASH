@@ -21,8 +21,12 @@ namespace WpfApp_REFASH
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(CollectionControl), new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty URLProperty =
-            DependencyProperty.Register("URL", typeof(string), typeof(CollectionControl), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty BitmapImageProperty =
+    DependencyProperty.Register(
+        "BitmapImage",
+        typeof(BitmapImage),
+        typeof(CollectionControl),
+        new PropertyMetadata(null));
 
         public static readonly DependencyProperty StatusProperty =
             DependencyProperty.Register("Status", typeof(VerificationStatus), typeof(CollectionControl), new PropertyMetadata(VerificationStatus.InVerification));
@@ -33,10 +37,10 @@ namespace WpfApp_REFASH
             set { SetValue(TitleProperty, value); }
         }
 
-        public string URL
+        public BitmapImage BitmapImage
         {
-            get { return (string)GetValue(URLProperty); }
-            set { SetValue(URLProperty, value); }
+            get { return (BitmapImage)GetValue(BitmapImageProperty); }
+            set { SetValue(BitmapImageProperty, value); }
         }
 
         public VerificationStatus Status

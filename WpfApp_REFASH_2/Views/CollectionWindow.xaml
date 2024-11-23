@@ -105,7 +105,7 @@
                                 <DataTemplate>
                                     <local:CollectionControl 
                         Title="{Binding Title}" 
-                        URL="{Binding URL}" 
+                        BitmapImage="{Binding BitmapImage}"
                         Status="{Binding Status}"
                         Margin="-10,10,25,30">
                                         <local:CollectionControl.Width>
