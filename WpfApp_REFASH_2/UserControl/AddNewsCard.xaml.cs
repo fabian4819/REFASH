@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace WpfApp_REFASH
         public Content CurrentContent { get; private set; }
 
         private bool IsNewContent;
+        private byte[] currentImageData;
 
         public AddNewsCard()
         {
@@ -58,7 +60,8 @@ namespace WpfApp_REFASH
                 {
                     title = tb_title.Text,
                     description = tb_description.Text,
-                    imagePath = tb_imageUrl.Text
+                    imagePath = tb_imageUrl.Text,
+                    imageData = currentImageData
                 };
 
                 // AdminSession and AddContent should handle saving or updating
@@ -112,7 +115,6 @@ namespace WpfApp_REFASH
 
         private void btn_browseImage_Click(object sender, RoutedEventArgs e)
         {
-            // Open file dialog to browse and select an image
             var openFileDialog = new OpenFileDialog
             {
                 Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png",
@@ -122,6 +124,15 @@ namespace WpfApp_REFASH
             if (openFileDialog.ShowDialog() == true)
             {
                 tb_imageUrl.Text = openFileDialog.FileName;
+                try
+                {
+                    currentImageData = File.ReadAllBytes(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to read the image file: {ex.Message}", "File Read Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
         }
     }

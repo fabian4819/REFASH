@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using WpfApp_REFASH.DataAccess;
 using WpfApp_REFASH.Utilities;
 using WpfApp_REFASH.ViewModels;
@@ -174,7 +176,8 @@ namespace WpfApp_REFASH
                                c.title AS title, 
                                c.description AS description, 
                                u.name AS writer, 
-                               c.image_path AS imagePath 
+                               c.image_path AS imagePath,
+                               c.image_data AS imageData
                         FROM contents AS c 
                         JOIN admins AS a ON c.author_email = a.email 
                         JOIN users AS u ON a.email = u.email";
@@ -191,7 +194,7 @@ namespace WpfApp_REFASH
                                             title = reader.GetString(reader.GetOrdinal("title")),
                                             description = reader.GetString(reader.GetOrdinal("description")),
                                             writer = reader.GetString(reader.GetOrdinal("writer")),
-                                            imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
+                                            bitmapImage = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : ConvertToBitmapImage((byte[])reader["imageData"])
                                         };
                                         contents.Add(content);
                                     }
@@ -415,15 +418,18 @@ namespace WpfApp_REFASH
             }
         }
 
-        //Change Password
-        public void ChangePassword()
+        public BitmapImage ConvertToBitmapImage(byte[] imageData)
         {
-            Console.WriteLine("Password changed.");
-        }
-        //Polymorphism (updateProfile method)
-        public virtual void UpdateProfile()
-        {
-            Console.WriteLine("Profile updated.");
+            using (var ms = new MemoryStream(imageData))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                image.Freeze(); // Important for use in a WPF environment
+                return image;
+            }
         }
     }
 }

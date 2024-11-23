@@ -133,7 +133,7 @@
                         <Grid>
                             <!-- Maintain aspect ratio using a hidden rectangle -->
                             <Rectangle Width="16" Height="9" Opacity="0"/>
-                            <Image Source="{Binding imagePath}" 
+                            <Image Source="{Binding bitmapImage}" 
                                    Stretch="Uniform"
                                    RenderOptions.BitmapScalingMode="HighQuality">
                                 <Image.Effect>

@@ -81,7 +81,8 @@ namespace WpfApp_REFASH
                        c.title AS title, 
                        c.description AS description, 
                        u.name AS writer, 
-                       c.image_path AS imagePath 
+                       c.image_path AS imagePath,
+                       c.image_data AS imageData
                 FROM contents AS c 
                 JOIN admins AS a ON c.author_email = a.email 
                 JOIN users AS u ON a.email = u.email
@@ -100,9 +101,10 @@ namespace WpfApp_REFASH
                                             title = reader.GetString(reader.GetOrdinal("title")),
                                             description = reader.GetString(reader.GetOrdinal("description")),
                                             writer = reader.GetString(reader.GetOrdinal("writer")),
-                                            imagePath = reader.GetString(reader.GetOrdinal("imagePath"))
+                                            bitmapImage = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : ConvertToBitmapImage((byte[])reader["imageData"])
                                         };
                                         contents.Add(content);
+
                                     }
                                 }
                             }
@@ -137,42 +139,43 @@ namespace WpfApp_REFASH
                         try
                         {
                             string query = @"
-                        INSERT INTO contents (title, description, image_path, author_email) values (@title, @description, @imagePath, @e)";
+                            INSERT INTO contents (title, description, image_data, author_email) 
+                            VALUES (@title, @description, @imageData, @authorEmail)";
 
                             using (var cmd = new NpgsqlCommand(query, conn, transaction))
                             {
-                                cmd.Parameters.AddWithValue("@title", content.title);
-                                cmd.Parameters.AddWithValue("@description", content.description);
-                                cmd.Parameters.AddWithValue("@imagePath", content.imagePath ?? (object)DBNull.Value);
-                                cmd.Parameters.AddWithValue("@e", Email);
+                                cmd.Parameters.AddWithValue("@title", content.title ?? (object)DBNull.Value);
+                                cmd.Parameters.AddWithValue("@description", content.description ?? (object)DBNull.Value);
+                                cmd.Parameters.Add("@imageData", NpgsqlTypes.NpgsqlDbType.Bytea).Value = content.imageData ?? (object)DBNull.Value;
+                                cmd.Parameters.AddWithValue("@authorEmail", Email);
 
                                 int rowsAffected = cmd.ExecuteNonQuery();
 
                                 if (rowsAffected == 0)
                                 {
-                                    throw new Exception("No rows were updated. The content may not exist.");
+                                    throw new Exception("No rows were inserted. Check the input data.");
                                 }
-                            }
 
-                            transaction.Commit(); // Commit transaction after successful execution
+                                transaction.Commit();
+                            }
                         }
                         catch (Exception ex)
                         {
-                            transaction.Rollback(); // Rollback transaction on error
-                            throw new Exception("Error while updating content: " + ex.Message);
+                            transaction.Rollback();
+                            MessageBox.Show("Error while adding content: " + ex.Message, "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            throw;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Log or display exception for connection issues
-                Console.WriteLine("Database connection or transaction error: " + ex.Message);
-                throw new Exception("Failed to edit content.", ex);
+                MessageBox.Show("Database connection or transaction error: " + ex.Message, "Database Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
             }
         }
 
-        public void EditContent(Content content)
+            public void EditContent(Content content)
         {
             try
             {
@@ -186,31 +189,32 @@ namespace WpfApp_REFASH
                             string query = @"
                         UPDATE contents
                         SET title = @title,
-                            description = @description,
-                            image_path = @imagePath
+                            description = @description
                         WHERE id = @contentID";
 
                             using (var cmd = new NpgsqlCommand(query, conn, transaction))
                             {
                                 cmd.Parameters.AddWithValue("@contentID", content.contentID);
-                                cmd.Parameters.AddWithValue("@title", content.title);
-                                cmd.Parameters.AddWithValue("@description", content.description);
-                                cmd.Parameters.AddWithValue("@imagePath", content.imagePath ?? (object)DBNull.Value);
+                                cmd.Parameters.AddWithValue("@title", content.title ?? (object)DBNull.Value);
+                                cmd.Parameters.AddWithValue("@description", content.description ?? (object)DBNull.Value);
+                                // cmd.Parameters.Add("@imageData", NpgsqlTypes.NpgsqlDbType.Bytea).Value = content.imageData ?? (object)DBNull.Value;
+                                cmd.Parameters.AddWithValue("@authorEmail", Email);
 
                                 int rowsAffected = cmd.ExecuteNonQuery();
 
                                 if (rowsAffected == 0)
                                 {
-                                    throw new Exception("No rows were updated. The content may not exist.");
+                                    throw new Exception("No rows were updated. Check the input data.");
                                 }
-                            }
 
-                            transaction.Commit(); // Commit transaction after successful execution
+                                transaction.Commit();
+                            }
                         }
                         catch (Exception ex)
                         {
-                            transaction.Rollback(); // Rollback transaction on error
-                            throw new Exception("Error while updating content: " + ex.Message);
+                            transaction.Rollback();
+                            MessageBox.Show("Error while updated content: " + ex.Message, "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            throw;
                         }
                     }
                 }
