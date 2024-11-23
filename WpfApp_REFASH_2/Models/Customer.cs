@@ -122,7 +122,7 @@ namespace WpfApp_REFASH
                 {
                     conn.Open();
                     string query = @"
-                select p.name as name, p.description as description, c.id as productID, p.image_path as image, p.price as price, p.category as category, p.size as size, c.quantity as stock from carts as c
+                select p.name as name, p.description as description, c.id as productID, p.image_data as imageData, p.price as price, p.category as category, p.size as size, c.quantity as stock from carts as c
 	JOIN products as p ON c.product_id = p.id WHERE c.customer_email = @e";
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
@@ -135,7 +135,7 @@ namespace WpfApp_REFASH
                                     reader.GetString(reader.GetOrdinal("name")),
                                     reader.GetString(reader.GetOrdinal("description")),
                                     reader.GetInt32(reader.GetOrdinal("productID")),
-                                    reader.GetString(reader.GetOrdinal("image")),
+                                    reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : ConvertToBitmapImage((byte[])reader["imageData"]),
                                     reader.GetDecimal(reader.GetOrdinal("price")),
                                     reader.GetString(reader.GetOrdinal("category")),
                                     reader.GetString(reader.GetOrdinal("size")),
