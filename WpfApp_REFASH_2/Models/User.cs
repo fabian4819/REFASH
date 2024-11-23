@@ -420,7 +420,7 @@ namespace WpfApp_REFASH
             }
         }
 
-        public BitmapImage ConvertToBitmapImage(byte[] imageData)
+        protected BitmapImage ConvertToBitmapImage(byte[] imageData)
         {
             using (var ms = new MemoryStream(imageData))
             {

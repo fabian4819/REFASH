@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
@@ -34,13 +35,14 @@ namespace WpfApp_REFASH
         public string Category { get; set; }
         public string Size { get; set; }
         public int Stock { get; set; }
+        public BitmapImage BitmapImage { get; set; }
 
         public CartItem(Product product)
         {
             ProductID = product.ProductID;
             ProductName = product.ProductName;
             Description = product.Description;
-            Image = product.Image;
+            BitmapImage = product.BitmapImage;
             Price = product.Price;
             Category = product.Category;
             Size = product.Size;
