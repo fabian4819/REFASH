@@ -14,18 +14,14 @@ namespace WpfApp_REFASH
     // Inheritance (User)
     public class Admin : User
     {
-        private int TotalContent { get; set; }
         private DatabaseManager _dbManager = new DatabaseManager();
-        private ObservableCollection<Content> ContentItem { get; set; }
-        public ObservableCollection<Collection> Collections { get; set; }
-
+        private int TotalContent { get; set; }
         public Admin(string name, string email, string phoneNumber, string password, string role)
            : base(name, email, phoneNumber, password, role)
         {
             TotalContent = 0;
             GetData(Email);
         }
-
         protected override (bool, string, string, string, string, string) GetData(string email)
         {
             var (isFound, name, role, phoneNumber, dbPassword, address) = base.GetData(email);
@@ -63,7 +59,7 @@ namespace WpfApp_REFASH
                 return (false, "Error during admin data retrieval", null, null, null, null);
             }
         }
-
+        // Contents
         public override ObservableCollection<Content> GetAllContent()
         {
             ObservableCollection<Content> contents = new ObservableCollection<Content>();
@@ -175,7 +171,6 @@ namespace WpfApp_REFASH
                 throw;
             }
         }
-
         public void EditContent(Content content)
         {
             try
@@ -271,6 +266,7 @@ namespace WpfApp_REFASH
                 throw new Exception("Failed to edit content.", ex);
             }
         }
+        // Collections
         public ObservableCollection<Collection> GetAllCollections()
         {
             ObservableCollection<Collection> collections = new ObservableCollection<Collection>();
@@ -331,7 +327,6 @@ namespace WpfApp_REFASH
 
             return collections;
         }
-
         public void UpdateCollectionStatus(Collection collection, string newStatus)
         {
             using (var conn = _dbManager.GetConnection())
@@ -362,7 +357,7 @@ namespace WpfApp_REFASH
                 }
             }
         }
-
+        // Products
         public override ObservableCollection<Product> GetAllProductOffer()
         {
             var products = new ObservableCollection<Product>();
@@ -412,10 +407,10 @@ namespace WpfApp_REFASH
                 {
                     conn.Open();
                     string query = @"
-                INSERT INTO products 
-                (name, description, image_data, price, category, size, stock, admin_email)
-                VALUES 
-                (@name, @description, @imageData, @price, @category, @size, @stock, @admin_email)";
+                        INSERT INTO products 
+                            (name, description, image_data, price, category, size, stock, admin_email)
+                        VALUES 
+                            (@name, @description, @imageData, @price, @category, @size, @stock, @admin_email)";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
@@ -456,7 +451,7 @@ namespace WpfApp_REFASH
                 UPDATE products
                 SET name = @name,
                     description = @description,
-                    image_path = @image,
+                    image_data = @imageData,
                     price = @price,
                     category = @category,
                     size = @size,
@@ -467,7 +462,7 @@ namespace WpfApp_REFASH
                     {
                         cmd.Parameters.AddWithValue("@name", product.Name);
                         cmd.Parameters.AddWithValue("@description", product.Description ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@image", product.Image ?? (object)DBNull.Value);
+                        cmd.Parameters.Add("@imageData", NpgsqlTypes.NpgsqlDbType.Bytea).Value = product.ImageData ?? (object)DBNull.Value;
                         cmd.Parameters.AddWithValue("@price", product.Price);
                         cmd.Parameters.AddWithValue("@category", product.Category);
                         cmd.Parameters.AddWithValue("@size", product.Size ?? (object)DBNull.Value);
