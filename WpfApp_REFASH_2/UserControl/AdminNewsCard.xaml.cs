@@ -38,9 +38,19 @@ namespace WpfApp_REFASH
                         MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Reload parent window's data
-                    if (Window.GetWindow(this) is AdminNewsWindow parentWindow)
+                    //if (Window.GetWindow(this) is AdminNewsWindow parentWindow)
+                    //{
+                    //    parentWindow.ReloadContent();
+                    //}
+                    var parentUserControl = UIHelper.FindParent<AdminNewsView>(this);
+                    if (parentUserControl != null)
                     {
-                        parentWindow.ReloadContent();
+                        // Panggil metode dari parent
+                        parentUserControl.ReloadContent();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Parent UserControl not found!");
                     }
                 }
                 catch (Exception ex)
@@ -69,9 +79,15 @@ namespace WpfApp_REFASH
                         AdminSession.CurrentAdmin?.DeleteContent(content);
 
                         // Reload parent window's data
-                        if (Window.GetWindow(this) is AdminNewsWindow parentWindow)
+                        //if (Window.GetWindow(this) is AdminNewsWindow parentWindow)
+                        //{
+                        //    parentWindow.ReloadContent();
+                        //}
+                        var parentUserControl = UIHelper.FindParent<AdminNewsView>(this);
+                        if (parentUserControl != null)
                         {
-                            parentWindow.ReloadContent();
+                            // Panggil metode dari parent
+                            parentUserControl.ReloadContent();
                         }
                     }
                 }
