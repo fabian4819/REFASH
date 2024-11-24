@@ -1,0 +1,195 @@
+﻿<UserControl x:Class="WpfApp_REFASH.AdminNewsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp_REFASH"
+             mc:Ignorable="d"
+             Width="Auto">
+    <UserControl.Resources>
+        <!-- Color Resources -->
+        <Color x:Key="PrimaryDark">#1A1A2E</Color>
+        <Color x:Key="Primary">#16213E</Color>
+        <Color x:Key="Secondary">#0F3460</Color>
+        <Color x:Key="Accent">#E94560</Color>
+        <Color x:Key="BackgroundColor">#F5F6FA</Color>
+        <Color x:Key="TextPrimary">#2D3436</Color>
+        <Color x:Key="TextSecondary">#636E72</Color>
+
+        <!-- Brushes -->
+        <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDark}"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+        <SolidColorBrush x:Key="HoverColor" Color="#233666"/>
+        <SolidColorBrush x:Key="PressedColor" Color="#162444"/>
+
+        <!-- Effects -->
+        <DropShadowEffect x:Key="StandardShadow" 
+                     BlurRadius="10" 
+                     ShadowDepth="2" 
+                     Direction="270" 
+                     Opacity="0.2" 
+                     Color="#000000"/>
+
+        <!-- Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            x:Name="border">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoverColor}" TargetName="border"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="10" 
+                                                    ShadowDepth="1" 
+                                                    Direction="270" 
+                                                    Opacity="0.2"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PressedColor}" TargetName="border"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListViewItem Style -->
+        <Style x:Key="ModernListViewItem" TargetType="ListViewItem">
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Border" 
+                            Background="{TemplateBinding Background}"
+                            Margin="{TemplateBinding Margin}"
+                            CornerRadius="12">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="8" 
+                                                    ShadowDepth="2" 
+                                                    Direction="270" 
+                                                    Opacity="0.1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid x:Name="MainGrid" Background="{StaticResource BackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Main Content Container -->
+        <Grid x:Name="ContentContainer" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Main Content -->
+            <Grid x:Name="ContentGrid" Grid.Row="1" Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header with Buttons -->
+                <Grid Grid.Row="0" Margin="0,0,0,25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="News Management" 
+                         FontSize="32" 
+                         FontWeight="Bold" 
+                         Foreground="{StaticResource TextPrimaryBrush}"
+                         VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" 
+                          Orientation="Horizontal" 
+                          HorizontalAlignment="Right">
+                        <Button x:Name="AddNewsButton" 
+                            Content="+ Add News" 
+                            Style="{StaticResource ModernButton}"
+                            Margin="0,0,0,0"
+                            Click="AddNewsButton_Click" 
+                            Width="101"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- News List -->
+                <ListView Grid.Row="1" 
+                     ItemsSource="{Binding ContentItem}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     ItemContainerStyle="{StaticResource ModernListViewItem}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <local:AdminNewsCard/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+
+        <!-- Modal Overlay -->
+        <Grid x:Name="ModalContainer" 
+          Grid.ColumnSpan="2"
+          Visibility="Collapsed">
+            <!-- Semi-transparent background -->
+            <Rectangle Fill="#80000000"/>
+
+            <!-- Modal Content -->
+            <Border VerticalAlignment="Center" 
+                HorizontalAlignment="Center"
+                Background="White"
+                CornerRadius="15"
+                MaxWidth="500">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" 
+                                ShadowDepth="5" 
+                                Direction="270" 
+                                Opacity="0.2"/>
+                </Border.Effect>
+                <local:AddNewsCard x:Name="AddNewsCardModal"/>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

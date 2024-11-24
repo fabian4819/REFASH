@@ -1,40 +1,49 @@
-﻿using System;
+﻿using ScottPlot;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
-using ScottPlot;
-using ScottPlot.WPF;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
-    //public class IntToVisibilityConverter : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        if (value is int count)
-    //        {
-    //            return count == 0 ? Visibility.Visible : Visibility.Collapsed;
-    //        }
-    //        return Visibility.Collapsed;
-    //    }
-
-    //    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
-    public partial class AdminDashboardWindow : Window, INotifyPropertyChanged
+    public class IntToVisibilityConverter : IValueConverter
     {
-        private Admin Admin;
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is int count)
+            {
+                return count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    /// <summary>
+    /// Interaction logic for AdminDashboardView.xaml
+    /// </summary>
+    public partial class AdminDashboardView : UserControl, INotifyPropertyChanged
+    {
+        private Admin Admin {  get; set; }
         private ObservableCollection<Order> _allOrders;
         private ObservableCollection<Order> _filteredOrders;
         private WpfPlot _salesPlot;
-
         public ObservableCollection<Order> FilteredOrders
         {
             get { return _filteredOrders; }
@@ -44,15 +53,13 @@ namespace WpfApp_REFASH
                 OnPropertyChanged(nameof(FilteredOrders));
             }
         }
-
-        public AdminDashboardWindow()
+        public AdminDashboardView()
         {
             InitializeComponent();
             DataContext = this;
             InitializeData();
             InitializeSalesChart();
         }
-
         private void InitializeData()
         {
             try
@@ -69,9 +76,6 @@ namespace WpfApp_REFASH
                 CollectionTotalText.Text = collectionCount.ToString();
                 TotalProductsText.Text = productCount.ToString();
                 SoldProductsText.Text = soldCount.ToString();
-
-                // Set welcome name
-                upperBar.WelcomeName = Admin.Name;
 
                 // Load orders
                 _allOrders = Admin.GetAllOrders();
@@ -99,7 +103,6 @@ namespace WpfApp_REFASH
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private void InitializeSalesChart()
         {
             var salesData = Admin.GetDailySalesData();
@@ -159,7 +162,6 @@ namespace WpfApp_REFASH
                 _salesPlot.Refresh();
             }
         }
-
         private void OrderStatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (OrderStatusFilter.SelectedItem == null) return;
@@ -209,37 +211,34 @@ namespace WpfApp_REFASH
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+    public class Order : INotifyPropertyChanged
+    {
+        private string _status;
+        public int OrderId { get; set; }
+        public string CustomerEmail { get; set; }
+        public DateTime OrderDate { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string Status
+        {
+            get => _status;
+            set
+            {
+                _status = value;
+                OnPropertyChanged(nameof(Status));
+            }
+        }
 
-    // Order class (unchanged)
-    //public class Order : INotifyPropertyChanged
-    //{
-    //    private string _status;
-    //    public int OrderId { get; set; }
-    //    public string CustomerEmail { get; set; }
-    //    public DateTime OrderDate { get; set; }
-    //    public decimal TotalAmount { get; set; }
-    //    public string Status
-    //    {
-    //        get => _status;
-    //        set
-    //        {
-    //            _status = value;
-    //            OnPropertyChanged(nameof(Status));
-    //        }
-    //    }
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
 
-    //    public event PropertyChangedEventHandler PropertyChanged;
-    //    protected virtual void OnPropertyChanged(string propertyName)
-    //    {
-    //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    //    }
-    //}
-
-    //// DailySales class (unchanged)
-    //public class DailySales
-    //{
-    //    public DateTime Date { get; set; }
-    //    public decimal Amount { get; set; }
-    //}
-   
+    // DailySales class (unchanged)
+    public class DailySales
+    {
+        public DateTime Date { get; set; }
+        public decimal Amount { get; set; }
+    }
 }

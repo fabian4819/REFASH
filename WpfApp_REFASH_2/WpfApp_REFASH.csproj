@@ -304,6 +304,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControlView\AdminShopView.xaml.cs">
+      <DependentUpon>AdminShopView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\AdminCollectionView.xaml.cs">
+      <DependentUpon>AdminCollectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\AdminNewsView.xaml.cs">
+      <DependentUpon>AdminNewsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\AdminDashboardView.xaml.cs">
+      <DependentUpon>AdminDashboardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminIntegratedWindow.xaml.cs">
+      <DependentUpon>AdminIntegratedWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\AdminIntegratedSidebar.xaml.cs">
+      <DependentUpon>AdminIntegratedSidebar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControlView\CustomerNewsDetailView.xaml.cs">
       <DependentUpon>CustomerNewsDetailView.xaml</DependentUpon>
     </Compile>
@@ -404,6 +422,30 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="UserControlView\AdminShopView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\AdminCollectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\AdminNewsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\AdminDashboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminIntegratedWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\AdminIntegratedSidebar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControlView\CustomerNewsDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

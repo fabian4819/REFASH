@@ -568,7 +568,7 @@ namespace WpfApp_REFASH
                         o.customer_email,
                         o.create_at AS order_date,
                         o.status,
-                        COALESCE(SUM(p.price * od.quantity) OVER (PARTITION BY o.id), 0) as total_amount
+                        COALESCE(SUM(CAST(p.price * od.quantity AS MONEY)) OVER (PARTITION BY o.id), CAST(0 AS MONEY)) as total_amount
                     FROM orders o
                     JOIN order_details od ON o.id = od.order_id
                     JOIN products p ON od.product_id = p.id
@@ -615,7 +615,7 @@ namespace WpfApp_REFASH
                     string query = @"
                     SELECT 
                         DATE(o.create_at) as sale_date,
-                        SUM(p.price * od.quantity) as daily_total
+                        SUM(CAST(p.price * od.quantity AS MONEY)) as daily_total
                     FROM orders o
                     JOIN order_details od ON o.id = od.order_id
                     JOIN products p ON od.product_id = p.id
