@@ -357,7 +357,6 @@
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="ViewModels\AdminSession.cs" />
     <Compile Include="ViewModels\LoginViewModels.cs" />
-    <Compile Include="ViewModels\SideBarViewModel.cs" />
     <Compile Include="ViewModels\UserSession.cs" />
     <Compile Include="UserControl\ShopCard.xaml.cs">
       <DependentUpon>ShopCard.xaml</DependentUpon>
