@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp_REFASH.ViewModels;
-using WpfApp_REFASH.ViewModels.WpfApp_REFASH.ViewModel;
 
 namespace WpfApp_REFASH
 {
