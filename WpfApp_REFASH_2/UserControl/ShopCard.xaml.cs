@@ -57,7 +57,6 @@ namespace WpfApp_REFASH
                     return;
                 }
                 Customer.AddToCart(product.ProductID, quantity);
-                MessageBox.Show($"Adding {quantity} of product ID {product.ProductID} to the cart. by {Customer.Name}");
             }
             else
             {

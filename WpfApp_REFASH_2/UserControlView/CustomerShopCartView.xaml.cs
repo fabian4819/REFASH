@@ -1,84 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
-    //public class CartItem : INotifyPropertyChanged
-    //{
-    //    public event PropertyChangedEventHandler PropertyChanged;
-
-    //    private bool _isSelected;
-    //    public bool IsSelected
-    //    {
-    //        get { return _isSelected; }
-    //        set
-    //        {
-    //            if (_isSelected != value)
-    //            {
-    //                _isSelected = value;
-    //                OnPropertyChanged(nameof(IsSelected));
-    //            }
-    //        }
-    //    }
-
-    //    public int ProductID { get; set; }
-    //    public string ProductName { get; set; }
-    //    public string Description { get; set; }
-    //    public string Image { get; set; }
-    //    public decimal Price { get; set; }
-    //    public string Category { get; set; }
-    //    public string Size { get; set; }
-    //    public int Stock { get; set; }
-    //    public BitmapImage BitmapImage { get; set; }
-
-    //    public CartItem(Product product)
-    //    {
-    //        ProductID = product.ProductID;
-    //        ProductName = product.ProductName;
-    //        Description = product.Description;
-    //        BitmapImage = product.BitmapImage;
-    //        Price = product.Price;
-    //        Category = product.Category;
-    //        Size = product.Size;
-    //        Stock = product.Stock;
-    //        IsSelected = false;
-    //    }
-
-    //    public Product ToProduct()
-    //    {
-    //        return new Product(
-    //            ProductName,
-    //            Description,
-    //            ProductID,
-    //            Image,
-    //            Price,
-    //            Category,
-    //            Size,
-    //            Stock
-    //        );
-    //    }
-
-    //    protected virtual void OnPropertyChanged(string propertyName)
-    //    {
-    //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    //    }
-    //}
-
-    public partial class ShopCartWindow : Window, INotifyPropertyChanged
+    /// <summary>
+    /// Interaction logic for CustomerShopCartView.xaml
+    /// </summary>
+    public partial class CustomerShopCartView : UserControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private Customer _customer;
         private ObservableCollection<CartItem> _cartItems;
         private decimal _totalPrice;
         private int _totalSelectedItems;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public Customer Customer
         {
             get => _customer;
@@ -129,8 +78,7 @@ namespace WpfApp_REFASH
                 UpdateSelectedItemsCount();
             }
         }
-
-        public ShopCartWindow()
+        public CustomerShopCartView()
         {
             InitializeComponent();
             Customer = UserSession.CurrentCustomer;
@@ -141,9 +89,7 @@ namespace WpfApp_REFASH
             }
             LoadCartItems();
             DataContext = this;
-            upperBar.WelcomeName = Customer.Name;
         }
-
         private void LoadCartItems()
         {
             var products = Customer.GetAllProductCart();
@@ -155,7 +101,6 @@ namespace WpfApp_REFASH
                 item.PropertyChanged += CartItem_PropertyChanged;
             }
         }
-
         private void CartItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(CartItem.IsSelected))
@@ -164,18 +109,15 @@ namespace WpfApp_REFASH
                 UpdateSelectedItemsCount();
             }
         }
-
         private void UpdateTotalPrice()
         {
             TotalPrice = CartItems?.Where(item => item.IsSelected)
                                  .Sum(item => item.Price * item.Stock) ?? 0;
         }
-
         private void UpdateSelectedItemsCount()
         {
             TotalSelectedItems = CartItems?.Count(item => item.IsSelected) ?? 0;
         }
-
         private void btn_deleteFromCart_click(object sender, RoutedEventArgs e)
         {
             var cartItem = ((FrameworkElement)sender).DataContext as CartItem;
@@ -194,7 +136,6 @@ namespace WpfApp_REFASH
                 }
             }
         }
-
         private void btn_checkout_click(object sender, RoutedEventArgs e)
         {
             if (!HasSelectedItems)
@@ -234,12 +175,79 @@ namespace WpfApp_REFASH
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private void btn_back_click(object sender, RoutedEventArgs e)
         {
-            var shopWindow = new ShopWindow(_customer);
-            shopWindow.Show();
-            Close();
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is IntegratedWindows integratedWindows)
+            {
+                integratedWindows.SetMainContent(new CustomerShopView());
+            }
+            else
+            {
+                MessageBox.Show("This Window is not of type IntegratedWindows.");
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+
+    public class CartItem : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
+
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
+        public decimal Price { get; set; }
+        public string Category { get; set; }
+        public string Size { get; set; }
+        public int Stock { get; set; }
+        public BitmapImage BitmapImage { get; set; }
+
+        public CartItem(Product product)
+        {
+            ProductID = product.ProductID;
+            ProductName = product.ProductName;
+            Description = product.Description;
+            BitmapImage = product.BitmapImage;
+            Price = product.Price;
+            Category = product.Category;
+            Size = product.Size;
+            Stock = product.Stock;
+            IsSelected = false;
+        }
+
+        public Product ToProduct()
+        {
+            return new Product(
+                ProductName,
+                Description,
+                ProductID,
+                Image,
+                Price,
+                Category,
+                Size,
+                Stock
+            );
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

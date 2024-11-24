@@ -1,0 +1,221 @@
+﻿<UserControl x:Class="WpfApp_REFASH.CustomerNewsDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp_REFASH"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <UserControl.Resources>
+        <!-- Back Button Style -->
+        <Style x:Key="BackButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#16213E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Margin" Value="0,0,0,30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="8"
+                            BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1F2937"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Content Container Style -->
+        <Style x:Key="ContentContainerStyle" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="40"/>
+            <Setter Property="Margin" Value="0,0,0,30"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="20" 
+                                ShadowDepth="5" 
+                                Direction="270" 
+                                Opacity="0.1" 
+                                Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern ScrollViewer Style -->
+        <Style x:Key="ModernScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter />
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                 Grid.Column="1"
+                                 Value="{TemplateBinding VerticalOffset}"
+                                 Maximum="{TemplateBinding ScrollableHeight}"
+                                 ViewportSize="{TemplateBinding ViewportHeight}"
+                                 Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}">
+                                <ScrollBar.Style>
+                                    <Style TargetType="ScrollBar">
+                                        <Setter Property="Width" Value="8"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Width" Value="10"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ScrollBar.Style>
+                            </ScrollBar>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Upper Bar -->
+            <Grid Grid.Row="0" 
+              Background="#000000" 
+              HorizontalAlignment="Stretch" 
+              Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+            <!-- Content Area -->
+            <ScrollViewer Grid.Row="1" 
+                     Style="{StaticResource ModernScrollViewerStyle}"
+                     VerticalScrollBarVisibility="Auto" 
+                     Padding="40,30">
+                <StackPanel MaxWidth="1000" HorizontalAlignment="Center">
+                    <!-- Back Button -->
+                    <Button Style="{StaticResource BackButtonStyle}"
+                        HorizontalAlignment="Left"
+                        Click="btn_back_click" Height="37" Width="79">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="←" 
+                                 Margin="0,0,8,0" 
+                                 VerticalAlignment="Center"/>
+                            <TextBlock Text="Back" 
+                                 VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Main Content Container -->
+                    <Border Style="{StaticResource ContentContainerStyle}" Width="944">
+                        <StackPanel>
+                            <!-- Hero Image Container -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="1" 
+                                    CornerRadius="12" 
+                                    ClipToBounds="True"
+                                    MaxWidth="600"
+                                    Margin="0,0,0,30">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="15" 
+                                                    ShadowDepth="3" 
+                                                    Direction="270" 
+                                                    Opacity="0.2"/>
+                                    </Border.Effect>
+                                    <Image Source="{Binding bitmapImage}" 
+                                       MaxHeight="400"
+                                       MaxWidth="600"
+                                       Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                            </Grid>
+
+                            <!-- Title -->
+                            <TextBlock FontSize="42" 
+                                   FontWeight="Bold" 
+                                   Text="{Binding title}" 
+                                   Foreground="#1A1A1A" 
+                                   Margin="0,0,0,20" 
+                                   TextWrapping="Wrap"
+                                   LineHeight="50">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect BlurRadius="1" 
+                                                ShadowDepth="1" 
+                                                Direction="270" 
+                                                Opacity="0.2"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+
+                            <!-- Author and Date Container -->
+                            <Border Background="#F8F9FA" 
+    CornerRadius="8" 
+    Padding="20" 
+    Margin="0,0,0,30">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                        <TextBlock Text="Written by: " 
+                  FontSize="16" 
+                  FontWeight="Regular"
+                  Foreground="#6C757D"/>
+                                        <TextBlock FontSize="16" 
+                  FontWeight="SemiBold" 
+                  Foreground="#2C3E50" 
+                  Text="{Binding writer}"/>
+                                    </StackPanel>
+                                    <TextBlock FontSize="14" 
+              Foreground="#6C757D" 
+              Text="{Binding date}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Content -->
+                            <TextBlock FontSize="18" 
+                                   TextWrapping="Wrap"  
+                                   Foreground="#4F4F4F" 
+                                   LineHeight="32" 
+                                   Text="{Binding description}"
+                                   TextAlignment="Justify">
+                                <TextBlock.Resources>
+                                    <Style TargetType="{x:Type Paragraph}">
+                                        <Setter Property="Margin" Value="0,0,0,20"/>
+                                    </Style>
+                                </TextBlock.Resources>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

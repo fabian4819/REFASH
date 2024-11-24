@@ -304,6 +304,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControlView\CustomerNewsDetailView.xaml.cs">
+      <DependentUpon>CustomerNewsDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\CustomerShopTransaction.xaml.cs">
+      <DependentUpon>CustomerShopTransaction.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\CustomerShopCartView.xaml.cs">
+      <DependentUpon>CustomerShopCartView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\CustomerShopView.xaml.cs">
+      <DependentUpon>CustomerShopView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\CustomerCollectionView.xaml.cs">
+      <DependentUpon>CustomerCollectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlView\CustomerNewsView.xaml.cs">
+      <DependentUpon>CustomerNewsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\IntegratedSidebar.xaml.cs">
+      <DependentUpon>IntegratedSidebar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IntegratedWindows.xaml.cs">
+      <DependentUpon>IntegratedWindows.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Views\ShopTransactionWindow.xaml.cs">
       <DependentUpon>ShopTransactionWindow.xaml</DependentUpon>
@@ -380,6 +404,38 @@
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Page Include="UserControlView\CustomerNewsDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\CustomerShopTransaction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\CustomerShopCartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\CustomerShopView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\CustomerCollectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControlView\CustomerNewsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\IntegratedSidebar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IntegratedWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShopTransactionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -534,9 +590,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Assets\Logo.png" />
   </ItemGroup>

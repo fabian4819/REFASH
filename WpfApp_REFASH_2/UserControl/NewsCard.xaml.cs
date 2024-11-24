@@ -40,10 +40,15 @@ namespace WpfApp_REFASH
             }
             else if (DataContext is Content content && Customer != null)
             {
-                NewsDetailWindow newsDetailWindow = new NewsDetailWindow(content.contentID);
-                newsDetailWindow.Show();
                 Window parentWindow = Window.GetWindow(this);
-                parentWindow?.Close();
+                if (parentWindow is IntegratedWindows integratedWindows)
+                {
+                    integratedWindows.SetMainContent(new CustomerNewsDetailView(content.contentID));
+                }
+                else
+                {
+                    MessageBox.Show("This Window is not of type IntegratedWindows.");
+                }
             }
             else
             {
