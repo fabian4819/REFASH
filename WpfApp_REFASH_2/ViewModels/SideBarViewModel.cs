@@ -52,8 +52,8 @@ namespace WpfApp_REFASH.ViewModels
                         MessageBox.Show("Customer data is missing. Cannot navigate to news");
                         return;
                     }
-                    var newsWindow = new NewsWindow();
-                    newsWindow.Show();
+                    //var newsWindow = new NewsWindow();
+                    //newsWindow.Show();
                     CloseCurrentWindow();
                 });
             }
@@ -65,8 +65,8 @@ namespace WpfApp_REFASH.ViewModels
                     MessageBox.Show("Customer data is missing.Cannot navigate to collection");
                     return;
                 }
-                var collectionWindow = new CollectionWindow(Customer);
-                collectionWindow.Show();
+                //var collectionWindow = new CollectionWindow(Customer);
+                //collectionWindow.Show();
                 CloseCurrentWindow();
             }
 
@@ -77,8 +77,8 @@ namespace WpfApp_REFASH.ViewModels
                     MessageBox.Show("Customer data is missing. Cannot navigate to shop");
                     return;
                 }
-                var shopWindow = new ShopWindow(Customer);
-                shopWindow.Show();
+                //var shopWindow = new ShopWindow(Customer);
+                //shopWindow.Show();
                 CloseCurrentWindow();
             }
 

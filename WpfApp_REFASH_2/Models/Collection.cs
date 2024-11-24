@@ -82,6 +82,12 @@ namespace WpfApp_REFASH
             base.DisplayInfo();
             Console.WriteLine($"Collection ID: {CollectionID}\nStatus: {Status}\nCategory: {Category}");
         }
-
+    }
+    // Class to represent each collection item
+    public class CollectionItem
+    {
+        public string Title { get; set; }
+        public BitmapImage BitmapImage { get; set; }
+        public VerificationStatus Status { get; set; }
     }
 }

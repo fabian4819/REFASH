@@ -347,9 +347,6 @@
       <DependentUpon>IntegratedWindows.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Transaction.cs" />
-    <Compile Include="Views\ShopTransactionWindow.xaml.cs">
-      <DependentUpon>ShopTransactionWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\AddNewsCard.xaml.cs">
       <DependentUpon>AddNewsCard.xaml</DependentUpon>
     </Compile>
@@ -361,9 +358,6 @@
     <Compile Include="ViewModels\LoginViewModels.cs" />
     <Compile Include="ViewModels\SideBarViewModel.cs" />
     <Compile Include="ViewModels\UserSession.cs" />
-    <Compile Include="Views\ShopCartWindow.xaml.cs">
-      <DependentUpon>ShopCartWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\ShopCard.xaml.cs">
       <DependentUpon>ShopCard.xaml</DependentUpon>
     </Compile>
@@ -377,23 +371,8 @@
       <DependentUpon>CollectionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Converters.cs" />
-    <Compile Include="Views\CollectionWindow.xaml.cs">
-      <DependentUpon>CollectionWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ShopWindow.xaml.cs">
-      <DependentUpon>ShopWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\UpperBar.xaml.cs">
       <DependentUpon>UpperBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControl\SideBar.xaml.cs">
-      <DependentUpon>SideBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewsDetailWindow.xaml.cs">
-      <DependentUpon>NewsDetailWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewsWindow.xaml.cs">
-      <DependentUpon>NewsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControl\NewsCard.xaml.cs">
       <DependentUpon>NewsCard.xaml</DependentUpon>
@@ -403,9 +382,6 @@
     </Compile>
     <Compile Include="UserControl\ProductDialog.xaml.cs">
       <DependentUpon>ProductDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Dashboard.xaml.cs">
-      <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\DatabaseManager.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -478,19 +454,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ShopTransactionWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControl\AddNewsCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControl\AdminNewsCard.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ShopCartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -506,31 +474,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\CollectionWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ShopWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    
     <Page Include="UserControl\UpperBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\SideBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControl\AdminSideBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewsDetailWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -543,10 +492,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControl\ProductDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
