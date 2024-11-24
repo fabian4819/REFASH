@@ -13,15 +13,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
     /// <summary>
-    /// Interaction logic for AdminCollectionWindow.xaml
+    /// Interaction logic for AdminCollectionView.xaml
     /// </summary>
-    public partial class AdminCollectionWindow : Window, INotifyPropertyChanged
+    public partial class AdminCollectionView : UserControl, INotifyPropertyChanged
     {
         private ObservableCollection<Collection> _allCollections;
         private ObservableCollection<Collection> _filteredCollections;
@@ -34,24 +35,21 @@ namespace WpfApp_REFASH
                 OnPropertyChanged(nameof(FilteredCollections));
             }
         }
-        private Admin Admin {  get; set; }
-        public AdminCollectionWindow()
+        private Admin Admin { get; set; }
+        public AdminCollectionView()
         {
             InitializeComponent();
             Admin = AdminSession.CurrentAdmin;
             LoadCollections();
             DataContext = this;
-            StatusFilter.SelectedIndex = 0; // Select "All" by default
-            upperBar.WelcomeName = Admin.Name;
+            StatusFilter.SelectedIndex = 0;
         }
-
         private void LoadCollections()
         {
             // TODO: Load collections from database
             _allCollections = Admin.GetAllCollections();
             FilteredCollections = new ObservableCollection<Collection>(_allCollections);
         }
-
         private void StatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (StatusFilter.SelectedItem == null) return;
@@ -68,7 +66,6 @@ namespace WpfApp_REFASH
                 );
             }
         }
-
         private void StatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox && comboBox.DataContext is Collection collection)
@@ -77,7 +74,6 @@ namespace WpfApp_REFASH
                 UpdateCollectionStatus(collection, newStatus);
             }
         }
-
         private void UpdateCollectionStatus(Collection collection, string newStatus)
         {
             // TODO: Update status in database
@@ -86,37 +82,36 @@ namespace WpfApp_REFASH
             MessageBox.Show($"Collection status updated to {newStatus}", "Status Updated",
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-    //public class StatusToBrushConverter : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        if (value is string status)
-    //        {
-    //            switch (status.ToLower())
-    //            {
-    //                case "inreview":
-    //                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F39C12"));
-    //                case "verified":
-    //                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ECC71"));
-    //                case "rejected":
-    //                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C"));
-    //                default:
-    //                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#95A5A6"));
-    //            }
-    //        }
-    //        return null;
-    //    }
+    public class StatusToBrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string status)
+            {
+                switch (status.ToLower())
+                {
+                    case "inreview":
+                        return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F39C12"));
+                    case "verified":
+                        return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ECC71"));
+                    case "rejected":
+                        return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E74C3C"));
+                    default:
+                        return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#95A5A6"));
+                }
+            }
+            return null;
+        }
 
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
