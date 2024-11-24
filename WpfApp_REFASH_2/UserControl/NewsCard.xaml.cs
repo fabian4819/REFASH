@@ -33,8 +33,8 @@ namespace WpfApp_REFASH
             // Access Customer through DataContext (Content object)
             if(AdminSession.CurrentAdmin != null)
             {
-                AdminNewsWindow adminNewsWindow = new AdminNewsWindow();
-                adminNewsWindow.Show();
+                //AdminNewsWindow adminNewsWindow = new AdminNewsWindow();
+                //adminNewsWindow.Show();
                 Window parentWindow = Window.GetWindow(this);
                 parentWindow.Close();
             }

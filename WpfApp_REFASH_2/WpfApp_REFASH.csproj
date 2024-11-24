@@ -304,6 +304,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utilities\Helper.cs" />
     <Compile Include="UserControlView\AdminShopView.xaml.cs">
       <DependentUpon>AdminShopView.xaml</DependentUpon>
     </Compile>
@@ -360,9 +361,6 @@
     <Compile Include="ViewModels\UserSession.cs" />
     <Compile Include="UserControl\ShopCard.xaml.cs">
       <DependentUpon>ShopCard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControl\AdminSideBar.xaml.cs">
-      <DependentUpon>AdminSideBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControl\AddCollectionDialog.xaml.cs">
       <DependentUpon>AddCollectionDialog.xaml</DependentUpon>
@@ -474,12 +472,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    
     <Page Include="UserControl\UpperBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControl\AdminSideBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -503,38 +496,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AdminDashboardWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AdminNewsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AdminShopWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AdminCollectionWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="Views\AdminCollectionWindow.xaml.cs">
-      <DependentUpon>AdminCollectionWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\AdminShopWindow.xaml.cs">
-      <DependentUpon>AdminShopWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\AdminNewsWindow.xaml.cs">
-      <DependentUpon>AdminNewsWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\AdminDashboardWindow.xaml.cs">
-      <DependentUpon>AdminDashboardWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
