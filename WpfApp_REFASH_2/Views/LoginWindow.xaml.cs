@@ -71,8 +71,10 @@ namespace WpfApp_REFASH
                 MessageBox.Show("Customer is missing in login");
             }
             Application.Current.Dispatcher.Invoke(() => {
-                var newsWindow = new NewsWindow();
-                newsWindow.Show();
+                //var newsWindow = new NewsWindow();
+                //newsWindow.Show();
+                var integratedWindow = new IntegratedWindows();
+                integratedWindow.Show();
                 this.Close();
             });
         }

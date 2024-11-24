@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,21 +12,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using WpfApp_REFASH.ViewModels;
 
 namespace WpfApp_REFASH
 {
-    //public enum VerificationStatus
-    //{
-    //    Verified,
-    //    InVerification,
-    //    Rejected
-    //}
-    public partial class CollectionWindow : Window, INotifyPropertyChanged
+    /// <summary>
+    /// Interaction logic for CustomerCollectionView.xaml
+    /// </summary>
+    public enum VerificationStatus
     {
+        Verified,
+        InVerification,
+        Rejected
+    }
+
+    public partial class CustomerCollectionView : UserControl, INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
         public Customer Customer { get; private set; }
         private Grid modalBackground;
         private AddCollectionDialog addDialog;
@@ -44,34 +50,25 @@ namespace WpfApp_REFASH
         {
             get { return Collections?.Count ?? 0; }
         }
-
-        public CollectionWindow(Customer customer)
+        public CustomerCollectionView()
         {
             InitializeComponent();
             InitializeModalLayer();
             Customer = UserSession.CurrentCustomer;
 
-            // Initialize collections
             RefreshCollections();
 
-            // Subscribe to CollectionChanged event
             Collections.CollectionChanged += (s, e) =>
             {
                 OnPropertyChanged(nameof(TotalCollections));
             };
-
             DataContext = this;
-
-            Customer = UserSession.CurrentCustomer;
-            upperBar.WelcomeName = Customer.Name;
         }
-
         private void RefreshCollections()
         {
             var collections = Customer.GetAllCollections();
             Collections = ConvertToCollectionItems(collections);
         }
-
         private VerificationStatus MapStatusToVerificationStatus(string status)
         {
             return status switch
@@ -82,7 +79,6 @@ namespace WpfApp_REFASH
                 _ => VerificationStatus.InVerification // Default case
             };
         }
-
         public ObservableCollection<CollectionItem> ConvertToCollectionItems(ObservableCollection<Collection> collections)
         {
             ObservableCollection<CollectionItem> collectionItems = new ObservableCollection<CollectionItem>();
@@ -97,7 +93,6 @@ namespace WpfApp_REFASH
             }
             return collectionItems;
         }
-
         private void InitializeModalLayer()
         {
             modalBackground = new Grid
@@ -110,7 +105,7 @@ namespace WpfApp_REFASH
 
             var blurEffect = new System.Windows.Media.Effects.BlurEffect
             {
-                Radius = 5,
+                Radius = 0,
                 KernelType = System.Windows.Media.Effects.KernelType.Gaussian
             };
 
@@ -133,12 +128,10 @@ namespace WpfApp_REFASH
             modalBackground.Children.Add(addDialog);
             MainGrid.Children.Add(modalBackground);
         }
-
         private void btn_addCollection_Click(object sender, RoutedEventArgs e)
         {
             modalBackground.Visibility = Visibility.Visible;
         }
-
         private void AddDialog_OnAdd(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(addDialog.CollectionName))
@@ -173,25 +166,13 @@ namespace WpfApp_REFASH
                 MessageBox.Show($"Error adding collection: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private void AddDialog_OnCancel(object sender, RoutedEventArgs e)
         {
             modalBackground.Visibility = Visibility.Collapsed;
         }
-
-        // INotifyPropertyChanged implementation
-        public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-
-    // Class to represent each collection item
-    public class CollectionItem
-    {
-        public string Title { get; set; }
-        public BitmapImage BitmapImage { get; set; }
-        public VerificationStatus Status { get; set; }
     }
 }
