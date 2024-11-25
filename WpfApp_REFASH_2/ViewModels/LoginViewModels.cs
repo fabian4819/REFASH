@@ -14,6 +14,7 @@ namespace WpfApp_REFASH.ViewModels
     {
         private string _email;
         private string _password;
+        private bool _isLoading;
         private readonly DatabaseManager _dbManager;
 
         public string Email
@@ -36,53 +37,85 @@ namespace WpfApp_REFASH.ViewModels
             }
         }
 
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
         public ICommand LoginCommand { get; }
-
         public event PropertyChangedEventHandler PropertyChanged;
-
         public event Action<Customer> LoginSuccess;
         public event Action<Admin> LoginSuccessAdmin;
 
         public LoginViewModel()
         {
             _dbManager = new DatabaseManager();
-            LoginCommand = new RelayCommand(ExecuteLogin);
+            LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
         }
 
-        private void ExecuteLogin()
+        private bool CanExecuteLogin()
         {
-            // Logika autentikasi
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
-            {
-                MessageBox.Show("Please enter both email and password.");
-                return;
-            }
+            return !IsLoading; // Disable login button while loading
+        }
 
-            User user = new User(Email, Password);
-            var (isAuthenticated, message, name, role, phoneNumber) = user.Login(Email, Password);
-
-            if (isAuthenticated)
+        private async void ExecuteLogin()
+        {
+            try
             {
-                switch (role)
+                IsLoading = true;
+
+                // Validasi input
+                if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
                 {
-                    case "Admin":
-                        Admin admin = new Admin(name, Email, phoneNumber, Password, role);
-                        AdminSession.CurrentAdmin = admin;
-                        LoginSuccessAdmin(admin);
-                        break;
-                    case "Customer":
-                        Customer customer = new Customer(name, Email, phoneNumber, Password, role);
-                        UserSession.CurrentCustomer = customer;
-                        LoginSuccess?.Invoke(customer);
-                        break;
-                    default:
-                        MessageBox.Show("Unknown role");
-                        break;
+                    MessageBox.Show("Please enter both email and password.");
+                    return;
+                }
+
+                // Simulate network delay (optional, remove in production)
+                await Task.Delay(1000);
+
+                // Logika autentikasi
+                User user = new User(Email, Password);
+                var (isAuthenticated, message, name, role, phoneNumber) = user.Login(Email, Password);
+
+                if (isAuthenticated)
+                {
+                    switch (role?.ToLower())
+                    {
+                        case "admin":
+                            Admin admin = new Admin(name, Email, phoneNumber, Password, role);
+                            AdminSession.CurrentAdmin = admin;
+                            LoginSuccessAdmin?.Invoke(admin);
+                            break;
+
+                        case "customer":
+                            Customer customer = new Customer(name, Email, phoneNumber, Password, role);
+                            UserSession.CurrentCustomer = customer;
+                            LoginSuccess?.Invoke(customer);
+                            break;
+
+                        default:
+                            MessageBox.Show("Unknown role");
+                            break;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(message);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(message);
+                MessageBox.Show($"Login error: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 

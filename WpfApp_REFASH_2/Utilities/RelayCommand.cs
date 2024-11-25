@@ -18,12 +18,25 @@ namespace WpfApp_REFASH
             _canExecute = canExecute;
         }
 
-        public bool CanExecute(object parameter) => _canExecute == null || _canExecute();
-        public void Execute(object parameter) => _execute();
         public event EventHandler CanExecuteChanged
         {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute?.Invoke() ?? true;
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute();
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }
