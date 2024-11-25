@@ -349,14 +349,13 @@ Margin="30">
                             <Run Text="1. "/>
                             <Run Text="Scan QR code and make the payment"/>
                             </TextBlock>
-                            <TextBlock TextWrapping="Wrap"
-                                 Margin="0,4">
-                            <Run Text="2. "/>
-                            <Run Text="Confirm payment via "/>
-                            <Hyperlink NavigateUri="https://wa.me/6282232018289"
-                                     RequestNavigate="Hyperlink_RequestNavigate">
-                                WhatsApp
-                            </Hyperlink>
+                            <TextBlock TextWrapping="Wrap" Margin="0,4">
+    <Run Text="2. "/>
+    <Run Text="Confirm payment via "/>
+    <Hyperlink NavigateUri="{Binding WhatsAppLink}"
+               RequestNavigate="Hyperlink_RequestNavigate">
+        WhatsApp
+    </Hyperlink>
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap"
                                  Margin="0,4">

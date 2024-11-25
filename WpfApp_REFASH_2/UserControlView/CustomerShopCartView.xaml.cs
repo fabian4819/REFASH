@@ -18,6 +18,7 @@ using WpfApp_REFASH.ViewModels;
 using System.IO;
 using System.Diagnostics;
 using QRCoder;
+using System.Drawing;
 
 namespace WpfApp_REFASH
 {
@@ -31,6 +32,22 @@ namespace WpfApp_REFASH
         private ObservableCollection<CartItem> _cartItems;
         private decimal _totalPrice;
         private int _totalSelectedItems;
+        private string _whatsAppLink; // Tambahkan field untuk WhatsAppLink
+
+        // Tambahkan property WhatsAppLink
+        public string WhatsAppLink
+        {
+            get => _whatsAppLink;
+            set
+            {
+                if (_whatsAppLink != value)
+                {
+                    _whatsAppLink = value;
+                    OnPropertyChanged(nameof(WhatsAppLink));
+                }
+            }
+        }
+
         public Customer Customer
         {
             get => _customer;
@@ -81,6 +98,7 @@ namespace WpfApp_REFASH
                 UpdateSelectedItemsCount();
             }
         }
+
         public CustomerShopCartView()
         {
             InitializeComponent();
@@ -92,7 +110,9 @@ namespace WpfApp_REFASH
             }
             LoadCartItems();
             DataContext = this;
+            WhatsAppLink = "https://wa.me/6282232018289"; // Initialize default WhatsApp link
         }
+
         private void LoadCartItems()
         {
             var products = Customer.GetAllProductCart();
@@ -104,6 +124,7 @@ namespace WpfApp_REFASH
                 item.PropertyChanged += CartItem_PropertyChanged;
             }
         }
+
         private void CartItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(CartItem.IsSelected))
@@ -112,15 +133,31 @@ namespace WpfApp_REFASH
                 UpdateSelectedItemsCount();
             }
         }
+
         private void UpdateTotalPrice()
         {
             TotalPrice = CartItems?.Where(item => item.IsSelected)
                                  .Sum(item => item.Price * item.Stock) ?? 0;
         }
+
         private void UpdateSelectedItemsCount()
         {
             TotalSelectedItems = CartItems?.Count(item => item.IsSelected) ?? 0;
         }
+
+        private void btn_back_click(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is IntegratedWindows integratedWindows)
+            {
+                integratedWindows.SetMainContent(new CustomerShopView());
+            }
+            else
+            {
+                MessageBox.Show("This Window is not of type IntegratedWindows.");
+            }
+        }
+
         private void btn_deleteFromCart_click(object sender, RoutedEventArgs e)
         {
             var cartItem = ((FrameworkElement)sender).DataContext as CartItem;
@@ -139,6 +176,7 @@ namespace WpfApp_REFASH
                 }
             }
         }
+
         private void btn_checkout_click(object sender, RoutedEventArgs e)
         {
             if (!HasSelectedItems)
@@ -167,7 +205,7 @@ namespace WpfApp_REFASH
                 if (result == MessageBoxResult.Yes)
                 {
                     _customer.Checkout(new ObservableCollection<Product>(selectedItems));
-                    ShowPaymentModal(totalAmount); // Show payment modal instead of success message
+                    ShowPaymentModal(totalAmount); // Show payment modal
                     LoadCartItems();
                 }
             }
@@ -177,22 +215,19 @@ namespace WpfApp_REFASH
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void btn_back_click(object sender, RoutedEventArgs e)
-        {
-            Window parentWindow = Window.GetWindow(this);
-            if (parentWindow is IntegratedWindows integratedWindows)
-            {
-                integratedWindows.SetMainContent(new CustomerShopView());
-            }
-            else
-            {
-                MessageBox.Show("This Window is not of type IntegratedWindows.");
-            }
-        }
 
         private void ShowPaymentModal(decimal totalAmount)
         {
             TotalAmountText.Text = $"Rp. {totalAmount:N0}";
+
+            // Create WhatsApp message template
+            var message = $"Halo Admin REFASH, saya ingin mengkonfirmasi pembayaran:%0A" +
+                         $"Total Pembayaran: Rp. {totalAmount:N0}%0A" +
+                         $"Nama: {Customer.Name}%0A" +
+                         $"Order ID: {DateTime.Now:yyyyMMddHHmmss}";
+
+            // Update WhatsApp link with message template
+            WhatsAppLink = $"https://wa.me/6282232018289?text={message}";
 
             // Generate QR Code
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
