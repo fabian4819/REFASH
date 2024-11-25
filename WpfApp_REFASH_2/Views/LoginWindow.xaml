@@ -64,6 +64,37 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <!-- Loading Spinner Style -->
+        <Style x:Key="LoadingSpinner" TargetType="Control">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Grid>
+                            <Grid.RenderTransform>
+                                <RotateTransform x:Name="SpinnerRotate" Angle="0"/>
+                            </Grid.RenderTransform>
+                            <Path Width="24" Height="24" 
+                              Data="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"
+                              Fill="{StaticResource AccentBrush}">
+                            </Path>
+                            <Grid.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                            Storyboard.TargetName="SpinnerRotate"
+                                            Storyboard.TargetProperty="Angle"
+                                            From="0" To="360" Duration="0:0:1"
+                                            RepeatBehavior="Forever"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Grid.Triggers>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid Background="{StaticResource PrimaryDarkBrush}">
@@ -222,5 +253,20 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay" 
+          Background="#80000000" 
+          Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+                <Control Style="{StaticResource LoadingSpinner}" 
+                     Width="48" 
+                     Height="48" 
+                     Margin="0,0,0,16"/>
+                <TextBlock Text="Please wait..." 
+                       Foreground="White" 
+                       FontSize="16"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
