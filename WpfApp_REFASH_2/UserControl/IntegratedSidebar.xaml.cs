@@ -77,8 +77,23 @@ namespace WpfApp_REFASH
 
         private void btn_logout_click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("You have logged out.");
-            Application.Current.Shutdown();
+            try
+            {
+                // Call the logout method from User class
+                Customer?.Logout();
+
+                // Create and show new MainWindow
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+
+                // Close the current window
+                Window currentWindow = Window.GetWindow(this);
+                currentWindow?.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during logout: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

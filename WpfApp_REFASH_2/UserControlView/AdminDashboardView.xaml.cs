@@ -44,6 +44,12 @@ namespace WpfApp_REFASH
         private ObservableCollection<Order> _allOrders;
         private ObservableCollection<Order> _filteredOrders;
         private WpfPlot _salesPlot;
+        public List<string> StatusOptions { get; } = new List<string>
+    {
+        "Packaging",
+        "Shipped",
+        "Delivered"
+    };
         public ObservableCollection<Order> FilteredOrders
         {
             get { return _filteredOrders; }
@@ -77,21 +83,22 @@ namespace WpfApp_REFASH
                 TotalProductsText.Text = productCount.ToString();
                 SoldProductsText.Text = soldCount.ToString();
 
-                // Load orders
+                // Load orders with extra logging
                 _allOrders = Admin.GetAllOrders();
+                Console.WriteLine($"Loaded {_allOrders?.Count ?? 0} orders");
+
                 if (_allOrders == null)
                 {
                     _allOrders = new ObservableCollection<Order>();
                 }
+
                 FilteredOrders = new ObservableCollection<Order>(_allOrders);
+                Console.WriteLine($"Initialized FilteredOrders with {FilteredOrders.Count} items");
 
-                // Ensure the ListView updates
-                if (OrdersListView != null)
-                {
-                    OrdersListView.ItemsSource = FilteredOrders;
-                }
+                // Force UI refresh
+                OrdersListView.ItemsSource = null;
+                OrdersListView.ItemsSource = FilteredOrders;
 
-                // Set default order filter
                 if (OrderStatusFilter != null)
                 {
                     OrderStatusFilter.SelectedIndex = 0;
@@ -99,8 +106,8 @@ namespace WpfApp_REFASH
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error initializing data: {ex.Message}", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error initializing data: {ex.Message}",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void InitializeSalesChart()
@@ -129,7 +136,7 @@ namespace WpfApp_REFASH
             // Configure axes
             plot.Title("Daily Sales Overview");
             plot.XLabel("Date");
-            plot.YLabel("Sales Amount ($)");
+            plot.YLabel("Sales Amount (Rp)"); // Ubah label Y-axis
 
             // Set axis limits
             plot.SetAxisLimits(
@@ -141,6 +148,9 @@ namespace WpfApp_REFASH
             // Add custom X axis labels
             plot.XAxis.ManualTickPositions(xData, xLabels);
             plot.XAxis.TickLabelStyle(rotation: 45);
+
+            // Format Y axis ticks to show Rupiah format
+            plot.YAxis.TickLabelFormat((y) => $"Rp {y:N0}");
 
             // Configure grid and style
             plot.Grid(enable: true, lineStyle: ScottPlot.LineStyle.Dot);
@@ -164,28 +174,74 @@ namespace WpfApp_REFASH
         }
         private void OrderStatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (OrderStatusFilter.SelectedItem == null) return;
+            if (OrderStatusFilter?.SelectedItem == null || _allOrders == null) return;
 
-            string selectedStatus = ((ComboBoxItem)OrderStatusFilter.SelectedItem).Content.ToString();
-
-            if (selectedStatus == "All Orders")
+            try
             {
-                FilteredOrders = new ObservableCollection<Order>(_allOrders);
+                string selectedStatus = ((ComboBoxItem)OrderStatusFilter.SelectedItem).Content.ToString();
+
+                if (selectedStatus == "All Orders")
+                {
+                    FilteredOrders = new ObservableCollection<Order>(_allOrders);
+                }
+                else
+                {
+                    FilteredOrders = new ObservableCollection<Order>(
+                        _allOrders.Where(o => string.Equals(o.Status, selectedStatus,
+                            StringComparison.OrdinalIgnoreCase))
+                    );
+                }
+
+                // Force UI refresh
+                OrdersListView.ItemsSource = null;
+                OrdersListView.ItemsSource = FilteredOrders;
             }
-            else
+            catch (Exception ex)
             {
-                FilteredOrders = new ObservableCollection<Order>(
-                    _allOrders.Where(o => o.Status == selectedStatus)
-                );
+                MessageBox.Show($"Error filtering orders: {ex.Message}",
+                    "Filter Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void OrderStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox comboBox && comboBox.DataContext is Order order)
+            try
             {
-                string newStatus = ((ComboBoxItem)comboBox.SelectedItem).Content.ToString();
-                UpdateOrderStatus(order, newStatus);
+                if (sender is ComboBox comboBox && comboBox.DataContext is Order order)
+                {
+                    string newStatus = comboBox.SelectedItem as string;
+                    if (string.IsNullOrEmpty(newStatus) || newStatus == order.Status) return;
+
+                    var result = MessageBox.Show(
+                        $"Are you sure you want to update Order #{order.OrderId} status to '{newStatus}'?",
+                        "Confirm Status Update",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        Admin?.UpdateOrderStatus(order.OrderId, newStatus);
+
+                        // Update UI
+                        order.Status = newStatus;
+
+                        // Optional: Refresh data untuk memastikan konsistensi
+                        InitializeData();
+                    }
+                    else
+                    {
+                        // Revert selection jika user membatalkan
+                        comboBox.SelectedItem = order.Status;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating order status: {ex.Message}",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                // Log untuk debugging
+                Console.WriteLine($"Error in OrderStatus_SelectionChanged: {ex}");
             }
         }
 
@@ -193,15 +249,15 @@ namespace WpfApp_REFASH
         {
             try
             {
-                Admin.UpdateOrderStatus(order.OrderId, newStatus);
-                order.Status = newStatus;
-                MessageBox.Show($"Order status updated to {newStatus}", "Status Updated",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                Admin?.UpdateOrderStatus(order.OrderId, newStatus);
+                order.Status = newStatus; // Update status di UI
+
+                MessageBox.Show($"Order #{order.OrderId} status has been updated to '{newStatus}'",
+                    "Status Updated", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to update order status: {ex.Message}", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new Exception($"Failed to update order status: {ex.Message}");
             }
         }
 
@@ -213,7 +269,7 @@ namespace WpfApp_REFASH
     }
     public class Order : INotifyPropertyChanged
     {
-        private string _status;
+        private string _status = "Packaging"; // Default value
         public int OrderId { get; set; }
         public string CustomerEmail { get; set; }
         public DateTime OrderDate { get; set; }
@@ -223,8 +279,11 @@ namespace WpfApp_REFASH
             get => _status;
             set
             {
-                _status = value;
-                OnPropertyChanged(nameof(Status));
+                if (_status != value)
+                {
+                    _status = value;
+                    OnPropertyChanged(nameof(Status));
+                }
             }
         }
 
