@@ -162,9 +162,9 @@
                  FontSize="20" 
                  FontWeight="Bold"/>
                                 <ComboBox x:Name="OrderStatusFilter" 
-                Grid.Column="1"
-                Style="{StaticResource StatusComboBox}"
-                SelectionChanged="OrderStatusFilter_SelectionChanged">
+          Grid.Column="1"
+          Style="{StaticResource StatusComboBox}"
+          SelectionChanged="OrderStatusFilter_SelectionChanged">
                                     <ComboBoxItem Content="All Orders"/>
                                     <ComboBoxItem Content="Packaging"/>
                                     <ComboBoxItem Content="Shipped"/>
@@ -174,12 +174,12 @@
 
                             <!-- Orders List -->
                             <ListView x:Name="OrdersListView" 
-             Grid.Row="1"
-             ItemsSource="{Binding FilteredOrders}"
-             BorderThickness="0"
-             Background="Transparent"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Auto">
+          Grid.Row="1"
+          ItemsSource="{Binding FilteredOrders}"
+          BorderThickness="0"
+          Background="Transparent"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+          ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -209,65 +209,39 @@
                                                 <!-- Order Details -->
                                                 <StackPanel Grid.Column="0" Width="200">
                                                     <TextBlock Text="{Binding OrderId, StringFormat='Order #{0}'}"
-                                     FontWeight="Bold"
-                                     FontSize="16"/>
+                                 FontWeight="Bold"
+                                 FontSize="16"/>
                                                     <TextBlock Text="{Binding CustomerEmail}"
-                                     Foreground="#636e72"
-                                     TextWrapping="Wrap"
-                                     Margin="0,5,0,0"/>
+                                 Foreground="#636e72"
+                                 TextWrapping="Wrap"
+                                 Margin="0,5,0,0"/>
                                                 </StackPanel>
 
                                                 <!-- Amount -->
                                                 <TextBlock Grid.Column="1"
-                                 Text="{Binding TotalAmount, StringFormat='${0:N2}'}"
-                                 FontWeight="SemiBold"
-                                 FontSize="16"
-                                 Margin="20,0"
-                                 VerticalAlignment="Center"/>
+           Text="{Binding TotalAmount, StringFormat='Rp {0:N0}'}"
+           FontWeight="SemiBold"
+           FontSize="16"
+           Margin="20,0"
+           VerticalAlignment="Center"/>
 
                                                 <!-- Date -->
                                                 <TextBlock Grid.Column="2"
-                                 Text="{Binding OrderDate, StringFormat='{}{0:MMM dd, yyyy}'}"
-                                 Foreground="#636e72"
-                                 Margin="20,0"
-                                 VerticalAlignment="Center"/>
+                             Text="{Binding OrderDate, StringFormat='{}{0:MMM dd, yyyy}'}"
+                             Foreground="#636e72"
+                             Margin="20,0"
+                             VerticalAlignment="Center"/>
 
                                                 <!-- Status -->
                                                 <ComboBox Grid.Column="3"
-                                Style="{StaticResource StatusComboBox}"
-                                SelectedValue="{Binding Status}"
-                                SelectionChanged="OrderStatus_SelectionChanged">
-                                                    <ComboBoxItem Content="Packaging"/>
-                                                    <ComboBoxItem Content="Shipped"/>
-                                                    <ComboBoxItem Content="Delivered"/>
-                                                </ComboBox>
+                             Style="{StaticResource StatusComboBox}"
+                             ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=StatusOptions}"
+                             SelectedValue="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             SelectionChanged="OrderStatus_SelectionChanged"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
-
-                                <!-- Empty State -->
-                                <ListView.Template>
-                                    <ControlTemplate TargetType="ListView">
-                                        <Border Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                                            <Grid>
-                                                <ScrollViewer>
-                                                    <ItemsPresenter/>
-                                                </ScrollViewer>
-                                                <TextBlock Text="No orders found"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center"
-                                 Foreground="#636e72"
-                                 FontSize="16"
-                                 Visibility="{Binding FilteredOrders.Count, 
-                                    Converter={StaticResource IntToVisibilityConverter}, 
-                                    RelativeSource={RelativeSource AncestorType=ListView}}"/>
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </ListView.Template>
                             </ListView>
                         </Grid>
                     </Border>

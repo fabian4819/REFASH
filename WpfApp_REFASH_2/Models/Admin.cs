@@ -661,36 +661,61 @@ namespace WpfApp_REFASH
                     {
                         try
                         {
-                            string query = @"
-                            UPDATE orders 
-                            SET status = @status,
-                                update_at = CURRENT_TIMESTAMP
-                            WHERE id = @id";
+                            // Cek dulu apakah order dengan ID tersebut ada dan terkait dengan admin ini
+                            string checkQuery = @"
+                        SELECT COUNT(*)
+                        FROM orders o
+                        JOIN order_details od ON o.id = od.order_id
+                        JOIN products p ON od.product_id = p.id
+                        WHERE o.id = @id AND p.admin_email = @email";
 
-                            using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                            using (var checkCmd = new NpgsqlCommand(checkQuery, conn, transaction))
                             {
-                                cmd.Parameters.AddWithValue("@status", newStatus);
-                                cmd.Parameters.AddWithValue("@id", orderId);
+                                checkCmd.Parameters.AddWithValue("@id", orderId);
+                                checkCmd.Parameters.AddWithValue("@email", Email);
 
-                                int rowsAffected = cmd.ExecuteNonQuery();
-                                if (rowsAffected == 0)
+                                int orderExists = Convert.ToInt32(checkCmd.ExecuteScalar());
+                                if (orderExists == 0)
                                 {
-                                    throw new Exception("Order not found");
+                                    throw new Exception("Order not found or you don't have permission to update this order");
                                 }
                             }
+
+                            // Jika order ditemukan, lakukan update
+                            string updateQuery = @"
+                        UPDATE orders 
+                        SET status = @status,
+                            update_at = CURRENT_TIMESTAMP
+                        WHERE id = @id
+                        RETURNING id"; // Tambahkan RETURNING untuk memastikan update berhasil
+
+                            using (var updateCmd = new NpgsqlCommand(updateQuery, conn, transaction))
+                            {
+                                updateCmd.Parameters.AddWithValue("@status", newStatus);
+                                updateCmd.Parameters.AddWithValue("@id", orderId);
+
+                                var result = updateCmd.ExecuteScalar();
+                                if (result == null)
+                                {
+                                    throw new Exception("Failed to update order status");
+                                }
+                            }
+
                             transaction.Commit();
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             transaction.Rollback();
-                            throw;
+                            throw new Exception($"Error updating order status: {ex.Message}");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to update order status: {ex.Message}");
+                MessageBox.Show($"Failed to update order status: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
             }
         }
     }
