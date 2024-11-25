@@ -220,11 +220,18 @@ namespace WpfApp_REFASH
         {
             TotalAmountText.Text = $"Rp. {totalAmount:N0}";
 
-            // Create WhatsApp message template
+            // Create product details string
+            var productDetails = string.Join("%0A", CartItems
+                .Where(item => item.IsSelected)
+                .Select(item => $"- {item.ProductName} (x{item.Stock})"));
+
+            // Create WhatsApp message template with current date and time
             var message = $"Halo Admin REFASH, saya ingin mengkonfirmasi pembayaran:%0A" +
-                         $"Total Pembayaran: Rp. {totalAmount:N0}%0A" +
+                         $"Tanggal: {DateTime.Now:dd MMMM yyyy}%0A" +
+                         $"Pukul: {DateTime.Now:HH:mm} WIB%0A" +
                          $"Nama: {Customer.Name}%0A" +
-                         $"Order ID: {DateTime.Now:yyyyMMddHHmmss}";
+                         $"%0ADetail Produk:%0A{productDetails}%0A" +
+                         $"%0ATotal Pembayaran: Rp. {totalAmount:N0}";
 
             // Update WhatsApp link with message template
             WhatsAppLink = $"https://wa.me/6282232018289?text={message}";
