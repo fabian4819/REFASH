@@ -15,6 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp_REFASH.ViewModels;
+using System.IO;
+using System.Diagnostics;
+using QRCoder;
 
 namespace WpfApp_REFASH
 {
@@ -164,8 +167,7 @@ namespace WpfApp_REFASH
                 if (result == MessageBoxResult.Yes)
                 {
                     _customer.Checkout(new ObservableCollection<Product>(selectedItems));
-                    MessageBox.Show("Checkout successful!", "Success",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    ShowPaymentModal(totalAmount); // Show payment modal instead of success message
                     LoadCartItems();
                 }
             }
@@ -186,6 +188,58 @@ namespace WpfApp_REFASH
             {
                 MessageBox.Show("This Window is not of type IntegratedWindows.");
             }
+        }
+
+        private void ShowPaymentModal(decimal totalAmount)
+        {
+            TotalAmountText.Text = $"Rp. {totalAmount:N0}";
+
+            // Generate QR Code
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(totalAmount.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+
+            // Convert to Bitmap
+            System.Drawing.Bitmap qrCodeImage = qrCode.GetGraphic(20);
+
+            // Convert to BitmapImage for WPF
+            using (MemoryStream memory = new MemoryStream())
+            {
+                qrCodeImage.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+
+                QRCodeImage.Source = bitmapImage;
+            }
+
+            PaymentModal.Visibility = Visibility.Visible;
+        }
+
+        private void ClosePaymentModal_Click(object sender, RoutedEventArgs e)
+        {
+            PaymentModal.Visibility = Visibility.Collapsed;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = e.Uri.AbsoluteUri,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Could not open WhatsApp: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            e.Handled = true;
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
